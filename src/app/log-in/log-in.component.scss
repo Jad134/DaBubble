@@ -12,6 +12,9 @@
     width: 187px;
     height: 184px;
     object-fit: cover;
+    animation: 0.3s forwards slide-left;
+    animation-delay: 1s;
+    
 }
 
 .logo-animation-container{
@@ -20,6 +23,16 @@
     >span{
         font-family: 'Nunito';
         font-size: 90px;
-    }
-    
+        font-weight: bold;
+        color: white;
+    } 
 }
+
+@keyframes slide-left {
+    from {
+      margin-left: 0;
+    }
+    to {
+      margin-right: 300px;
+    }
+  }
