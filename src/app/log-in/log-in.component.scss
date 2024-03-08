@@ -1,38 +1,73 @@
-.background-intro{
+.background-intro {
     background: linear-gradient(1deg, #313ae5 1.22%, #797ef3 98.76%);
     display: flex;
     height: 100vh;
     display: flex;
-    justify-content: center;  
+    justify-content: center;
     align-items: center;
-   
+
 }
 
-.logo{
+.logo {
     width: 187px;
     height: 184px;
     object-fit: cover;
-    animation: 0.3s forwards slide-left;
-    animation-delay: 1s;
+    z-index: 2;
+    overflow: hidden;
     
 }
 
-.logo-animation-container{
+.logo-animation-container {
     display: flex;
     align-items: center;
-    >span{
-        font-family: 'Nunito';
-        font-size: 90px;
-        font-weight: bold;
-        color: white;
-    } 
+    animation: 0.3s forwards slide-left;
+    animation-delay: 1s;
+    position: relative;
+    z-index: 2;
+    
+}
+
+.project-name-intro {
+    overflow: hidden;
+    font-family: 'Nunito';
+    font-size: 90px;
+    font-weight: bold;
+    color: white;
+    animation: 0.3s forwards slide-text;
+    animation-delay: 1.5s;
+    opacity: 0;
+}
+
+.oh{
+    position: absolute;
+    left: 195px;
+    overflow: hidden;
 }
 
 @keyframes slide-left {
     from {
-      margin-left: 0;
+        padding-left: 0;
     }
+
     to {
-      margin-right: 300px;
+        padding-right: 300px;
     }
-  }
+}
+
+@keyframes slide-text {
+    from {
+        margin-left: -100%;
+        width: 300%; 
+      }
+    
+      to {
+        margin-left: 0%;
+        width: 100%;
+        opacity: 1;
+
+      }
+}
+
+
+
+
