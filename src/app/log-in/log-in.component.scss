@@ -13,3 +13,13 @@
     height: 184px;
     object-fit: cover;
 }
+
+.logo-animation-container{
+    display: flex;
+    align-items: center;
+    >span{
+        font-family: 'Nunito';
+        font-size: 90px;
+    }
+    
+}
