@@ -9,6 +9,18 @@
 .logo-container{
     padding-left: $padding-logo;
     padding-top: $padding-logo;
+    animation: show-logo 1s 3.5s forwards;
+    opacity: 0;
+}
+
+@keyframes show-logo {
+    from {
+        opacity: 0;
+    }
+
+    to {
+       opacity: 1;
+    }
 }
 
 
