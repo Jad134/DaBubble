@@ -1,38 +1,221 @@
-.background-intro{
-    background: linear-gradient(1deg, #313ae5 1.22%, #797ef3 98.76%);
-    display: flex;
+@import './../../styles.scss';
+
+section {
+    background-color: $bg-color;
     height: 100vh;
+    width: 100vw;
     display: flex;
-    justify-content: center;  
-    align-items: center;
-   
+    justify-content: center;
 }
 
-.logo{
-    width: 187px;
-    height: 184px;
-    object-fit: cover;
-    animation: 0.3s forwards slide-left;
-    animation-delay: 1s;
-    
+.main-content {
+    max-width: 1920px;
+    width: 1920px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-.logo-animation-container{
+.logo-container {
+    position: absolute;
+    top: $padding-logo;
+    left: $padding-logo;
+    animation: show-logo 1s 3.5s forwards;
+    opacity: 0;
+}
+
+mat-card {
+    width: 606px;
+    height: 769px;
+    border-radius: 30px;
+    display: flex;
+
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-container {
+    padding-top: 75px
+}
+
+mat-card-content {
+    width: 500px;
+    padding: 0 !important;
+    flex-direction: column;
+    display: flex;
+}
+
+mat-card-header {
     display: flex;
     align-items: center;
-    >span{
-        font-family: 'Nunito';
-        font-size: 90px;
+    flex-direction: column;
+    padding: 0 !important;
+
+    h1 {
+        color: $purple1;
+        padding-top: 50px;
+        font-family: $nunito;
+        font-weight: 700;
+        font-size: 46px;
+        margin-bottom: 30px
+    }
+
+    >span {
+        text-align: center;
+        font-family: $nunito;
+        font-size: 20px;
+        font-weight: 400;
+        margin-bottom: 30px
+    }
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+    margin-bottom: 30px;
+
+    >a {
+        text-decoration: none;
+        font-size: 18px;
+        color: $purple2;
+
+    }
+}
+
+.mail-input {
+    border-radius: 100px;
+    height: 60px;
+    background-color: $bg-color;
+    border: 0px solid;
+    font-size: 18px;
+    font-family: $nunito;
+    font-weight: 500;
+    background-image: url(../../assets/img/mail-input.png);
+    background-repeat: no-repeat;
+    background-position: 32px;
+    padding-left: 82px;
+
+
+    &:focus {
+        border: 1px solid $purple1 !important;
+        border-color: $purple1;
+        outline: none;
+    }
+}
+
+.password-input {
+    border-radius: 100px;
+    height: 60px;
+    background-color: $bg-color;
+    border: 0px solid;
+    font-size: 18px;
+    font-family: $nunito;
+    font-weight: 500;
+    background-image: url(../../assets/img/lock-input.png);
+    background-repeat: no-repeat;
+    background-position: 32px;
+    padding-left: 82px;
+
+
+    &:focus {
+        border: 1px solid $purple1 !important;
+        border-color: $purple1;
+        outline: none;
+    }
+}
+
+.seperator {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid $light-purple;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    margin-bottom: 30px;
+
+    >span {
+        background: #fff;
+        padding: 0 10px;
+        font-family: $nunito;
+        font-size: 18px;
+    }
+}
+
+.google-login {
+    height: 60px;
+    background-color: $bg-color;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-family: $nunito;
+    font-size: 18px;
+    color: $purple1;
+    border: 1px solid transparent;
+    transition: font-weight 0.3s ease, border 0.3s ease;
+    margin-bottom: 30px;
+
+    &:hover {
+        border: 1px solid $purple1;
+        cursor: pointer;
         font-weight: bold;
-        color: white;
-    } 
+    }
 }
 
-@keyframes slide-left {
+.login-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.sign-up {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: $nunito;
+    color: white;
+    border: none;
+    background-color: $purple1;
+    width: 137px;
+    height: 49px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 125ms ease-in-out;
+
+    &:hover {
+        background-color: lighten($purple1, 10%);
+    }
+}
+
+.guest-login {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: $nunito;
+    color: $purple1;
+    border: 1px solid $purple2;
+    background-color: white;
+    width: 137px;
+    height: 49px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 125ms ease-in-out;
+
+    &:hover {
+        background-color: $purple1;
+        color: white;
+    }
+}
+
+
+
+@keyframes show-logo {
     from {
-      margin-left: 0;
+        opacity: 0;
     }
+
     to {
-      margin-right: 300px;
+        opacity: 1;
     }
-  }
+}

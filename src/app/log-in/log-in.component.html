@@ -1,6 +1,38 @@
-<div class="background-intro">
-    <div class="logo-animation-container">
-        <img class="logo" src="/assets/img/start-logo.png" alt="">
-        <!-- <span>DABubble</span> -->
-    </div> 
-</div>
+<app-intro></app-intro>
+
+<section>
+    <div class="main-content">
+        <div class="logo-container">
+            <img src="/assets/img/home-workspace.svg" alt="">
+        </div>
+        <div class="card-container">
+            <mat-card>
+                <mat-card-content>
+                    <mat-card-header>
+                        <h1>Anmeldung</h1>
+                        <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
+                    </mat-card-header>
+                    <div class="input-container">
+                        <input placeholder="beispielname@emailcom" class="mail-input" type="text">
+                        <input placeholder="Passwort" class="password-input" type="text">
+                        <a [routerLink]="''">Passwort vergessen?</a>
+                        <!-- Wird später mit router-link zu der pw vergessen component geleitet -->
+                    </div>
+                    <div class="seperator">
+                        <span>ODER</span>
+                    </div>
+                    <div class="google-login">
+                        <img src="/assets/img/google-icon.png" alt="">
+                        <span>Anmelden mit Google</span>
+                    </div>
+                    <div class="login-buttons">
+                        <button class="sign-up">Anmelden</button>
+                        <button class="guest-login">Gäste-Login</button>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+    </div>
+</section>
