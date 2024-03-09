@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:DaBubble": "node dist/da-bubble/server/server.mjs"
+    "serve:ssr:dabubble": "node dist/da-bubble/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -16,6 +16,7 @@
     "@angular/common": "^17.2.0",
     "@angular/compiler": "^17.2.0",
     "@angular/core": "^17.2.0",
+    "@angular/fire": "^17.0.1",
     "@angular/forms": "^17.2.0",
     "@angular/material": "^17.2.2",
     "@angular/platform-browser": "^17.2.0",
