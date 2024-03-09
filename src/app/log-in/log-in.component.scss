@@ -1,16 +1,70 @@
 @import './../../styles.scss';
 
-.main-content {
+section {
     background-color: $bg-color;
     height: 100vh;
-
+    width: 100vw;
+    display: flex;
+    justify-content: center;
 }
 
-.logo-container{
-    padding-left: $padding-logo;
-    padding-top: $padding-logo;
+.main-content {
+    max-width: 1920px;
+    width: 1920px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logo-container {
+    position: absolute;
+    top: $padding-logo;
+    left: $padding-logo;
     animation: show-logo 1s 3.5s forwards;
     opacity: 0;
+}
+
+mat-card {
+    width: 606px;
+    height: 769px;
+    border-radius: 30px;
+    display: flex;
+
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-container {
+    padding-top: 75px
+}
+
+mat-card-content {
+    width: 500px;
+    padding: 0 !important;
+}
+
+mat-card-header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 !important;
+
+    h1 {
+        color: $purple1;
+        padding-top: 50px;
+        font-family: $nunito;
+        font-weight: 700;
+        font-size: 46px;
+        margin-bottom: 30px
+    }
+
+    >span {
+        text-align: center;
+        font-family: $nunito;
+        font-size: 20px;
+        font-weight: 400;
+    }
 }
 
 @keyframes show-logo {
@@ -19,9 +73,6 @@
     }
 
     to {
-       opacity: 1;
+        opacity: 1;
     }
 }
-
-
-

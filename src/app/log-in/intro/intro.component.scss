@@ -10,6 +10,7 @@
     align-items: center;
     position: absolute;
     animation: hide-background 2s 3s forwards;
+    z-index: 500;
 }
 
 .logo {
