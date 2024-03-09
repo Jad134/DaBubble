@@ -15,9 +15,21 @@
                     <div class="input-container">
                         <input placeholder="beispielname@emailcom" class="mail-input" type="text">
                         <input placeholder="Passwort" class="password-input" type="text">
-                         <a [routerLink]="''">Passwort vergessen?</a> <!-- Wird später mit router-link zu der pw vergessen component geleitet -->
+                        <a [routerLink]="''">Passwort vergessen?</a>
+                        <!-- Wird später mit router-link zu der pw vergessen component geleitet -->
                     </div>
-                   
+                    <div class="seperator">
+                        <span>ODER</span>
+                    </div>
+                    <div class="google-login">
+                        <img src="/assets/img/google-icon.png" alt="">
+                        <span>Anmelden mit Google</span>
+                    </div>
+                    <div class="login-buttons">
+                        <button class="sign-up">Anmelden</button>
+                        <button class="guest-login">Gäste-Login</button>
+                    </div>
+
                 </mat-card-content>
             </mat-card>
         </div>
