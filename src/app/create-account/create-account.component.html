@@ -1,8 +1,29 @@
 <section>
-  <img src="assets/img/home-workspace.svg" alt="" />
-  <div class="create-section">
-    <mat-card class="create-card">
-      <mat-card-content>Simple card</mat-card-content>
-    </mat-card>
+  <div class="main-content">
+      <div class="logo-container">
+          <img src="/assets/img/home-workspace.svg" alt="">
+      </div>
+      <div class="card-container">
+          <mat-card>
+              <mat-card-content>
+                  <mat-card-header>
+                      <h1>Konto erstellen</h1>
+                      <span>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</span>
+                  </mat-card-header>
+                  <div class="input-container">
+                      <input placeholder="Name und Nachname" class="name-input" type="text">
+                      <input placeholder="beispielname@email.com" class="mail-input" type="email">
+                      <input placeholder="Passwort" class="password-input" type="text">
+                  </div>
+                  <div class="checkbox-container">
+                    <input type="checkbox" id="meineCheckbox">
+                    Ich stimme der <a href="">Datenschutzerklärung</a> zu.
+                  </div>
+                  <div class="forward-button">
+                      <button class="forward">Weiter</button>
+                  </div>
+              </mat-card-content>
+          </mat-card>
+        </div>
   </div>
 </section>
