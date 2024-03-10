@@ -6,6 +6,10 @@ section {
     width: 100vw;
     display: flex;
     justify-content: center;
+
+    p{
+        margin: 0;
+    }
 }
 
 .main-content {
@@ -100,5 +104,40 @@ mat-card-header {
             border-color: $light-purple; /* Border-Farbe beim Hover-Effekt ändern */
         }
         
+    }
+}
+
+.avatar-selection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selected-avatar{
+    width: 168px;
+    height: 168px;
+}
+
+.upload-img{
+    display: flex;
+    align-items: center;
+}
+
+.upload-button {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: $nunito;
+    color: $purple1;
+    border: 1px solid $purple2;
+    background-color: white;
+    width: 187px;
+    height: 49px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 125ms ease-in-out;
+
+    &:hover {
+        background-color: $purple1;
+        color: white;
     }
 }
