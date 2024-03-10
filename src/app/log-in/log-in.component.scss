@@ -15,6 +15,7 @@ section {
     justify-content: center;
     align-items: center;
     position: relative;
+    flex-direction: column;
 }
 
 .logo-container {
@@ -57,7 +58,6 @@ section {
         }
     }
 }
-
 
 mat-card {
     width: 606px;
@@ -239,6 +239,35 @@ mat-card-header {
     &:hover {
         background-color: $purple1;
         color: white;
+    }
+}
+
+.footer-links{
+    width: 270px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    padding-top: 50px;
+    
+
+    >a{
+        text-decoration: none;
+        cursor: pointer;
+        color: $purple2;
+        font-size: 18px;
+        border: 1px transparent solid; /* Transparente Border für Platzhalter */
+        border-radius: 30px;
+        transition: border-color 125ms ease-in-out; /* Übergangseffekt für Border-Farbe */
+        width: 174px;
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+            border-color: $light-purple; /* Border-Farbe beim Hover-Effekt ändern */
+        }
+        
     }
 }
 
