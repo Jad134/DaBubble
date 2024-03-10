@@ -111,16 +111,39 @@ mat-card-header {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    h2{
+        font-family: $nunito;
+        font-weight: 700;
+        font-size: 32px;
+    }
+
+    >p{
+        font-family: $nunito;
+        font-weight: 400;
+        size: 20px;
+        width: 100%;
+    }
 }
 
 .selected-avatar{
     width: 168px;
     height: 168px;
+    padding-bottom: 26px;
 }
 
 .upload-img{
     display: flex;
     align-items: center;
+    gap: 30px;
+    width: 100%;
+    padding-bottom: 16px;
+
+    p{
+        font-family: $nunito;
+        font-weight: 400;
+        size: 20px;
+    }
 }
 
 .upload-button {
@@ -139,5 +162,20 @@ mat-card-header {
     &:hover {
         background-color: $purple1;
         color: white;
+    }
+}
+
+.avatar-imgs{
+    display: flex;
+    padding-bottom: 16px;
+
+    img{
+        cursor: pointer;
+        border-radius: 100px;
+        padding: 2px;
+
+        &:hover{
+            background-color: #e6e6e6;
+        }
     }
 }
