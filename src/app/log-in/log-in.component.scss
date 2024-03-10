@@ -25,6 +25,40 @@ section {
     opacity: 0;
 }
 
+.new-user-info {
+    position: absolute;
+    right: $padding-logo;
+    top: $padding-logo;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    > span {
+        font-family: $nunito;
+        font-size: 18px;
+    }
+
+    > a {
+        display: flex;
+        justify-content: end;
+        text-decoration: none;
+        color: $purple2;
+        font-size: 18px;
+        width: 174px;
+        height: 42px;
+        align-items: center;
+        justify-content: center;
+        border: 1px transparent solid; /* Transparente Border für Platzhalter */
+        border-radius: 30px;
+        transition: border-color 125ms ease-in-out; /* Übergangseffekt für Border-Farbe */
+
+        &:hover {
+            border-color: $light-purple; /* Border-Farbe beim Hover-Effekt ändern */
+        }
+    }
+}
+
+
 mat-card {
     width: 606px;
     border-radius: 30px;
