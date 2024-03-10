@@ -12,6 +12,7 @@ section {
     max-width: 1920px;
     width: 1920px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -25,7 +26,6 @@ section {
 
 mat-card {
     width: 606px;
-    height: 769px;
     border-radius: 30px;
     display: flex;
 
@@ -81,9 +81,16 @@ mat-card-header {
         color: $purple2;
 
     }
+    p{
+        margin: 0;
+        color: $rosa-error;
+        position: absolute;
+        bottom: -25px;
+    }
 }
 
-.name-input {
+.input-field{
+    width: calc(100% - 82px);
     border-radius: 100px;
     height: 60px;
     background-color: $bg-color;
@@ -91,60 +98,28 @@ mat-card-header {
     font-size: 18px;
     font-family: $nunito;
     font-weight: 500;
-    background-image: url(../../assets/img/name-input.svg);
     background-repeat: no-repeat;
     background-position: 32px;
     padding-left: 82px;
-
 
     &:focus {
         border: 1px solid $purple1 !important;
         border-color: $purple1;
         outline: none;
     }
+}
+
+.name-input {
+    background-image: url(../../assets/img/name-input.svg);
 }
 
 
 .mail-input {
-    border-radius: 100px;
-    height: 60px;
-    background-color: $bg-color;
-    border: 0px solid;
-    font-size: 18px;
-    font-family: $nunito;
-    font-weight: 500;
     background-image: url(../../assets/img/mail-input.png);
-    background-repeat: no-repeat;
-    background-position: 32px;
-    padding-left: 82px;
-
-
-    &:focus {
-        border: 1px solid $purple1 !important;
-        border-color: $purple1;
-        outline: none;
-    }
 }
 
 .password-input {
-    border-radius: 100px;
-    height: 60px;
-    background-color: $bg-color;
-    border: 0px solid;
-    font-size: 18px;
-    font-family: $nunito;
-    font-weight: 500;
     background-image: url(../../assets/img/lock-input.png);
-    background-repeat: no-repeat;
-    background-position: 32px;
-    padding-left: 82px;
-
-
-    &:focus {
-        border: 1px solid $purple1 !important;
-        border-color: $purple1;
-        outline: none;
-    }
 }
 
 .seperator {
@@ -167,6 +142,7 @@ mat-card-header {
     display: flex;
     justify-content: flex-end;
     gap: 30px;
+    padding-bottom: 40px;
 }
 
 .forward {
@@ -195,6 +171,8 @@ mat-card-header {
         text-decoration: none;
         color: $purple2;
         font-size: 18px;
+        padding-left: 4px;
+        padding-right: 4px;
 
         &:hover{
             color: $purple3;
@@ -202,4 +180,14 @@ mat-card-header {
             border-radius: 15px;
         }
     }
+}
+
+.dflex-col-start{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pos-rel{
+    position: relative;
 }

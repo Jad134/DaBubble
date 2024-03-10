@@ -11,9 +11,18 @@
                       <span>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</span>
                   </mat-card-header>
                   <div class="input-container">
-                      <input placeholder="Name und Nachname" class="name-input" type="text">
-                      <input placeholder="beispielname@email.com" class="mail-input" type="email">
-                      <input placeholder="Passwort" class="password-input" type="text">
+                    <div class="dflex-col-start pos-rel">
+                      <input placeholder="Name und Nachname" class="name-input input-field" type="text">
+                      <p>Bitte schreiben Sie einen Namen.</p>
+                    </div>
+                  <div class="dflex-col-start pos-rel">
+                      <input placeholder="beispielname@email.com" class="mail-input input-field" type="email">
+                      <p>*Diese E-Mail-Adresse ist leider ungültig.</p>
+                    </div>
+                    <div class="dflex-col-start pos-rel">
+                      <input placeholder="Passwort" class="password-input input-field" type="text">
+                      <p>Bitte geben Sie ein Passwort ein.</p>
+                    </div>
                   </div>
                   <div class="checkbox-container">
                     <input type="checkbox" id="meineCheckbox">
@@ -25,5 +34,10 @@
               </mat-card-content>
           </mat-card>
         </div>
+        <div>
+          <a href="">Impressumg</a>
+          <a href="">Datenschutz</a>
+        </div>
   </div>
+
 </section>
