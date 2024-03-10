@@ -27,7 +27,6 @@ section {
 
 mat-card {
     width: 606px;
-    height: 769px;
     border-radius: 30px;
     display: flex;
 
@@ -169,6 +168,7 @@ mat-card-header {
     display: flex;
     justify-content: center;
     gap: 30px;
+    padding-bottom: 40px;
 }
 
 .sign-up {
