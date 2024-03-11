@@ -34,12 +34,12 @@ section {
     flex-direction: column;
     gap: 20px;
 
-    > span {
+    >span {
         font-family: $nunito;
         font-size: 18px;
     }
 
-    > a {
+    >a {
         display: flex;
         justify-content: end;
         text-decoration: none;
@@ -49,12 +49,15 @@ section {
         height: 42px;
         align-items: center;
         justify-content: center;
-        border: 1px transparent solid; /* Transparente Border für Platzhalter */
+        border: 1px transparent solid;
+        /* Transparente Border für Platzhalter */
         border-radius: 30px;
-        transition: border-color 125ms ease-in-out; /* Übergangseffekt für Border-Farbe */
+        transition: border-color 125ms ease-in-out;
+        /* Übergangseffekt für Border-Farbe */
 
         &:hover {
-            border-color: $light-purple; /* Border-Farbe beim Hover-Effekt ändern */
+            border-color: $light-purple;
+            /* Border-Farbe beim Hover-Effekt ändern */
         }
     }
 }
@@ -115,6 +118,22 @@ mat-card-header {
         font-size: 18px;
         color: $purple2;
 
+    }
+}
+
+.input-validation-container {
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    gap: 4px;
+    >span{
+        font-family: $nunito;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19px;
+        letter-spacing: 0em;
+        color: $rosa-error;
+        opacity: 0;
     }
 }
 
@@ -242,22 +261,24 @@ mat-card-header {
     }
 }
 
-.footer-links{
+.footer-links {
     width: 270px;
     display: flex;
     gap: 16px;
     justify-content: center;
     padding-top: 50px;
-    
 
-    >a{
+
+    >a {
         text-decoration: none;
         cursor: pointer;
         color: $purple2;
         font-size: 18px;
-        border: 1px transparent solid; /* Transparente Border für Platzhalter */
+        border: 1px transparent solid;
+        /* Transparente Border für Platzhalter */
         border-radius: 30px;
-        transition: border-color 125ms ease-in-out; /* Übergangseffekt für Border-Farbe */
+        transition: border-color 125ms ease-in-out;
+        /* Übergangseffekt für Border-Farbe */
         width: 174px;
         height: 42px;
         display: flex;
@@ -265,9 +286,10 @@ mat-card-header {
         align-items: center;
 
         &:hover {
-            border-color: $light-purple; /* Border-Farbe beim Hover-Effekt ändern */
+            border-color: $light-purple;
+            /* Border-Farbe beim Hover-Effekt ändern */
         }
-        
+
     }
 }
 
