@@ -1,0 +1,33 @@
+<section>
+    <div class="main-content">
+        <div class="logo-container">
+            <img src="/assets/img/home-workspace.svg" alt="">
+        </div>
+        <div class="card-container">
+            <mat-card>
+                <mat-card-content>
+                    <mat-card-header>
+                        <div class="header-container">
+                            <button routerLink="/" mat-mini-fab color="primary" class="back-button">
+                                <mat-icon class="back-icon">arrow_back</mat-icon> 
+                              </button>
+                            <h1>Passwort zurücksetzen</h1>           
+                        </div> 
+                    </mat-card-header>
+                    <div class="input-container">
+                        <input placeholder="Neues Passwort" class="password-input" type="password">
+                        <input placeholder="Neues Kennwort bestätigen" class="password-input-control" type="password">
+                    </div>
+                    <div class="button-container">
+                        <button disabled class="send-mail-btn">Passwort ändern</button>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="footer-links">
+            <a  routerLink="">Impressum</a>
+            <a  routerLink="">Datenschutz</a>
+        </div>
+    </div>
+</section>
