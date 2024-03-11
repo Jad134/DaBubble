@@ -12,16 +12,16 @@
                   </mat-card-header>
                   <div class="input-container">
                     <div class="dflex-col-start pos-rel">
-                      <input placeholder="Name und Nachname" class="name-input input-field" type="text">
-                      <p class="d-none">Bitte schreiben Sie einen Namen.</p>
+                      <input placeholder="Name und Nachname" class="name-input input-field" type="text" [(ngModel)]="newUser.name">
+                      <p [ngStyle]="{'display': nameFailed ? 'block' : 'none'}">Bitte schreiben Sie einen Namen.</p>
                     </div>
                   <div class="dflex-col-start pos-rel">
-                      <input placeholder="beispielname@email.com" class="mail-input input-field" type="email">
-                      <p class="d-none">*Diese E-Mail-Adresse ist leider ungültig.</p>
+                      <input placeholder="beispielname@email.com" class="mail-input input-field" type="email" [(ngModel)]="newUser.eMail">
+                      <p [ngStyle]="{'display': mailFailed ? 'block' : 'none'}">*Diese E-Mail-Adresse ist leider ungültig.</p>
                     </div>
                     <div class="dflex-col-start pos-rel">
-                      <input placeholder="Passwort" class="password-input input-field" type="text">
-                      <p class="d-none">Bitte geben Sie ein Passwort ein.</p>
+                      <input placeholder="Passwort" class="password-input input-field" type="text" [(ngModel)]="newUser.password">
+                      <p [ngStyle]="{'display': pswFailed ? 'block' : 'none'}">Bitte geben Sie ein Passwort ein.</p>
                     </div>
                   </div>
                   <div class="checkbox-container">
@@ -29,7 +29,7 @@
                     Ich stimme der <a href="">Datenschutzerklärung</a> zu.
                   </div>
                   <div class="forward-button">
-                      <button class="forward">Weiter</button>
+                      <button class="forward" (click)="createAccount()">Weiter</button>
                   </div>
               </mat-card-content>
           </mat-card>
