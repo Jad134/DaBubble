@@ -19,8 +19,8 @@
                     <form autocomplete="off" action="" novalidate>
                         <div class="input-container">
                             <div class="input-validation-container">
-                                <input required placeholder="beispielname@emailcom" class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
-                                <span>*Diese E-Mail Adresse ist leider ungültig.</span>
+                                <input #mailField required placeholder="beispielname@emailcom" class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+                                <span #passwordMessage>*Diese E-Mail Adresse ist leider ungültig.</span>
                             </div>
                             <div class="input-validation-container">
                                 <input  required placeholder="Passwort" class="password-input" type="text">
@@ -37,8 +37,8 @@
                             <span>Anmelden mit Google</span>
                         </div>
                         <div class="login-buttons">
-                            <button class="sign-up">Anmelden</button>
-                            <button class="guest-login">Gäste-Login</button>
+                            <button (click)=" logIn()" type="button" class="sign-up">Anmelden</button>
+                            <button type="button" class="guest-login">Gäste-Login</button>
                         </div>
                     </form>
                 </mat-card-content>
