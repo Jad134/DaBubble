@@ -221,7 +221,19 @@ mat-card-header {
     display: flex;
     justify-content: center;
     gap: 30px;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
+}
+
+.invalid-login{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px !important;
+    font-weight: bold;
+    color: $rosa-error;
+    font-family: $nunito;
 }
 
 .sign-up {

@@ -1,7 +1,7 @@
 import { Injectable, Component, inject, NgZone } from '@angular/core';
 import { Firestore, getFirestore } from '@angular/fire/firestore';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect } from '@angular/fire/auth';
+import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { Auth, GoogleAuthProvider } from '@angular/fire/auth'
 import { Router } from '@angular/router';
@@ -16,7 +16,8 @@ import { doc, setDoc } from "firebase/firestore";
 
 
 export class FirestoreService {
- 
+
+ logInInvalid = false;
 
   firebaseConfig = {
     apiKey: "AIzaSyDiGmIlzMq2kQir6-xnHFX9iOXxH1Wcj8o",
@@ -31,12 +32,10 @@ export class FirestoreService {
 
 
   firestore: Firestore = inject(Firestore)
-
   app = initializeApp(this.firebaseConfig);
   auth = getAuth(this.app);
   db = getFirestore(this.app)
   users = new User;
-
 
 
     constructor(private router: Router, public ngZone: NgZone) { }
@@ -74,9 +73,11 @@ export class FirestoreService {
 
     this.ngZone.run(() => {
       this.router.navigate(['/dashboard']);
+      this.logInInvalid = false;
     });
   } catch (error) {
     window.alert('error, anmelden geht nicht');
+    this.logInInvalid = true;
   }
 }
 
@@ -90,5 +91,17 @@ GoogleAuth() {
     this.router.navigate(['dashboard']);
   });
 }
+
+
+    //Send Password Reset Email
+    async sendPasswordResetEmails(email : string){
+      sendPasswordResetEmail(this.auth,email)
+      .then(() => {
+         window.alert('Password reset email sent, check your inbox.');
+      })
+      .catch((error) => {
+       window.alert(error.message);
+     });
+   }
 
 }

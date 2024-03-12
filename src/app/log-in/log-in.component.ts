@@ -4,11 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { FirestoreService } from '../services/firestore.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-log-in',
   standalone: true,
-  imports: [IntroComponent, MatCardModule, RouterModule, FormsModule, ReactiveFormsModule,],
+  imports: [IntroComponent, MatCardModule, RouterModule, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss'
 })

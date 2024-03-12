@@ -30,10 +30,8 @@ export class CreateAccountComponent {
     if (this.checkCorrectPasswordFormat()) {
       console.log(this.newUser.password);
       
-      this.firestore.createUserWithEmailAndPassword(this.newUser.eMail, this.newUser.password, this.newUser)
+      this.firestore.createUserWithEmailAndPassword(this.newUser.eMail, this.newUser.password, this.newUser) // Testweise die funktion zum erstellen der user und übergabe der daten implementiert
     }
-
-    
   }
 
   checkNameInputNotEmpty() {
