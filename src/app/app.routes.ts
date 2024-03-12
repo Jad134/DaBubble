@@ -4,6 +4,7 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { SelectAvatarComponent } from './select-avatar/select-avatar.component';
 import { ResetPasswortComponent } from './log-in/reset-passwort/reset-passwort.component';
 import { NewPasswortComponent } from './log-in/reset-passwort/new-passwort/new-passwort.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 export const routes: Routes = [
@@ -11,5 +12,6 @@ export const routes: Routes = [
     {path: 'create-account', component: CreateAccountComponent},
     {path: 'select-avatar', component: SelectAvatarComponent},
     {path: 'reset-password', component: ResetPasswortComponent},
-    {path: 'new-password', component: NewPasswortComponent}
+    {path: 'new-password', component: NewPasswortComponent},
+    {path: 'dashboard', component: DashboardComponent},
 ];

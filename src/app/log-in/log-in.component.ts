@@ -24,10 +24,11 @@ export class LogInComponent {
 
   logIn() {
     this.validateCheck()
+    this.firestore.Login(this.mail, this.password)  // erst nach dem check 
+  }
 
-
-
-
+  logInWithGoogle(){
+    this.firestore.GoogleAuth();
   }
 
   validateCheck() {
@@ -40,7 +41,7 @@ export class LogInComponent {
       passwordMessage.style = 'opacity: 0'
       console.log(this.mail, this.password)
     }
-    this.firestore.createUserWithEmailAndPassword(this.mail, this.password)
+    // this.firestore.createUserWithEmailAndPassword(this.mail, this.password) dies war nur ein test zum anlegen der daten
   }
 
 }

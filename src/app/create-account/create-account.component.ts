@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { User } from '../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FirestoreService } from '../services/firestore.service';
 
 @Component({
   selector: 'app-create-account',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './create-account.component.scss',
 })
 export class CreateAccountComponent {
+  firestore = inject(FirestoreService)
   newUser = new User();
   nameFailed = false;
   mailFailed = false;
@@ -26,7 +28,10 @@ export class CreateAccountComponent {
     }
     if (this.checkCorrectPasswordFormat()) {
       console.log(this.newUser.password);
+      this.firestore.createUserWithEmailAndPassword(this.newUser.eMail, this.newUser.password)
     }
+
+    
   }
 
   checkNameInputNotEmpty() {

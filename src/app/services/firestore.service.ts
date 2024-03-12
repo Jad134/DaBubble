@@ -1,9 +1,13 @@
-import { Injectable, Component, inject } from '@angular/core';
+import { Injectable, Component, inject,NgZone } from '@angular/core';
 import { Firestore, } from '@angular/fire/firestore';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getAuth, provideAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { Auth } from '@angular/fire/auth'
+import { Auth, GoogleAuthProvider } from '@angular/fire/auth'
+import { Router } from '@angular/router';
+import { routes } from '../app.routes';
+import { User } from '../../models/user.class';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +29,16 @@ export class FirestoreService {
 
 
   firestore: Firestore = inject(Firestore)
+  
   app = initializeApp(this.firebaseConfig);
   auth = getAuth(this.app);
-
-
-  constructor() { }
-
   
+  
+  
+
+  constructor(private router : Router, public ngZone: NgZone) { }
+
+   //----------------------------------------Create Account------------------------------------------
    async createUserWithEmailAndPassword(email: string, password: string): Promise<void> {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
@@ -44,6 +51,33 @@ export class FirestoreService {
         const errorMessage = error.message;
         // Fehlerbehandlung...
       });
+  }
+
+  //-- ----------------------------------- ---Anmelden--------------------------------------------
+  // https://www.linkedin.com/pulse/angular-14-firebase-authentication-tutorial-attia-imed/ daraus kommt die anmlede funktion
+   
+ 
+  async Login(email : string, password : string){
+    try {
+      const result = await signInWithEmailAndPassword(this.auth, email, password);
+      
+      this.ngZone.run(() => {
+        this.router.navigate(['/dashboard']);
+      });
+    } catch (error) {
+      window.alert('error, anmelden geht nicht');
+    }
+  }
+
+   //Login with Google
+   GoogleAuth() {
+    return this.loginWithPopup(new GoogleAuthProvider());
+  }
+
+  async loginWithPopup(provider :any) {
+    return signInWithPopup(this.auth,provider).then(() => {
+      this.router.navigate(['dashboard']);
+    });
   }
 
 }
