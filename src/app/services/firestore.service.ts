@@ -92,8 +92,7 @@ GoogleAuth() {
   });
 }
 
-
-    //Send Password Reset Email
+  //Send Password Reset Email
     async sendPasswordResetEmails(email : string){
       sendPasswordResetEmail(this.auth,email)
       .then(() => {

@@ -16,13 +16,13 @@
                         <span>Bitte geben sie ihre E-Mail-Adresse ein.</span>
                     </mat-card-header>
                     <div class="input-container">
-                        <input placeholder="beispielname@emailcom" class="mail-input" type="text">
+                        <input  [formControl]="emailFormControl" placeholder="beispielname@emailcom" class="mail-input" type="text">
                     </div>
                     <span class="mail-info-text">
                         Wir senden Ihnen eine E-mail, über die Sie ihr Passwort ändern können.
                     </span>
                     <div class="button-container">
-                        <button disabled class="send-mail-btn">E-Mail senden</button>
+                        <button (click)="sendMail()" [disabled]="!emailFormControl.valid"  class="send-mail-btn">E-Mail senden</button>
                     </div>
 
                 </mat-card-content>
