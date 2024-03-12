@@ -70,9 +70,12 @@ export class FirestoreService {
   async Login(email : string, password : string){
   try {
     const result = await signInWithEmailAndPassword(this.auth, email, password);
-
+    const user = result.user;
+    let userid = user.uid;
     this.ngZone.run(() => {
-      this.router.navigate(['/dashboard']);
+      // this.router.navigate(['/dashboard']);
+      console.log(userid);
+      
       this.logInInvalid = false;
     });
   } catch (error) {
