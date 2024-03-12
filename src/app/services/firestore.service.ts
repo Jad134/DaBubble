@@ -73,7 +73,7 @@ export class FirestoreService {
     const user = result.user;
     let userid = user.uid;
     this.ngZone.run(() => {
-      // this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/' + userid]);
       console.log(userid);
       
       this.logInInvalid = false;
