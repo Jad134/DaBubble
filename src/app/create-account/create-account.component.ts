@@ -22,7 +22,6 @@ export class CreateAccountComponent {
   createAccount() {
     if (this.checkNameInputNotEmpty()) {
       console.log(this.newUser.name);
-
     }
     if (this.checkIfCorrectMailFormat()) {
       console.log(this.newUser.eMail);

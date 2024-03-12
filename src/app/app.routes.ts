@@ -10,7 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 export const routes: Routes = [
     {path: '', component: LogInComponent},
     {path: 'create-account', component: CreateAccountComponent},
-    {path: 'select-avatar', component: SelectAvatarComponent},
+    {path: 'select-avatar/:id', component: SelectAvatarComponent},
     {path: 'reset-password', component: ResetPasswortComponent},
     {path: 'new-password', component: NewPasswortComponent},
     {path: 'dashboard/:id', component: DashboardComponent},
