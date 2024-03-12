@@ -19,15 +19,15 @@
                     <form autocomplete="off" action="" novalidate>
                         <div class="input-container">
                             <div class="input-validation-container">
-                                <input #mailField required placeholder="beispielname@emailcom" class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+                                <input name="mail" [(ngModel)]="mail" #mailField required placeholder="beispielname@emailcom" class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
                                 <span #passwordMessage>*Diese E-Mail Adresse ist leider ungültig.</span>
                             </div>
                             <div class="input-validation-container">
-                                <input  required placeholder="Passwort" class="password-input" type="text">
+                                <input name="password"  [(ngModel)]="password"  required placeholder="Passwort" class="password-input" type="text">
                                 <span>*Falsches Passwort. Bitte noch einmal versuchen.</span>
                             </div>
 
-                            <a routerLink="/reset-password">Passwort vergessen?</a>
+                            <a routerLink="/reset-password">Passwort vergessen?</a> 
                         </div>
                         <div class="seperator">
                             <span>ODER</span>
