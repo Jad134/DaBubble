@@ -1,5 +1,5 @@
 import { Injectable, Component, inject, NgZone } from '@angular/core';
-import { Firestore, getFirestore } from '@angular/fire/firestore';
+import { Firestore, getDoc, getFirestore } from '@angular/fire/firestore';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { Auth, GoogleAuthProvider } from '@angular/fire/auth'
 import { Router } from '@angular/router';
 import { routes } from '../app.routes';
 import { User } from '../../models/user.class';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection } from "firebase/firestore";
 
 
 @Injectable({
@@ -55,7 +55,7 @@ export class FirestoreService {
 
   // Weiterleitung zur Dashboard-Seite
   this.ngZone.run(() => {
-    // this.router.navigate(['/dashboard']);
+    // Automatic forwarding to the Select Avatar component after successful creation of a new user
     this.router.navigate(['/select-avatar/' + userid]);
   });
 } catch (error) {
@@ -106,5 +106,25 @@ GoogleAuth() {
        window.alert(error.message);
      });
    }
+
+
+   async getUserDataById(id: string) {
+    try {
+        const docRef = doc(this.db, 'Users', id);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            // Dokument gefunden, gib die Daten zurück
+            return docSnap.data();
+        } else {
+            // Dokument nicht gefunden
+            console.log('Kein Dokument mit dieser ID gefunden');
+            return null;
+        }
+    } catch (error) {
+        console.error('Fehler beim Abrufen des Dokuments:', error);
+        return null;
+    }
+}
 
 }
