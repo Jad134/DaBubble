@@ -1,5 +1,5 @@
-import { Injectable, Component, inject,NgZone } from '@angular/core';
-import { Firestore, } from '@angular/fire/firestore';
+import { Injectable, Component, inject, NgZone } from '@angular/core';
+import { Firestore, getFirestore } from '@angular/fire/firestore';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
@@ -7,6 +7,7 @@ import { Auth, GoogleAuthProvider } from '@angular/fire/auth'
 import { Router } from '@angular/router';
 import { routes } from '../app.routes';
 import { User } from '../../models/user.class';
+import { doc, setDoc } from "firebase/firestore";
 
 
 @Injectable({
@@ -15,6 +16,7 @@ import { User } from '../../models/user.class';
 
 
 export class FirestoreService {
+ 
 
   firebaseConfig = {
     apiKey: "AIzaSyDiGmIlzMq2kQir6-xnHFX9iOXxH1Wcj8o",
@@ -29,55 +31,64 @@ export class FirestoreService {
 
 
   firestore: Firestore = inject(Firestore)
-  
+
   app = initializeApp(this.firebaseConfig);
   auth = getAuth(this.app);
-  
-  
-  
+  db = getFirestore(this.app)
+  users = new User;
 
-  constructor(private router : Router, public ngZone: NgZone) { }
 
-   //----------------------------------------Create Account------------------------------------------
-   async createUserWithEmailAndPassword(email: string, password: string): Promise<void> {
-    return createUserWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        // Erfolgreich registriert
-        const user = userCredential.user;
-        // Weitere Aktionen...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // Fehlerbehandlung...
-      });
+
+    constructor(private router: Router, public ngZone: NgZone) { }
+
+  //----------------------------------------Create Account------------------------------------------
+  async createUserWithEmailAndPassword(email: string, password: string, userDatas: any): Promise < void> {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+    const user = userCredential.user;
+    let userid = user.uid
+        // Erstellen Sie ein neues Dokument in der Firestore-Sammlung 'users'
+        await setDoc(doc(this.db, "Users", userid), {
+          name: userDatas.name,
+          email: userDatas.eMail,
+          avatar: userDatas.avatar,
+        });
+
+  // Weiterleitung zur Dashboard-Seite
+  this.ngZone.run(() => {
+    this.router.navigate(['/dashboard']);
+  });
+} catch (error) {
+  console.error('Fehler beim Erstellen des Benutzers:', error);
+}
   }
+
 
   //-- ----------------------------------- ---Anmelden--------------------------------------------
   // https://www.linkedin.com/pulse/angular-14-firebase-authentication-tutorial-attia-imed/ daraus kommt die anmlede funktion
    
  
   async Login(email : string, password : string){
-    try {
-      const result = await signInWithEmailAndPassword(this.auth, email, password);
-      
-      this.ngZone.run(() => {
-        this.router.navigate(['/dashboard']);
-      });
-    } catch (error) {
-      window.alert('error, anmelden geht nicht');
-    }
-  }
+  try {
+    const result = await signInWithEmailAndPassword(this.auth, email, password);
 
-   //Login with Google
-   GoogleAuth() {
-    return this.loginWithPopup(new GoogleAuthProvider());
-  }
-
-  async loginWithPopup(provider :any) {
-    return signInWithPopup(this.auth,provider).then(() => {
-      this.router.navigate(['dashboard']);
+    this.ngZone.run(() => {
+      this.router.navigate(['/dashboard']);
     });
+  } catch (error) {
+    window.alert('error, anmelden geht nicht');
   }
+}
+
+//Login with Google
+GoogleAuth() {
+  return this.loginWithPopup(new GoogleAuthProvider());
+}
+
+  async loginWithPopup(provider : any) {
+  return signInWithPopup(this.auth, provider).then(() => {
+    this.router.navigate(['dashboard']);
+  });
+}
 
 }

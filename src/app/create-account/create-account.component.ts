@@ -22,13 +22,15 @@ export class CreateAccountComponent {
   createAccount() {
     if (this.checkNameInputNotEmpty()) {
       console.log(this.newUser.name);
+
     }
     if (this.checkIfCorrectMailFormat()) {
       console.log(this.newUser.eMail);
     }
     if (this.checkCorrectPasswordFormat()) {
       console.log(this.newUser.password);
-      this.firestore.createUserWithEmailAndPassword(this.newUser.eMail, this.newUser.password)
+      
+      this.firestore.createUserWithEmailAndPassword(this.newUser.eMail, this.newUser.password, this.newUser)
     }
 
     
