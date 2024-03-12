@@ -55,7 +55,7 @@ export class FirestoreService {
 
   // Weiterleitung zur Dashboard-Seite
   this.ngZone.run(() => {
-    this.router.navigate(['/dashboard']);
+    // this.router.navigate(['/dashboard']);
   });
 } catch (error) {
   console.error('Fehler beim Erstellen des Benutzers:', error);
