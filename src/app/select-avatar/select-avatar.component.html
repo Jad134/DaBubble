@@ -10,16 +10,16 @@
             <h1>Wähle deinen Avatar</h1>
           </mat-card-header>
           <div class="avatar-selection">
-            <img class="selected-avatar" src="assets/img/avatars/profile-blank.svg" alt="">
+            <img class="selected-avatar" src="assets/img/avatars/{{avatar}}" alt="">
             <h2>{{name}}</h2>
             <p>Aus der Liste wählen</p>
             <div class="avatar-imgs">
-                <img src="assets/img/avatars/avatar-1.svg" alt="">
-                <img src="assets/img/avatars/avatar-2.svg" alt="">
-                <img src="assets/img/avatars/avatar-3.svg" alt="">
-                <img src="assets/img/avatars/avatar-4.svg" alt="">
-                <img src="assets/img/avatars/avatar-5.svg" alt="">
-                <img src="assets/img/avatars/avatar-6.svg" alt="">
+                <img id="avatar-1.svg" src="assets/img/avatars/avatar-1.svg" alt="" (click)="selectNewAvatar($event)">
+                <img id="avatar-2.svg" src="assets/img/avatars/avatar-2.svg" alt="" (click)="selectNewAvatar($event)">
+                <img id="avatar-3.svg" src="assets/img/avatars/avatar-3.svg" alt="" (click)="selectNewAvatar($event)">
+                <img id="avatar-4.svg" src="assets/img/avatars/avatar-4.svg" alt="" (click)="selectNewAvatar($event)">
+                <img id="avatar-5.svg" src="assets/img/avatars/avatar-5.svg" alt="" (click)="selectNewAvatar($event)">
+                <img id="avatar-6.svg" src="assets/img/avatars/avatar-6.svg" alt="" (click)="selectNewAvatar($event)">
             </div>
             <div class="upload-img">
                 <p>eigenes Bild verwenden</p>

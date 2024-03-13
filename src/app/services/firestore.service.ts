@@ -1,5 +1,5 @@
 import { Injectable, Component, inject, NgZone } from '@angular/core';
-import { Firestore, getDoc, getFirestore } from '@angular/fire/firestore';
+import { Firestore, getDoc, getFirestore, onSnapshot } from '@angular/fire/firestore';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
@@ -107,6 +107,11 @@ GoogleAuth() {
      });
    }
 
+   async getUser(id: string){
+    const unsub = onSnapshot(doc(this.firestore, 'users', id), (doc)=>{
+      return doc.data();
+    });
+  }
 
    async getUserDataById(id: string) {
     try {
@@ -114,10 +119,8 @@ GoogleAuth() {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-            // Dokument gefunden, gib die Daten zurück
             return docSnap.data();
         } else {
-            // Dokument nicht gefunden
             console.log('Kein Dokument mit dieser ID gefunden');
             return null;
         }

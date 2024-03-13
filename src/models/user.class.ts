@@ -6,7 +6,7 @@ export class User{
 
     constructor(obj? : any){
         this.name = obj ? obj.name : '';
-        this.eMail = obj ? obj.eMail : '';
+        this.eMail = obj ? obj.email : '';
         this.password = obj ? obj.password : '';
         this.avatar = obj ? obj.avatar : '';
     }
