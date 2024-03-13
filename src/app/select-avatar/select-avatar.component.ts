@@ -28,7 +28,8 @@ export class SelectAvatarComponent {
     this.firestore
       .getUserDataById(this.userId)
       .then((data) => {
-        this.actualUser = data;
+        this.actualUser = new User(data);
+        console.log(this.actualUser);
 
         if (this.actualUser) {
           this.name = this.actualUser.name;
@@ -69,5 +70,9 @@ export class SelectAvatarComponent {
     const clickedElement = event.target as HTMLElement;
     const id = clickedElement.id;
     this.avatar = id;
+    this.actualUser.avatar = id;
+    console.log(this.actualUser);
+
+    this.firestore.updateUserById(this.userId, this.actualUser.toJSON());
   }
 }

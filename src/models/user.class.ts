@@ -11,4 +11,11 @@ export class User{
         this.avatar = obj ? obj.avatar : '';
     }
 
+    public toJSON() {
+        return {
+          name: this.name,
+          email: this.eMail,
+          avatar: this.avatar,
+        };
+      }
 }
