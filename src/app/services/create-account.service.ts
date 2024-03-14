@@ -1,7 +1,7 @@
 
 
 import { Injectable, inject, NgZone } from '@angular/core';
-import { Firestore,  getFirestore, onSnapshot } from '@angular/fire/firestore';
+import { Firestore,  getFirestore } from '@angular/fire/firestore';
 import {  initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -35,20 +35,29 @@ export class CreateAccountService {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
       let userid = user.uid
-      // Erstellen Sie ein neues Dokument in der Firestore-Sammlung 'users'
-      await setDoc(doc(this.db, "Users", userid), {
-        name: userDatas.name,
-        email: userDatas.eMail,
-        avatar: userDatas.avatar,
-      });
-
-      // Weiterleitung zur Dashboard-Seite
+      
+      this.setDocForDataBase(userid, userDatas)
       this.ngZone.run(() => {
-        // Automatic forwarding to the Select Avatar component after successful creation of a new user
         this.router.navigate(['/select-avatar/' + userid]);
       });
     } catch (error) {
       console.error('Fehler beim Erstellen des Benutzers:', error);
     }
   }
+
+
+  /**
+   * 
+   * @param userid 
+   * @param userDatas 
+   * @returns the JSON for the Databe
+   */
+async setDocForDataBase(userid:string, userDatas:any){
+ return await setDoc(doc(this.db, "Users", userid), {
+    name: userDatas.name,
+    email: userDatas.eMail,
+    avatar: userDatas.avatar,
+  });
+}
+
 }

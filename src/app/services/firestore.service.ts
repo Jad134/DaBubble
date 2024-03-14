@@ -1,13 +1,10 @@
-import { Injectable, Component, inject, NgZone } from '@angular/core';
+import { Injectable, inject, NgZone } from '@angular/core';
 import { Firestore, getDoc, getFirestore, onSnapshot } from '@angular/fire/firestore';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect, sendPasswordResetEmail } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-import { Auth, GoogleAuthProvider } from '@angular/fire/auth'
+import {  initializeApp } from '@angular/fire/app';
+import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { routes } from '../app.routes';
 import { User } from '../../models/user.class';
-import { doc, setDoc, collection, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 
 @Injectable({
@@ -16,8 +13,6 @@ import { doc, setDoc, collection, updateDoc } from "firebase/firestore";
 
 
 export class FirestoreService {
-
-  logInInvalid = false;
 
   firebaseConfig = {
     apiKey: "AIzaSyDiGmIlzMq2kQir6-xnHFX9iOXxH1Wcj8o",

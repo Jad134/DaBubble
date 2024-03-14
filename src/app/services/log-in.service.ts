@@ -1,14 +1,12 @@
 
-import { Injectable, Component, inject, NgZone } from '@angular/core';
-import { Firestore, getDoc, getFirestore, onSnapshot } from '@angular/fire/firestore';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getAuth, provideAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential, signInWithPopup, signInWithRedirect, sendPasswordResetEmail } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-import { Auth, GoogleAuthProvider } from '@angular/fire/auth'
+import { Injectable, inject, NgZone } from '@angular/core';
+import { Firestore, getDoc, getFirestore, } from '@angular/fire/firestore';
+import { initializeApp } from '@angular/fire/app';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+import { GoogleAuthProvider } from '@angular/fire/auth'
 import { Router } from '@angular/router';
-import { routes } from '../app.routes';
 import { User } from '../../models/user.class';
-import { doc, setDoc, collection, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { FirestoreService } from './firestore.service';
 
 
@@ -39,7 +37,6 @@ export class LogInService {
       this.ngZone.run(() => {
         this.router.navigate(['/dashboard/' + userid]);
         console.log(userid);
-
         this.logInInvalid = false;
       });
     } catch (error) {
@@ -56,31 +53,45 @@ export class LogInService {
       const userCredential = await signInWithPopup(this.auth, provider);
       const user = userCredential.user;
       const userId = user.uid;
-  
-      // Überprüfen, ob der Benutzer bereits existiert
       const userDoc = await getDoc(doc(this.db, "Users", userId));
-      const userData = {
-        name: user.displayName,
-        email: user.email,
-        avatar: '',
-      };
-  
-      if (userDoc.exists()) {
-        // Der Benutzer existiert bereits, leiten Sie ihn zur Dashboard-Seite weiter
-        this.ngZone.run(() => {
-          this.router.navigate(['/dashboard/' + userId]);
-        });
-      } else {
-        // Der Benutzer existiert noch nicht, leiten Sie ihn zur Avatar-Auswahl-Seite weiter
-        await setDoc(doc(this.db, "Users", userId), userData); // Benutzerdaten erstellen
-        this.ngZone.run(() => {
-          this.router.navigate(['/select-avatar/' + userId]);
-        });
-      }
+      const userData = this.setUserData(user);
+
+      this.checkUserStatus(userDoc, userId, userData);
     } catch (error) {
       console.error('Fehler beim Anmelden mit Google:', error);
     }
   }
 
 
+  checkUserStatus(userDoc: any, userId: any, userData: any) {
+    if (userDoc.exists()) {
+      this.routeToDashboard(userId)
+    } else {
+      this.routeToAvatarPage(userId, userData)
+    }
+  }
+
+
+  setUserData(user: any) {
+    return {
+      name: user.displayName,
+      email: user.email,
+      avatar: '',
+    };
+  }
+
+
+  routeToDashboard(userId: any) {
+    this.ngZone.run(() => {
+      this.router.navigate(['/dashboard/' + userId]);
+    });
+  }
+
+  
+  async routeToAvatarPage(userId: any, userData: any) {
+    await setDoc(doc(this.db, "Users", userId), userData); // Benutzerdaten erstellen
+    this.ngZone.run(() => {
+      this.router.navigate(['/select-avatar/' + userId]);
+    });
+  }
 }
