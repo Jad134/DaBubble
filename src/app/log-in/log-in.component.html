@@ -41,7 +41,7 @@
                             <button type="button" class="guest-login">Gäste-Login</button>
                         </div>
                     </form>
-                    <span *ngIf="firestore.logInInvalid" class="invalid-login">Invalid email or password.</span>
+                    <span *ngIf="loginService.logInInvalid" class="invalid-login">Invalid email or password.</span>
                 </mat-card-content>
             </mat-card>
         </div>
