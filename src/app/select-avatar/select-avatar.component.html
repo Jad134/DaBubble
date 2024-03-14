@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="forward-button">
-            <button class="forward">Weiter</button>
+            <button (click)="firestore.updateUser(userId, avatar)" class="forward">Weiter</button>
           </div>
         </mat-card-content>
       </mat-card>
