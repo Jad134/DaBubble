@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { FirestoreService } from '../services/firestore.service';
 import { CommonModule } from '@angular/common';
+import { LogInService } from '../services/log-in.service';
 
 @Component({
   selector: 'app-log-in',
@@ -20,17 +21,18 @@ export class LogInComponent {
   mail: any;
   password: any;
 
+  loginService = inject(LogInService)
   firestore = inject(FirestoreService)
 
 
   logIn() {
     this.validateCheck()
-    this.firestore.Login(this.mail, this.password)  // erst nach dem check 
+    this.loginService.Login(this.mail, this.password) // erst nach dem check 
   }
 
   async logInWithGoogle(){
     //this.firestore.GoogleAuth();
-   await  this.firestore.loginWithGoogle();
+   await this.loginService.loginWithGoogle()
   }
 
   validateCheck() {
