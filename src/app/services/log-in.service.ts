@@ -29,16 +29,16 @@ export class LogInService {
   // https://www.linkedin.com/pulse/angular-14-firebase-authentication-tutorial-attia-imed/ daraus kommt die anmlede funktion
 
 
+  /**
+   * This function log in the user with firebase Authentication
+   */
   async Login(email: string, password: string) {
     try {
       const result = await signInWithEmailAndPassword(this.auth, email, password);
       const user = result.user;
       let userid = user.uid;
-      this.ngZone.run(() => {
-        this.router.navigate(['/dashboard/' + userid]);
-        console.log(userid);
-        this.logInInvalid = false;
-      });
+      this.routeToDashboard(userid);
+     
     } catch (error) {
       window.alert('error, anmelden geht nicht');
       this.logInInvalid = true;
@@ -46,7 +46,9 @@ export class LogInService {
   }
 
 
-
+  /**
+   * This function is called at the log-in.component.html so sign up with google
+   */
   async loginWithGoogle() {
     try {
       const provider = new GoogleAuthProvider();
@@ -63,6 +65,12 @@ export class LogInService {
   }
 
 
+  /**
+   *This function checks whether the user already exists
+   * @param userDoc 
+   * @param userId 
+   * @param userData 
+   */
   checkUserStatus(userDoc: any, userId: any, userData: any) {
     if (userDoc.exists()) {
       this.routeToDashboard(userId)
@@ -72,6 +80,11 @@ export class LogInService {
   }
 
 
+  /**
+   * This function set Datas for the database for users with google Login
+   * @param user Datas from the user with firebase authentication
+   * @returns JSON
+   */
   setUserData(user: any) {
     return {
       name: user.displayName,
@@ -81,13 +94,22 @@ export class LogInService {
   }
 
 
+  /**
+   * Redirects to the dashboard with user ID as the identifier if the user already exists
+   * @param logInInvalid is a boolean for the login component.html to show a warning if the login details are incorrect
+   */
   routeToDashboard(userId: any) {
     this.ngZone.run(() => {
       this.router.navigate(['/dashboard/' + userId]);
+      console.log(userId);
+      this.logInInvalid = false;
     });
   }
 
-  
+
+  /**
+   * Redirects to the avatar collection page with user ID as the identifier if the user already does not exist
+   */
   async routeToAvatarPage(userId: any, userData: any) {
     await setDoc(doc(this.db, "Users", userId), userData); // Benutzerdaten erstellen
     this.ngZone.run(() => {
