@@ -72,7 +72,5 @@ export class SelectAvatarComponent {
     this.avatar = id;
     this.actualUser.avatar = id;
     console.log(this.actualUser);
-
-    this.firestore.updateUserById(this.userId, this.actualUser.toJSON());
   }
 }
