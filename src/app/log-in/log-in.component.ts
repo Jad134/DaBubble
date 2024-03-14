@@ -28,8 +28,9 @@ export class LogInComponent {
     this.firestore.Login(this.mail, this.password)  // erst nach dem check 
   }
 
-  logInWithGoogle(){
-    this.firestore.GoogleAuth();
+  async logInWithGoogle(){
+    //this.firestore.GoogleAuth();
+   await  this.firestore.loginWithGoogle();
   }
 
   validateCheck() {

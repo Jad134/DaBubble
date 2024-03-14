@@ -85,17 +85,7 @@ export class FirestoreService {
     }
   }
 
-  //Login with Google
-  GoogleAuth() {
-    return this.loginWithPopup(new GoogleAuthProvider());
-  }
-
-  async loginWithPopup(provider: any) {
-    return signInWithPopup(this.auth, provider).then(() => {
-      this.router.navigate(['dashboard']);
-    });
-  }
-
+  
   //Send Password Reset Email
   async sendPasswordResetEmails(email: string) {
     sendPasswordResetEmail(this.auth, email)
@@ -106,6 +96,41 @@ export class FirestoreService {
         window.alert(error.message);
       });
   }
+
+ 
+
+  async loginWithGoogle() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(this.auth, provider);
+      const user = userCredential.user;
+      const userId = user.uid;
+  
+      // Überprüfen, ob der Benutzer bereits existiert
+      const userDoc = await getDoc(doc(this.db, "Users", userId));
+      const userData = {
+        name: user.displayName,
+        email: user.email,
+        avatar: '',
+      };
+  
+      if (userDoc.exists()) {
+        // Der Benutzer existiert bereits, leiten Sie ihn zur Dashboard-Seite weiter
+        this.ngZone.run(() => {
+          this.router.navigate(['/dashboard/' + userId]);
+        });
+      } else {
+        // Der Benutzer existiert noch nicht, leiten Sie ihn zur Avatar-Auswahl-Seite weiter
+        await setDoc(doc(this.db, "Users", userId), userData); // Benutzerdaten erstellen
+        this.ngZone.run(() => {
+          this.router.navigate(['/select-avatar/' + userId]);
+        });
+      }
+    } catch (error) {
+      console.error('Fehler beim Anmelden mit Google:', error);
+    }
+  }
+
 
   async getUser(id: string) {
     const unsub = onSnapshot(doc(this.firestore, 'users', id), (doc) => {
