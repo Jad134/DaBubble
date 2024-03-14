@@ -47,7 +47,7 @@ export class CreateAccountService {
 
 
   /**
-   * 
+   * This function sets the datas for the database and connect it with the userid
    * @param userid 
    * @param userDatas 
    * @returns the JSON for the Databe
