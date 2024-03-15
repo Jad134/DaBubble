@@ -14,37 +14,19 @@
         <mat-card-content>
           <mat-card-header>
             <h1>Anmeldung</h1>
-            <span
-              >Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der
-              Arbeit verwendest.</span
-            >
+            <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der
+              Arbeit verwendest.</span>
           </mat-card-header>
           <form autocomplete="off" action="" novalidate>
             <div class="input-container">
               <div class="input-validation-container">
-                <input
-                  name="mail"
-                  [(ngModel)]="mail"
-                  #mailField
-                  required
-                  placeholder="beispielname@emailcom"
-                  class="mail-input"
-                  type="email"
-                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                />
-                <span #passwordMessage
-                  >*Diese E-Mail Adresse ist leider ungültig.</span
-                >
+                <input name="mail" [(ngModel)]="mail" #mailField required placeholder="beispielname@emailcom"
+                  class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
+                <span #passwordMessage>*Diese E-Mail Adresse ist leider ungültig.</span>
               </div>
               <div class="input-validation-container">
-                <input
-                  name="password"
-                  [(ngModel)]="password"
-                  required
-                  placeholder="Passwort"
-                  class="password-input"
-                  type="text"
-                />
+                <input name="password" [(ngModel)]="password" required placeholder="Passwort" class="password-input"
+                  type="text" />
                 <span>*Falsches Passwort. Bitte noch einmal versuchen.</span>
               </div>
 
@@ -64,9 +46,7 @@
               <button type="button" class="guest-login">Gäste-Login</button>
             </div>
           </form>
-          <span *ngIf="loginService.logInInvalid" class="invalid-login"
-            >Invalid email or password.</span
-          >
+          <span *ngIf="loginService.logInInvalid" class="invalid-login">Invalid email or password.</span>
         </mat-card-content>
       </mat-card>
     </div>
