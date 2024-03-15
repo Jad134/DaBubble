@@ -5,11 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FirestoreService } from '../services/firestore.service';
 import { CreateAccountService } from '../services/create-account.service';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [MatCardModule, FormsModule, CommonModule],
+  imports: [MatCardModule, FormsModule, CommonModule, RouterModule],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
 })

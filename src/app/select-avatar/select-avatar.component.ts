@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { FirestoreService } from '../services/firestore.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { User } from '../../models/user.class';
 import { doc, onSnapshot } from '@angular/fire/firestore';
 import { error } from 'console';
@@ -10,7 +10,7 @@ import { user } from '@angular/fire/auth';
 @Component({
   selector: 'app-select-avatar',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, RouterModule],
   templateUrl: './select-avatar.component.html',
   styleUrl: './select-avatar.component.scss',
 })
