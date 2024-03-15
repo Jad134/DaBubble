@@ -1,0 +1,113 @@
+@import "./../../styles.scss";
+
+section {
+  background-color: $bg-color;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  max-width: 1920px;
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+}
+
+mat-card {
+  width: 606px;
+  border-radius: 30px;
+  display: flex;
+  z-index: 2;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-container {
+  padding-top: 75px;
+}
+
+mat-card-content {
+  width: 500px;
+  margin: 2.5rem;
+  padding: 0 !important;
+  flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+}
+
+mat-card-header {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  padding: 0 !important;
+
+  h1 {
+    color: $purple1;
+    padding-top: 40px;
+    font-family: $nunito;
+    font-weight: 700;
+    font-size: 46px;
+    margin-bottom: 30px;
+  }
+  h2 {
+    color: $purple1;
+    font-family: $nunito;
+    font-size: 36px;
+    font-weight: 700;
+    padding-top: 40px;
+    letter-spacing: 0.01rem;
+  }
+
+  p {
+    text-align: start;
+    font-family: $nunito;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+button {
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  cursor: pointer;
+  &:hover {
+    background-color: $bg-color;
+    box-shadow: none;
+    > mat-icon {
+      color: $purple3;
+    }
+  }
+}
+
+.name-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.seperator {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid $light-purple;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+  margin-bottom: 30px;
+
+  > span {
+    background: #fff;
+    padding: 0 10px;
+    font-family: $nunito;
+    font-size: 18px;
+  }
+}

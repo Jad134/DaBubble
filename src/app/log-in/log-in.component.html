@@ -1,53 +1,78 @@
 <!-- <app-intro></app-intro> -->
 
 <section>
-    <div class="main-content">
-        <div class="logo-container">
-            <img src="/assets/img/home-workspace.svg" alt="">
-        </div>
-        <div class="new-user-info">
-            <span>Neu bei DABubble?</span>
-            <a routerLink="/create-account">Konto erstellen</a>
-        </div>
-        <div class="card-container">
-            <mat-card>
-                <mat-card-content>
-                    <mat-card-header>
-                        <h1>Anmeldung</h1>
-                        <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
-                    </mat-card-header>
-                    <form autocomplete="off" action="" novalidate>
-                        <div class="input-container">
-                            <div class="input-validation-container">
-                                <input name="mail" [(ngModel)]="mail" #mailField required placeholder="beispielname@emailcom" class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
-                                <span #passwordMessage>*Diese E-Mail Adresse ist leider ungültig.</span>
-                            </div>
-                            <div class="input-validation-container">
-                                <input name="password"  [(ngModel)]="password"  required placeholder="Passwort" class="password-input" type="text">
-                                <span>*Falsches Passwort. Bitte noch einmal versuchen.</span>
-                            </div>
-
-                            <a routerLink="/reset-password">Passwort vergessen?</a> 
-                        </div>
-                        <div class="seperator">
-                            <span>ODER</span>
-                        </div>
-                        <div (click)="logInWithGoogle()" class="google-login">
-                            <img src="/assets/img/google-icon.png" alt="">
-                            <span>Anmelden mit Google</span>
-                        </div>
-                        <div class="login-buttons">
-                            <button (click)=" logIn()" type="button" class="sign-up">Anmelden</button>
-                            <button type="button" class="guest-login">Gäste-Login</button>
-                        </div>
-                    </form>
-                    <span *ngIf="loginService.logInInvalid" class="invalid-login">Invalid email or password.</span>
-                </mat-card-content>
-            </mat-card>
-        </div>
-        <div class="footer-links">
-            <a routerLink="">Impressum</a>
-            <a routerLink="">Datenschutz</a>
-        </div>
+  <div class="main-content">
+    <div class="logo-container">
+      <img src="/assets/img/home-workspace.svg" alt="" />
     </div>
+    <div class="new-user-info">
+      <span>Neu bei DABubble?</span>
+      <a routerLink="/create-account">Konto erstellen</a>
+    </div>
+    <div class="card-container">
+      <mat-card>
+        <mat-card-content>
+          <mat-card-header>
+            <h1>Anmeldung</h1>
+            <span
+              >Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der
+              Arbeit verwendest.</span
+            >
+          </mat-card-header>
+          <form autocomplete="off" action="" novalidate>
+            <div class="input-container">
+              <div class="input-validation-container">
+                <input
+                  name="mail"
+                  [(ngModel)]="mail"
+                  #mailField
+                  required
+                  placeholder="beispielname@emailcom"
+                  class="mail-input"
+                  type="email"
+                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                />
+                <span #passwordMessage
+                  >*Diese E-Mail Adresse ist leider ungültig.</span
+                >
+              </div>
+              <div class="input-validation-container">
+                <input
+                  name="password"
+                  [(ngModel)]="password"
+                  required
+                  placeholder="Passwort"
+                  class="password-input"
+                  type="text"
+                />
+                <span>*Falsches Passwort. Bitte noch einmal versuchen.</span>
+              </div>
+
+              <a routerLink="/reset-password">Passwort vergessen?</a>
+            </div>
+            <div class="seperator">
+              <span>ODER</span>
+            </div>
+            <div (click)="logInWithGoogle()" class="google-login">
+              <img src="/assets/img/google-icon.png" alt="" />
+              <span>Anmelden mit Google</span>
+            </div>
+            <div class="login-buttons">
+              <button (click)="logIn()" type="button" class="sign-up">
+                Anmelden
+              </button>
+              <button type="button" class="guest-login">Gäste-Login</button>
+            </div>
+          </form>
+          <span *ngIf="loginService.logInInvalid" class="invalid-login"
+            >Invalid email or password.</span
+          >
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="footer-links">
+      <a routerLink="/imprint">Impressum</a>
+      <a routerLink="">Datenschutz</a>
+    </div>
+  </div>
 </section>
