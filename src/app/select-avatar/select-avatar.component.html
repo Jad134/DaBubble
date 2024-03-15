@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="forward-button">
-            <button (click)="firestore.updateUser(userId, avatar)" class="forward">Weiter</button>
+            <button (click)="updateAvatar()" class="forward">Weiter</button>
           </div>
         </mat-card-content>
       </mat-card>
@@ -36,5 +36,8 @@
       <a routerLink="/imprint">Impressum</a>
       <a routerLink="">Datenschutz</a>
     </div>
+  </div>
+  <div *ngIf="selectSucceed" id="success-box" class="overlay">
+    <img src="assets/img/konto_erfolgreich_erstellt.svg" alt="">
   </div>
 </section>

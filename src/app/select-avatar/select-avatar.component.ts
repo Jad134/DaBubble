@@ -1,16 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { FirestoreService } from '../services/firestore.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { User } from '../../models/user.class';
 import { doc, onSnapshot } from '@angular/fire/firestore';
 import { error } from 'console';
 import { user } from '@angular/fire/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-select-avatar',
   standalone: true,
-  imports: [MatCardModule, RouterModule],
+  imports: [MatCardModule, RouterModule, CommonModule],
   templateUrl: './select-avatar.component.html',
   styleUrl: './select-avatar.component.scss',
 })
@@ -20,8 +21,9 @@ export class SelectAvatarComponent {
   actualUser: any;
   name!: string;
   avatar: string = 'profile-blank.svg';
+  selectSucceed: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.getIdFromURL();
@@ -33,7 +35,6 @@ export class SelectAvatarComponent {
 
         if (this.actualUser) {
           this.name = this.actualUser.name;
-          console.log('Der Name lautet: ', this.name);
           this.showAvatar();
         }
       })
@@ -50,7 +51,6 @@ export class SelectAvatarComponent {
     if (id != null) {
       this.userId = id;
     }
-    console.log('Get id: ', this.userId);
   }
 
   /**
@@ -71,6 +71,16 @@ export class SelectAvatarComponent {
     const id = clickedElement.id;
     this.avatar = id;
     this.actualUser.avatar = id;
-    console.log(this.actualUser);
+  }
+
+  /**
+   * save selected Avatar to Firestore DB and redirect to the login
+   */
+  updateAvatar() {
+    this.selectSucceed = true;
+    this.firestore.updateUser(this.userId, this.avatar);
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 1500);
   }
 }
