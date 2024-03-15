@@ -193,3 +193,25 @@ mat-card-header {
         right: 30px;
     }
 }
+
+.back-arrow{
+    background: url("../../assets/img/go-back-arrow2.svg") no-repeat;
+    border-radius: 100px;
+    width: 40px;
+    height: 40px;
+
+    &:hover{
+        background: url("../../assets/img/go-back-arrow-hovert2.svg") no-repeat;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.back-arrow-box{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 45px;
+    left: 35px;
+}
