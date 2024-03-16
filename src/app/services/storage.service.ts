@@ -14,7 +14,7 @@ export class StorageService {
   pic: File | any;
   constructor() { }
 
-  onFileSelected(event: any) {  //Diese function kommt auf das input type=file
+  async onFileSelected(event: any) {  //Diese function kommt auf das input type=file
     this.pic = event.target.files[0];
     if (this.pic) {
       // Wenn eine Datei ausgewählt wurde, erstellen Sie die Referenz zum Bild im Cloud-Speicher
@@ -22,7 +22,7 @@ export class StorageService {
     }
   }
 
-  uploadImg() { // Diese function kommt auf den upload button
+ async uploadImg() { // Diese function kommt auf den upload button
     if (this.pic) {
       const fileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -38,4 +38,13 @@ export class StorageService {
       console.error('No image selected');
     }
   }
+
+  async avatarSelected(event: any) {  //Diese function kommt auf das input type=file
+    this.pic = event.target.files[0];
+    if (this.pic) {
+      // Wenn eine Datei ausgewählt wurde, erstellen Sie die Referenz zum Bild im Cloud-Speicher
+      this.imagesRef = ref(this.storage, 'avatars/' + this.pic.name);
+    }
+  }
+
 }

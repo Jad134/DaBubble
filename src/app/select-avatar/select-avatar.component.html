@@ -26,8 +26,8 @@
             </div>
             <div class="upload-img">
                 <p>eigenes Bild verwenden</p>
-                <button class="upload-button">Datei hochladen</button>
-            </div>
+                <input (change)="uploadService.avatarSelected($event)" type="file"  class="upload-button">Datei hochladen>
+            </div>  
           </div>
           <div class="forward-button">
             <button (click)="updateAvatar()" class="forward">Weiter</button>

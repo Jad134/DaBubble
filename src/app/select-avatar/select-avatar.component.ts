@@ -7,6 +7,7 @@ import { doc, onSnapshot } from '@angular/fire/firestore';
 import { error } from 'console';
 import { user } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-select-avatar',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './select-avatar.component.scss',
 })
 export class SelectAvatarComponent {
+  uploadService = inject(StorageService)
   firestore = inject(FirestoreService);
   userId = '';
   actualUser: any;
@@ -77,10 +79,13 @@ export class SelectAvatarComponent {
    * save selected Avatar to Firestore DB and redirect to the login
    */
   updateAvatar() {
+    this.uploadService.uploadImg();
     this.selectSucceed = true;
     this.firestore.updateUser(this.userId, this.avatar);
+    
     setTimeout(() => {
       this.router.navigate(['/']);
     }, 1500);
+    
   }
 }
