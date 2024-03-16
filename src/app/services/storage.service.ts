@@ -8,5 +8,8 @@ import { FirestoreService } from './firestore.service';
 export class StorageService {
 
   firestoreService = inject(FirestoreService)
+  storage = getStorage();
+  storageRef = ref(this.storage);
+  imagesRef = ref(this.storage, 'images');
   constructor() { }
 }
