@@ -26,7 +26,10 @@
             </div>
             <div class="upload-img">
                 <p>eigenes Bild verwenden</p>
-                <input (change)="uploadOwnAvatar($event)" type="file"  class="upload-button">Datei hochladen>
+                <label class="upload-button">
+                <input (change)="uploadOwnAvatar($event)" type="file">
+                Datei hochladen
+              </label>
             </div>  
           </div>
           <div class="forward-button">

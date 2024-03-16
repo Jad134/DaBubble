@@ -158,6 +158,10 @@ mat-card-header {
     border-radius: 25px;
     cursor: pointer;
     transition: background-color 125ms ease-in-out;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
         background-color: $purple1;
@@ -214,4 +218,8 @@ mat-card-header {
     align-items: center;
     top: 45px;
     left: 35px;
+}
+
+input[type="file"] {
+    display: none;
 }
