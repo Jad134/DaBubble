@@ -39,11 +39,12 @@ export class StorageService {
     }
   }
 
-  async avatarSelected(event: any) {  //Diese function kommt auf das input type=file
+  async avatarSelected(event: any, userId:any) {  //Diese function kommt auf das input type=file
     this.pic = event.target.files[0];
     if (this.pic) {
       // Wenn eine Datei ausgewählt wurde, erstellen Sie die Referenz zum Bild im Cloud-Speicher
-      this.imagesRef = ref(this.storage, 'avatars/' + this.pic.name);
+      this.imagesRef = ref(this.storage, userId + '/' + this.pic.name);
+      console.log(this.storage,'name:', this.pic.name)
     }
   }
 

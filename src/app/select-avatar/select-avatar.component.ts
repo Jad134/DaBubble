@@ -22,10 +22,11 @@ export class SelectAvatarComponent {
   userId = '';
   actualUser: any;
   name!: string;
-  avatar: string = 'profile-blank.svg';
+  avatar: any | string = 'assets/img/avatars/profile-blank.svg';
   selectSucceed: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.getIdFromURL();
@@ -82,10 +83,31 @@ export class SelectAvatarComponent {
     this.uploadService.uploadImg();
     this.selectSucceed = true;
     this.firestore.updateUser(this.userId, this.avatar);
-    
+
     setTimeout(() => {
       this.router.navigate(['/']);
     }, 1500);
-    
+
+  }
+
+
+  uploadOwnAvatar(event: any) {
+    this.uploadService.avatarSelected(event, this.userId);
+    this.ownPicturePreView(event);
+  }
+
+
+  ownPicturePreView(event: any) {
+    const file = event.target.files[0]; // Zugriff auf das ausgewählte Bild
+    // Überprüfe, ob eine Datei ausgewählt wurde und ob es sich um ein Bild handelt
+    if (file && file.type.startsWith('image')) {
+      const reader = new FileReader(); // Erstelle ein FileReader-Objekt
+      // Definiere eine Funktion, die aufgerufen wird, wenn das Bild geladen wurde
+      reader.onload = () => {
+        // Weise den Inhalt des Bildes der avatar-Variable zu
+        this.avatar = reader.result;
+      };
+      reader.readAsDataURL(file); // Lese das Bild als Daten-URL
+    }
   }
 }
