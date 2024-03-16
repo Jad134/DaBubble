@@ -84,9 +84,9 @@ export class SelectAvatarComponent {
     this.selectSucceed = true;
     this.firestore.updateUser(this.userId, this.avatar);
 
-    setTimeout(() => {
-      this.router.navigate(['/']);
-    }, 1500);
+    // setTimeout(() => {
+    //   this.router.navigate(['/']);
+    // }, 1500);
 
   }
 
