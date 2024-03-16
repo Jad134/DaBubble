@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref, uploadBytes  } from "firebase/storage";
 import { FirestoreService } from './firestore.service';
 
 @Injectable({
@@ -10,6 +10,32 @@ export class StorageService {
   firestoreService = inject(FirestoreService)
   storage = getStorage();
   storageRef = ref(this.storage);
-  imagesRef = ref(this.storage, 'images');
+  imagesRef:  any;
+  pic: File | any;
   constructor() { }
+
+  onFileSelected(event: any) {  //Diese function kommt auf das input type=file
+    this.pic = event.target.files[0];
+    if (this.pic) {
+      // Wenn eine Datei ausgewählt wurde, erstellen Sie die Referenz zum Bild im Cloud-Speicher
+      this.imagesRef = ref(this.storage, 'images/' + this.pic.name);
+    }
+  }
+
+  uploadImg() { // Diese function kommt auf den upload button
+    if (this.pic) {
+      const fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        if (e.target && e.target.result) {
+          const blob = new Blob([e.target.result], { type: this.pic.type });
+          uploadBytes(this.imagesRef, blob).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          });
+        }
+      };
+      fileReader.readAsArrayBuffer(this.pic);
+    } else {
+      console.error('No image selected');
+    }
+  }
 }

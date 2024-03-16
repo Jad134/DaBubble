@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { FirestoreService } from '../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { LogInService } from '../services/log-in.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-log-in',
@@ -23,6 +24,7 @@ export class LogInComponent {
 
   loginService = inject(LogInService)
   firestore = inject(FirestoreService)
+  uploadService = inject(StorageService)
 
 
   logIn() {
