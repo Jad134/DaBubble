@@ -7,10 +7,11 @@ import { NewPasswortComponent } from './log-in/reset-passwort/new-passwort/new-p
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { DataprotectionComponent } from './dataprotection/dataprotection.component';
+import { StartPageComponent } from './start-page/start-page.component';
 
 
 export const routes: Routes = [
-/*   { path: '', component: LogInComponent }, */
+  // { path: '', component: LogInComponent }, 
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'select-avatar/:id', component: SelectAvatarComponent },
   { path: 'reset-password', component: ResetPasswortComponent },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'dataprotection', component: DataprotectionComponent },
+  { path: 'test', component: StartPageComponent},
 ];
