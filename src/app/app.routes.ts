@@ -6,6 +6,8 @@ import { ResetPasswortComponent } from './log-in/reset-passwort/reset-passwort.c
 import { NewPasswortComponent } from './log-in/reset-passwort/new-passwort/new-passwort.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ImprintComponent } from './imprint/imprint.component';
+import { DataprotectionComponent } from './dataprotection/dataprotection.component';
+
 
 export const routes: Routes = [
   { path: '', component: LogInComponent },
@@ -15,4 +17,5 @@ export const routes: Routes = [
   { path: 'new-password', component: NewPasswortComponent },
   { path: 'dashboard/:id', component: DashboardComponent },
   { path: 'imprint', component: ImprintComponent },
+  { path: 'dataprotection', component: DataprotectionComponent },
 ];

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-start-page',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './start-page.component.html',
-  styleUrl: './start-page.component.scss'
+  styleUrl: './start-page.component.scss',
 })
-export class StartPageComponent {
-
-}
+export class StartPageComponent {}
