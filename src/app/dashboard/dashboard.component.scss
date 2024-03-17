@@ -1,0 +1,53 @@
+@import "./../../styles.scss";
+
+section {
+  background-color: $bg-color;
+  min-height: 100%;
+  font-family: $nunito;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+  padding: 3rem 1.5rem 0 3rem;
+
+  input {
+    border: none;
+    outline: none;
+    border-radius: 48px;
+    padding: 16px 32px 16px 32px;
+    width: 926px;
+    height: 38px;
+    background: url(/assets/img/search.png) no-repeat;
+    background-origin: content-box;
+    background-position: right center;
+    position: relative;
+    background-color: white;
+  }
+
+  .container_current_user {
+    display: flex;
+    width: 342px;
+    height: 70px;
+    gap: 16px;
+    align-items: center;
+    justify-content: end;
+    h2 {
+      margin: 0;
+      font-family: $nunito;
+      font-weight: 700;
+    }
+    div {
+      background-color: white;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+    }
+    button {
+      border: none;
+      background-color: transparent;
+    }
+  }
+}
