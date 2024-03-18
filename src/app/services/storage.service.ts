@@ -43,7 +43,7 @@ export class StorageService {
     this.pic = event.target.files[0];
     if (this.pic) {
       // Wenn eine Datei ausgewählt wurde, erstellen Sie die Referenz zum Bild im Cloud-Speicher
-      this.imagesRef = ref(this.storage, userId + '/' + this.pic.name);
+      this.imagesRef = ref(this.storage, userId + '/' + 'ownPictureDA');
       console.log(this.storage,'name:', this.pic.name)
     }
   }

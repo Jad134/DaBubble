@@ -24,6 +24,7 @@ export class SelectAvatarComponent {
   name!: string;
   avatar: any | string = 'assets/img/avatars/profile-blank.svg';
   selectSucceed: boolean = false;
+  selectOwnPicture: boolean = false;
 
 
   constructor(private route: ActivatedRoute, private router: Router) { }
@@ -74,6 +75,7 @@ export class SelectAvatarComponent {
     const id = clickedElement.id;
     this.avatar = id;
     this.actualUser.avatar = id;
+    this.selectOwnPicture = false;
   }
 
   /**
@@ -82,7 +84,7 @@ export class SelectAvatarComponent {
   updateAvatar() {
     this.uploadService.uploadImg();
     this.selectSucceed = true;
-    this.firestore.updateUser(this.userId, this.avatar);
+    this.controllIfOwnPictureUsed()
 
     // setTimeout(() => {
     //   this.router.navigate(['/']);
@@ -91,9 +93,22 @@ export class SelectAvatarComponent {
   }
 
 
+  /**
+   * This function controls, if the user use a own profilepicture or not. This is for upload a synonym for our avatar:'ownPictureDA' in DB.
+   */
+  controllIfOwnPictureUsed() {
+    if (this.selectOwnPicture) {
+      this.firestore.updateUser(this.userId, 'ownPictureDA');
+    } else if (!this.selectOwnPicture) {
+      this.firestore.updateUser(this.userId, this.avatar);
+    }
+  }
+
+
   uploadOwnAvatar(event: any) {
     this.uploadService.avatarSelected(event, this.userId);
     this.ownPicturePreView(event);
+    this.selectOwnPicture = true;
   }
 
 
