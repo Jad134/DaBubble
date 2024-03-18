@@ -1,0 +1,111 @@
+@import "../../../styles.scss";
+
+section {
+  font-family: $nunito;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidenav {
+  height: 880px;
+  width: 306px;
+  padding: 40px 30px 40px 30px;
+  position: absolute;
+  background-color: white;
+  border-radius: 32px;
+  margin: 20px 20px 0 20px;
+}
+
+.sidenav_head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h3 {
+    margin: 0;
+    font-family: $nunito;
+    font-weight: 800;
+  }
+  button {
+    border: none;
+    background-color: transparent;
+  }
+}
+
+.sidenav_head_left {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.sidenav_main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidenav_container_channels {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 16px;
+  div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    img {
+      object-fit: contain;
+    }
+    h4 {
+      margin: 0;
+      font-weight: 500;
+    }
+  }
+  .box_add {
+    flex: 1;
+    position: relative;
+    button {
+      position: absolute;
+      left: 127px;
+    }
+  }
+}
+
+.sidenav_place_channel_infos {
+  margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidenav_container_channel_info {
+  display: flex;
+  justify-content: start;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    gap: 8px;
+    padding: 2px 20px 2px 20px;
+    background-color: $bg-color;
+    color: $purple1;
+    p {
+      font-weight: 600;
+      font-size: 600;
+    }
+  }
+}
+
+.sidenav_container_add_channel {
+  display: flex;
+  justify-content: start;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    gap: 8px;
+    padding: 2px 20px 2px 20px;
+  }
+}

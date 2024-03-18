@@ -2,7 +2,6 @@
 
 section {
   background-color: $bg-color;
-  min-height: 100%;
   font-family: $nunito;
 }
 
@@ -11,7 +10,7 @@ section {
   justify-content: space-between;
   align-items: center;
   height: 10%;
-  padding: 3rem 1.5rem 0 3rem;
+  padding: 25px 0 0 45px;
 
   input {
     border: none;
@@ -34,6 +33,7 @@ section {
     gap: 16px;
     align-items: center;
     justify-content: end;
+    padding-right: 15px;
     h2 {
       margin: 0;
       font-family: $nunito;
@@ -48,6 +48,13 @@ section {
     button {
       border: none;
       background-color: transparent;
+    }
+  }
+
+  .logo_container {
+    img {
+      width: 242px;
+      height: 70px;
     }
   }
 }
