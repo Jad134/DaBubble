@@ -11,12 +11,12 @@ import { StartPageComponent } from './start-page/start-page.component';
 
 
 export const routes: Routes = [
-  // { path: '', component: LogInComponent }, 
+  { path: '', component: LogInComponent }, 
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'select-avatar/:id', component: SelectAvatarComponent },
   { path: 'reset-password', component: ResetPasswortComponent },
   { path: 'new-password', component: NewPasswortComponent },
-  { path: '', component: DashboardComponent },
+  // { path: '', component: DashboardComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'dataprotection', component: DataprotectionComponent },
   { path: 'test', component: StartPageComponent},

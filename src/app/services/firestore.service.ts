@@ -74,7 +74,7 @@ export class FirestoreService {
   async updateUser(id : string, avatarRef : string) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
-      avatar: avatarRef
+      avatar: avatarRef 
     });
     console.log(id, avatarRef)
   }
