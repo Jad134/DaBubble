@@ -84,17 +84,24 @@ export class SelectAvatarComponent {
   updateAvatar() {
     this.uploadService.uploadImg();
     this.selectSucceed = true;
-    if(this.selectOwnPicture){
-      this.firestore.updateUser(this.userId, 'ownAvatar');
-    }else if(!this.selectOwnPicture){
-      this.firestore.updateUser(this.userId, this.avatar);
-    }
-   
+    this.controllIfOwnPictureUsed()
 
     // setTimeout(() => {
     //   this.router.navigate(['/']);
     // }, 1500);
 
+  }
+
+
+  /**
+   * This function controls, if the user use a own profilepicture or not. This is for upload a synonym for our avatar:'ownPictureDA' in DB.
+   */
+  controllIfOwnPictureUsed() {
+    if (this.selectOwnPicture) {
+      this.firestore.updateUser(this.userId, 'ownPictureDA');
+    } else if (!this.selectOwnPicture) {
+      this.firestore.updateUser(this.userId, this.avatar);
+    }
   }
 
 
