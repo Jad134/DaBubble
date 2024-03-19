@@ -22,6 +22,9 @@ export class StorageService {
   constructor(private http: HttpClient, private route: ActivatedRoute) {  }
 
 
+  /**
+   * This function is currently not in Use !!! PLEASE DONT USE (erstmal nicht zu nutzen, vllt später um im chat bilder hoch zu laden)
+   */
   async onFileSelected(event: any) {  //Diese function kommt auf das input type=file
     this.pic = event.target.files[0];
     if (this.pic) {
@@ -30,6 +33,10 @@ export class StorageService {
     }
   }
 
+
+  /**
+   * This function upload the picture to our Storage
+   */
   async uploadImg() { // Diese function kommt auf den upload button
     if (this.pic) {
       const fileReader = new FileReader();
@@ -47,6 +54,10 @@ export class StorageService {
     }
   }
 
+
+  /**
+   * This function sets the picture to our firestore Storage with the name 'ownPictureDA' for the Profile Piture
+   */
   async avatarSelected(event: any, userId: any) {  //Diese function kommt auf das input type=file
     this.pic = event.target.files[0];
     if (this.pic) {
@@ -56,13 +67,15 @@ export class StorageService {
     }
   }
 
+
+  /**
+   * This function download the profilepicture and set the picture to the variable 'downloadedProifleImg' which is used e.g in head-dashboard.component
+   * @param userId 
+   */
   async downloadAvatar(userId: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/${userId}/ownPictureDA`);
-   
-
     try {
       const url = await getDownloadURL(imgReference);
-
       // Bild herunterladen
       this.http.get(url, { responseType: 'blob' }).subscribe((blob: Blob) => {
         const reader = new FileReader();
@@ -70,7 +83,6 @@ export class StorageService {
           this.downloadedProfileImg = event.target?.result as string;
         };
         reader.readAsDataURL(blob);
-        
       });
     } catch (error) {
       console.error('Fehler beim Herunterladen des Bildes:', error);
