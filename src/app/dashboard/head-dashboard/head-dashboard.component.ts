@@ -12,22 +12,32 @@ import { StorageService } from '../../services/storage.service';
 export class HeadDashboardComponent {
   downloadService = inject(StorageService)
   userId = '';
-  profilePicture : any;
+  profilePicture: any;
 
-constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
-ngOnInit(): void {
-  this.getIdFromURL();
-}
-
-/**
-   * read UserID from the Url.
-   */
-getIdFromURL() {
-  const id = this.route.snapshot.paramMap.get('id');
-  if (id != null) {
-    this.userId = id;
+  ngOnInit(): void {
+    this.getIdFromURL();
+    this.downloadProfileDatas(this.userId);
   }
-  console.log('die id ist:', this.userId); 
+
+
+  /**
+     * read UserID from the Url.
+     */
+  getIdFromURL() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id != null) {
+      this.userId = id;
+    }
+    console.log('die id ist:', this.userId);
+  }
+
+
+  downloadProfileDatas(userID: any) {
+    this.downloadService.downloadAvatar(userID)
+    
+  }
 }
-}
+
+
