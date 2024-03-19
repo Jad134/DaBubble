@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-head-dashboard',
@@ -8,5 +10,24 @@ import { Component } from '@angular/core';
   styleUrl: './head-dashboard.component.scss'
 })
 export class HeadDashboardComponent {
+  downloadService = inject(StorageService)
+  userId = '';
+  profilePicture : any;
 
+constructor(private route: ActivatedRoute, private router: Router) { }
+
+ngOnInit(): void {
+  this.getIdFromURL();
+}
+
+/**
+   * read UserID from the Url.
+   */
+getIdFromURL() {
+  const id = this.route.snapshot.paramMap.get('id');
+  if (id != null) {
+    this.userId = id;
+  }
+  console.log('die id ist:', this.userId); 
+}
 }
