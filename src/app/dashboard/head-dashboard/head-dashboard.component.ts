@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router, } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 
 @Component({

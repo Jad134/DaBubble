@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, } from '@angular/core';
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { FirestoreService } from './firestore.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,11 @@ export class StorageService {
   storageRef = ref(this.storage);
   imagesRef: any;
   pic: File | any;
+  downloadedProfileImg: any;
 
   // Create a reference from a Google Cloud Storage URI
-  
-  constructor() { }
+
+  constructor(private http: HttpClient) { }
 
   async onFileSelected(event: any) {  //Diese function kommt auf das input type=file
     this.pic = event.target.files[0];
@@ -53,21 +55,19 @@ export class StorageService {
 
   async downloadAvatar(userId: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/${userId}/ownPictureDA`);
-  
+
     try {
       const url = await getDownloadURL(imgReference);
-  
+
       // Bild herunterladen
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-  
-      xhr.onload = () => {
-        const blob = xhr.response;
-        // Hier können Sie mit dem Blob arbeiten, z.B. anzeigen oder speichern
-      };
-  
-      xhr.open('GET', url);
-      xhr.send();
+      this.http.get(url, { responseType: 'blob' }).subscribe((blob: Blob) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.downloadedProfileImg = event.target?.result as string;
+        };
+        reader.readAsDataURL(blob);
+        
+      });
     } catch (error) {
       console.error('Fehler beim Herunterladen des Bildes:', error);
     }

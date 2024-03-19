@@ -44,6 +44,7 @@ section {
       border-radius: 50%;
       width: 70px;
       height: 70px;
+      overflow: hidden;
     }
     button {
       border: none;
@@ -56,5 +57,10 @@ section {
       width: 242px;
       height: 70px;
     }
+  }
+
+  .profile-img{
+    width: 70px;
+    height: 70px;
   }
 }
