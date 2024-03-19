@@ -2,6 +2,7 @@ import { Injectable, inject, } from '@angular/core';
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { FirestoreService } from './firestore.service';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,12 @@ export class StorageService {
   imagesRef: any;
   pic: File | any;
   downloadedProfileImg: any;
+  userId :any;
 
   // Create a reference from a Google Cloud Storage URI
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute) {  }
+
 
   async onFileSelected(event: any) {  //Diese function kommt auf das input type=file
     this.pic = event.target.files[0];
@@ -55,6 +58,7 @@ export class StorageService {
 
   async downloadAvatar(userId: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/${userId}/ownPictureDA`);
+   
 
     try {
       const url = await getDownloadURL(imgReference);
@@ -72,4 +76,5 @@ export class StorageService {
       console.error('Fehler beim Herunterladen des Bildes:', error);
     }
   }
+
 }
