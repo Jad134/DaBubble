@@ -9,12 +9,12 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { DataprotectionComponent } from './dataprotection/dataprotection.component';
 
 export const routes: Routes = [
-  { path: '', component: LogInComponent }, 
+  { path: '', component: LogInComponent },
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'select-avatar/:id', component: SelectAvatarComponent },
   { path: 'reset-password', component: ResetPasswortComponent },
   { path: 'new-password', component: NewPasswortComponent },
-  { path: '', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'dataprotection', component: DataprotectionComponent },
 ];
