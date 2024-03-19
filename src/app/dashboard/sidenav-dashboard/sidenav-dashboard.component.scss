@@ -8,7 +8,7 @@ section {
 }
 
 .sidenav {
-  height: 880px;
+  min-height: 680px;
   width: 306px;
   padding: 40px 30px 40px 30px;
   position: absolute;
@@ -52,13 +52,14 @@ section {
   div {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     img {
       object-fit: contain;
+      transform: rotate(-90deg);
     }
     h4 {
       margin: 0;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
   .box_add {
@@ -66,33 +67,33 @@ section {
     position: relative;
     button {
       position: absolute;
-      left: 127px;
+      left: 108px;
     }
   }
 }
 
 .sidenav_place_channel_infos {
-  margin-left: 24px;
+  margin-left: 26px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-}
 
-.sidenav_container_channel_info {
-  display: flex;
-  justify-content: start;
-  div {
+  .sidenav_container_channel_info {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 16px;
-    gap: 8px;
-    padding: 2px 20px 2px 20px;
-    background-color: $bg-color;
-    color: $purple1;
-    p {
-      font-weight: 600;
-      font-size: 600;
+    justify-content: start;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      gap: 12px;
+      padding: 2px 20px 2px 20px;
+      background-color: $bg-color;
+      color: $purple1;
+      p {
+        font-weight: 600;
+        font-size: 600;
+      }
     }
   }
 }
@@ -100,12 +101,79 @@ section {
 .sidenav_container_add_channel {
   display: flex;
   justify-content: start;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    gap: 12px;
+    padding: 2px 20px 2px 20px;
+    p {
+      font-weight: 600;
+    }
+  }
+}
+
+.sidenav_container_directmessages {
+  display: flex;
+  justify-content: start;
+  gap: 18px;
   div {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 16px;
-    gap: 8px;
-    padding: 2px 20px 2px 20px;
+    gap: 14px;
   }
+  h4 {
+    font-weight: 700;
+  }
+}
+
+.sidenav_container_user {
+  margin-left: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .sidenav_box_user {
+    display: flex;
+    justify-content: start;
+    .sidenav_place_user {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      gap: 12px;
+      padding: 2px 20px 2px 20px;
+      div {
+        position: relative;
+        .user_picture {
+          border-radius: 50%;
+        }
+        .statuslight {
+          border-radius: 50%;
+          border: solid white 2px;
+          background-color: rgb(19, 173, 19);
+          position: absolute;
+          height: 10px;
+          width: 10px;
+          right: 2px;
+          bottom: 4.5px;
+        }
+      }
+      p {
+        font-weight: 600;
+      }
+    }
+  }
+}
+.rotated {
+  transform: rotate(-90deg); /* Rotate the image by 90 degrees */
+  transition: transform 0.1s ease; /* Add a smooth transition effect */
+}
+
+.rotatedBack {
+  transform: rotate(0deg); /* Rotate the image by 90 degrees */
+  transition: transform 0.1s ease;
 }

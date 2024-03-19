@@ -10,12 +10,17 @@
   </div>
   <div class="sidenav_main">
     <div class="sidenav_container_channels">
-      <button>
-        <img src="assets/img/arrow_drop_down.png" alt="" />
+      <button (click)="togglechannelsMenu()">
+        <img
+          [class.rotated]="!channelsmenu"
+          [class.rotatedBack]="channelsmenu"
+          src="assets/img/arrow_drop_down.png"
+          alt=""
+        />
       </button>
       <div>
         <img src="/assets/img/workspaces.png" alt="" />
-        <h4>channel</h4>
+        <h4>Channels</h4>
       </div>
       <div class="box_add">
         <button class="btn_add">
@@ -23,7 +28,10 @@
         </button>
       </div>
     </div>
-    <div class="sidenav_place_channel_infos">
+    <div
+      [@menuVisibility]="channelsmenu ? 'visible' : 'hidden'"
+      class="sidenav_place_channel_infos"
+    >
       <div class="sidenav_container_channel_info">
         <div class="sidenav_info">
           <img src="/assets/img/tag.png" alt="" />
@@ -31,11 +39,75 @@
         </div>
       </div>
       <div class="sidenav_container_add_channel">
-        <div >
-          <img src="assets/img/add_circle.png" alt="">
+        <button>
+          <img src="assets/img/add_circle.png" alt="" />
           <p>Channel hinzufügen</p>
-        </div>
+        </button>
       </div>
+    </div>
+    <div class="sidenav_container_directmessages">
+      <button (click)="toggleUsersMenu()">
+        <img [class.rotated]="!userMenu"
+        [class.rotatedBack]="userMenu" src="assets/img/arrow_drop_down.png" alt="" />
+      </button>
+      <div>
+        <img src="/assets/img/account_circle.png" alt="" />
+        <h4>Direktnachrichten</h4>
+      </div>
+    </div>
+    <div [@menuVisibility]="userMenu ? 'visible' : 'hidden'" class="sidenav_container_user">
+      <button class="sidenav_box_user">
+        <div class="sidenav_place_user">
+          <div>
+            <img
+              class="user_picture"
+              src="assets/img/00c.Charaters.png"
+              alt=""
+            />
+            <div class="statuslight" src="" alt=""></div>
+          </div>
+          <p>Frederick Beck (Du)</p>
+        </div>
+      </button>
+      <button class="sidenav_box_user">
+        <div class="sidenav_place_user">
+          <div>
+            <img
+              class="user_picture"
+              src="assets/img/00c.Charaters.png"
+              alt=""
+            />
+            <div class="statuslight" src="" alt=""></div>
+          </div>
+          <p>Frederick Beck (Du)</p>
+        </div>
+      </button>
+      <button class="sidenav_box_user">
+        <div class="sidenav_place_user">
+          <div>
+            <img
+              class="user_picture"
+              src="assets/img/00c.Charaters.png"
+              alt=""
+            />
+            <div class="statuslight" src="" alt=""></div>
+          </div>
+          <p>Frederick Beck (Du)</p>
+        </div>
+      </button>
+      <button class="sidenav_box_user">
+        <div class="sidenav_place_user">
+          <div>
+            <img
+              class="user_picture"
+              src="assets/img/00c.Charaters.png"
+              alt=""
+            />
+            <div class="statuslight" src="" alt=""></div>
+          </div>
+          <p>Frederick Beck (Du)</p>
+        </div>
+      </button>
     </div>
   </div>
 </section>
