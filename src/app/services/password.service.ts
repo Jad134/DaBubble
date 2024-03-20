@@ -9,22 +9,25 @@ import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
 export class PasswordService {
   firestore = inject(FirestoreService);
   newPassword!: string;
-  // actionCode = this.getParameterByName('oobCode');
-  // continueUrl = this.getParameterByName('continueUrl');
+  actionCode = this.getParameterByName('oobCode');
+  continueUrl = this.getParameterByName('continueUrl');
+  lang = this.getParameterByName('lang') || 'en';
   constructor(private route: ActivatedRoute) { }
 
-  // getParameterByName(name: string): string | null {
-  //   return this.route.snapshot.queryParamMap.get(name) || null;
-  // }
+  getParameterByName(name: string): string | null {
+    return this.route.snapshot.queryParamMap.get(name) || null;
+  }
 
-  // updatePassword() {
+  updatePassword(code: any, newPassword: any) {
+    console.log(code, newPassword);
 
-  //   confirmPasswordReset(this.firestore.auth, this.a, newPassword)
-  //     .then(function () {
-  //       // Success
-  //     })
-  //     .catch(function () {
-  //       // Invalid code
-  //     })
-  // }
+    confirmPasswordReset(this.firestore.auth, code, newPassword)
+      .then(function () {
+        console.log('gesendet');
+
+      })
+      .catch(function () {
+        // Invalid code
+      })
+  }
 }
