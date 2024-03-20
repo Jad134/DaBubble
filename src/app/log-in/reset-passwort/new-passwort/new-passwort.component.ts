@@ -1,8 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { FirestoreService } from '../../../services/firestore.service';
+import { PasswordService } from '../../../services/password.service';
 
 @Component({
   selector: 'app-new-passwort',
@@ -13,13 +15,17 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class NewPasswortComponent {
   constructor() { }
+  firestore = inject(FirestoreService);
+ passwordService = inject(PasswordService)
+  newPassword: any;
+  
   
 
   @ViewChild('passwordInput') passwordInput!: ElementRef;
   @ViewChild('passwordInputControl') passwordInputControl!: ElementRef;
   @ViewChild('sendPasswordBtn') sendPasswordBtn!: ElementRef;
   @ViewChild('notSimilarMessage') notSimilarMessage!: ElementRef
-  
+
 
 
   controlPasswords() {
@@ -32,11 +38,15 @@ export class NewPasswortComponent {
       if (input1 === input2) {
         btn.disabled = false;
         errorMessage.style = 'opacity: 0;'
+        input2 = this.newPassword;
       } else {
         btn.disabled = true;
         errorMessage.style = 'opacity: 1;'
+        input2 = '';
       }
     }
   }
+
+  
 }
 
