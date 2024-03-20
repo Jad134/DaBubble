@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { FirestoreService } from './firestore.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
 
 @Injectable({
@@ -12,7 +12,7 @@ export class PasswordService {
   actionCode = this.getParameterByName('oobCode');
   continueUrl = this.getParameterByName('continueUrl');
   lang = this.getParameterByName('lang') || 'en';
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
 
   /**
@@ -35,8 +35,11 @@ export class PasswordService {
     console.log(code, newPassword);
 
     confirmPasswordReset(this.firestore.auth, code, newPassword)
-      .then(function () {
+      .then(() => {
         console.log('gesendet');
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 1500);
 
       })
       .catch(function () {
