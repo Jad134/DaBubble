@@ -86,9 +86,9 @@ export class SelectAvatarComponent {
     this.selectSucceed = true;
     this.controllIfOwnPictureUsed()
 
-    // setTimeout(() => {
-    //   this.router.navigate(['/']);
-    // }, 1500);
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 1500);
 
   }
 

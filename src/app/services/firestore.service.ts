@@ -47,7 +47,7 @@ export class FirestoreService {
 
   async getUser(id: string) {
     const unsub = onSnapshot(doc(this.firestore, 'users', id), (doc) => {
-      return doc.data();
+      return doc.data();     
     });
   }
 
