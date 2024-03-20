@@ -14,10 +14,23 @@ export class PasswordService {
   lang = this.getParameterByName('lang') || 'en';
   constructor(private route: ActivatedRoute) { }
 
+
+  /**
+ * Retrieves the value of a URL parameter with the specified name.
+ * 
+ * @param name The name of the URL parameter to retrieve.
+ * @returns The value of the URL parameter if found, or null if not found.
+ */
   getParameterByName(name: string): string | null {
     return this.route.snapshot.queryParamMap.get(name) || null;
   }
 
+
+  /**
+   * This function updates the new password to the user.
+   * @param code 
+   * @param newPassword 
+   */
   updatePassword(code: any, newPassword: any) {
     console.log(code, newPassword);
 

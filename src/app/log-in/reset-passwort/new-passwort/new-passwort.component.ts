@@ -21,14 +21,15 @@ export class NewPasswortComponent {
   newPassword: any;
 
 
-
   @ViewChild('passwordInput') passwordInput!: ElementRef;
   @ViewChild('passwordInputControl') passwordInputControl!: ElementRef;
   @ViewChild('sendPasswordBtn') sendPasswordBtn!: ElementRef;
   @ViewChild('notSimilarMessage') notSimilarMessage!: ElementRef
 
 
-
+  /**
+   * This function controls, if the first and the second input value are the same
+   */
   controlPasswords() {
     if (this.passwordInput && this.passwordInputControl && this.sendPasswordBtn) {
       let btn = this.sendPasswordBtn.nativeElement;
@@ -46,11 +47,20 @@ export class NewPasswortComponent {
     }
   }
 
+
+  /**
+   * This function gets the oob code from the link
+   */
   getIdFromUrl() {
     let code = this.passwordService.actionCode;
     this.sendNewPassword(code)
   }
 
+
+  /**
+   * This function starts the update function
+   * @param code oob code from link
+   */
   sendNewPassword(code: any) {
     this.passwordService.updatePassword(code, this.newPassword);
   }
