@@ -1,15 +1,33 @@
 <section>
-    <div class="thread-container">
-        <div class="thread-head">
-            <h2>Thread</h2>
-            Entwicklerteam
-            <img src="assets/img/close.svg" alt="">
-        </div>
-        <div class="thread-content">
-            hier steht der Chatverlauf
-        </div>
-        <div class="answer-section">
-            hier kommt das Inputfeld rein.
-        </div>
+  <div class="thread-container">
+    <div class="thread-head">
+      <div class="head-text">
+        <h2>Thread</h2>
+        <p>#</p>
+        <p>Entwicklerteam</p>
+      </div>
+      <div class="close w-h-40"></div>
     </div>
+    <div class="thread-content">hier steht der Chatverlauf</div>
+    <div class="answer-section">
+      <div class="answer-field">
+        <textarea
+          name="answer"
+          id="answer"
+          cols="1"
+          rows="40"
+          placeholder="Antworten..."
+        ></textarea>
+        <div class="button-row">
+          <div class="d-flex-sb">
+            <div class="add w-h-40"></div>
+            <div class="vector"></div>
+            <div class="emoji w-h-40"></div>
+            <div class="email w-h-40"></div>
+          </div>
+          <div class="send w-h-40"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
