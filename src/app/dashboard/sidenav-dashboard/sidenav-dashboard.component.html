@@ -59,9 +59,9 @@
       <button *ngFor="let user of allUsers" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
-            <img
+            <img [src]="user.avatar"
               class="user_picture"
-              src="assets/img/00c.Charaters.png"
+              
               alt=""
             />
             <div class="statuslight" src="" alt=""></div>

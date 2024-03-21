@@ -87,7 +87,7 @@ export class StorageService {
     } catch (error) {
       console.error('Fehler beim Herunterladen des Bildes:', error);
     }
-    await this.firestoreService.getAllUsers();
+    await this.firestoreService.getAllUsers()
   }
 
 }
