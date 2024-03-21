@@ -34,6 +34,7 @@ section {
     align-items: center;
     justify-content: end;
     padding-right: 15px;
+    position: relative;
     h2 {
       margin: 0;
       font-family: $nunito;
@@ -50,6 +51,16 @@ section {
       border: none;
       background-color: transparent;
     }
+    .statuslight {
+      border-radius: 50%;
+      border: solid white 2px;
+      background-color: rgb(19, 173, 19);
+      position: absolute;
+      height: 10px;
+      width: 10px;
+      right: 67px;
+      bottom: 4.5px;
+    }
   }
 
   .logo_container {
@@ -63,4 +74,6 @@ section {
     width: 70px;
     height: 70px;
   }
+
+  
 }

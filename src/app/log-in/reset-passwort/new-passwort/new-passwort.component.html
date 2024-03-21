@@ -15,10 +15,11 @@
                         </div> 
                     </mat-card-header>
                     <div class="input-container">
-                        <input placeholder="Neues Passwort" class="password-input" type="password">
-                        <input placeholder="Neues Kennwort bestätigen" class="password-input-control" type="password">
+                        <input (input)="this.controlPasswords()" #passwordInput placeholder="Neues Passwort" class="password-input" type="password">
+                        <input [(ngModel)]="newPassword" (input)="this.controlPasswords()" #passwordInputControl placeholder="Neues Kennwort bestätigen" class="password-input-control" type="password">
+                        <span #notSimilarMessage class="wrong-pw-message">Ihre Kennwörter stimmen nicht überein</span>
                         <div class="button-container">
-                            <button disabled class="send-mail-btn">Passwort ändern</button>
+                            <button (click)="this.getIdFromUrl()" #sendPasswordBtn disabled class="send-mail-btn">Passwort ändern</button>
                         </div>
                     </div>
                 </mat-card-content>

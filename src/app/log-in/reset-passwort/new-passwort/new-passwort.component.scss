@@ -217,4 +217,14 @@ mat-card-header {
         }
         
     }
+
+    
+}
+
+.wrong-pw-message{
+    color: $rosa-error;
+    font-family: $nunito;
+    font-size: 14px;
+    text-align: left;
+    opacity: 0;
 }
