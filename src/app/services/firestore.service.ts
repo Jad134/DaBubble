@@ -1,7 +1,7 @@
 import { Injectable, inject, NgZone } from '@angular/core';
 import { Firestore, getDoc, getFirestore, onSnapshot } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
-import { confirmPasswordReset, getAuth, sendPasswordResetEmail, updatePassword, verifyPasswordResetCode } from '@angular/fire/auth';
+import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
 import { doc, updateDoc } from "firebase/firestore";
@@ -31,7 +31,7 @@ export class FirestoreService {
   db = getFirestore(this.app);
   users = new User();
   user = this.auth.currentUser;
-  
+
 
 
   constructor(private router: Router, public ngZone: NgZone) { }
@@ -47,7 +47,7 @@ export class FirestoreService {
       });
   }
 
-  
+
 
   async getUser(id: string) {
     const unsub = onSnapshot(doc(this.firestore, 'users', id), (doc) => {
@@ -81,5 +81,16 @@ export class FirestoreService {
       avatar: avatarRef
     });
     console.log(id, avatarRef)
+  }
+
+
+  async checkIfUserOnline(uid: string) {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        console.log('Benutzer online:', user.uid);
+      } else {
+        console.log('Benutzer offline');
+      }
+    });
   }
 }
