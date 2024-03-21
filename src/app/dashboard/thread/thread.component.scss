@@ -72,7 +72,15 @@ section {
     font-weight: 400;
     width: 400px;
     height: 110px;
+
+    &:focus-visible{
+      outline: none;
+    }
   }
+}
+
+#answer {
+  resize: none;
 }
 
 .button-row {
