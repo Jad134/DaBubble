@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit } from '@angular/core';
 import { HeadDashboardComponent } from './head-dashboard/head-dashboard.component';
 import { SidenavDashboardComponent } from './sidenav-dashboard/sidenav-dashboard.component';
 import { FirestoreService } from '../services/firestore.service';
 
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
+import { AllUser } from '../../models/allUser.class';
 
 
 @Component({
@@ -20,10 +21,22 @@ export class DashboardComponent {
   firestoreService = inject(FirestoreService)
   userId: any;
   users: User[] = [];
+  allUsers: AllUser[] = [];
 
 
   ngOnInit(): void {
     this.getIdFromURL(); 
+    
+  }
+
+  ngAfterViewInit(): void {
+    this.firestoreService.getAllUsers().then(users => {
+      // Handle users data
+      console.log(users);
+      
+    }).catch(error => {
+      console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
+    });
   }
 
 

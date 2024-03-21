@@ -84,10 +84,11 @@ export class StorageService {
         };
         reader.readAsDataURL(blob);
       });
+      await this.firestoreService.getAllUsers()
     } catch (error) {
       console.error('Fehler beim Herunterladen des Bildes:', error);
     }
-    await this.firestoreService.getAllUsers()
+    
   }
 
 }

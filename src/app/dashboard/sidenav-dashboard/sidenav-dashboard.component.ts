@@ -39,12 +39,12 @@ export class SidenavDashboardComponent {
   constructor(private renderer: Renderer2) { }
 
   ngOnInit(): void {
-    this.firestoreService.getAllUsers().then(users => {
-      this.allUsers = users;
-      console.log(this.allUsers); // Hier haben Sie Zugriff auf die heruntergeladenen Benutzerdaten
-    }).catch(error => {
-      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-    });
+    // this.firestoreService.getAllUsers().then(users => {
+    //   this.allUsers = users;
+    //   console.log(this.allUsers); // Hier haben Sie Zugriff auf die heruntergeladenen Benutzerdaten
+    // }).catch(error => {
+    //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+    // });
   }
 
   channelsmenu: boolean = true;
