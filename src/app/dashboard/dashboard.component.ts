@@ -32,7 +32,8 @@ export class DashboardComponent {
   ngAfterViewInit(): void {
     this.firestoreService.getAllUsers().then(users => {
       // Handle users data
-      console.log(users);
+      this.allUsers = users;
+      console.log(this.allUsers);
       
     }).catch(error => {
       console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
