@@ -1,5 +1,5 @@
 <app-head-dashboard></app-head-dashboard>
-<app-sidenav-dashboard></app-sidenav-dashboard>
+<app-sidenav-dashboard [allUsers]="allUsers"></app-sidenav-dashboard>
 <section>
     <button class="test" (click)="firestoreService.checkIfUserOnline(userId)"> button</button>
 </section>

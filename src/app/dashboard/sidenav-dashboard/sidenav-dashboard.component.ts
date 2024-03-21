@@ -5,6 +5,7 @@ import {
   viewChild,
   Renderer2,
   inject,
+  Input,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -35,8 +36,11 @@ import { AllUser } from '../../../models/allUser.class';
 })
 export class SidenavDashboardComponent {
   firestoreService = inject(FirestoreService)
-  allUsers: AllUser[] = [];
+  // allUsers: AllUser[] = [];
+
   constructor(private renderer: Renderer2) { }
+
+  @Input() allUsers: AllUser[] = [];
 
   ngOnInit(): void {
     // this.firestoreService.getAllUsers().then(users => {
@@ -45,7 +49,7 @@ export class SidenavDashboardComponent {
     // }).catch(error => {
     //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
     // });
-  }
+  } 
 
   channelsmenu: boolean = true;
   userMenu: boolean = true;
