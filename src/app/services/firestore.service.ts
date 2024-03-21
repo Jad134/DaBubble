@@ -51,9 +51,7 @@ export class FirestoreService {
 
 
   /**
-   * 
-   * @returns ddwdw
-   * 
+   * This function download all UserDatas and is started after the storage.service function downloadAvatar() to pretend download mistakes 
    */
   async getAllUsers(): Promise<AllUser[]> {
     const users: AllUser[] = [];
@@ -63,11 +61,10 @@ export class FirestoreService {
       const user = new AllUser(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
       users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
       console.log(user); 
-      
     });
+    
     return users; // Geben Sie das Array der Benutzer zurück
   }
-
 
 
   async getUser(id: string) {
@@ -105,6 +102,7 @@ export class FirestoreService {
   }
 
 
+  //---------------------------------------------------------------------- check Online function (vorerst)-------------------------
   async checkIfUserOnline(uid: string) {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
