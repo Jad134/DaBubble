@@ -138,9 +138,7 @@ section {
 
   .sidenav_box_user {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    justify-content: start;
     .sidenav_place_user {
       display: flex;
       justify-content: center;
@@ -148,7 +146,6 @@ section {
       border-radius: 16px;
       gap: 12px;
       padding: 2px 20px 2px 20px;
-      
       div {
         position: relative;
         .user_picture {
