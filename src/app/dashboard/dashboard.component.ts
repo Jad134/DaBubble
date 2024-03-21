@@ -4,6 +4,8 @@ import { SidenavDashboardComponent } from './sidenav-dashboard/sidenav-dashboard
 import { FirestoreService } from '../services/firestore.service';
 
 import { ActivatedRoute } from '@angular/router';
+import { User } from '../../models/user.class';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -15,12 +17,13 @@ import { ActivatedRoute } from '@angular/router';
 
 export class DashboardComponent {
   constructor(private route: ActivatedRoute) { }
-  test = inject(FirestoreService)
+  firestoreService = inject(FirestoreService)
   userId: any;
+  users: User[] = [];
 
 
   ngOnInit(): void {
-    this.getIdFromURL();
+    this.getIdFromURL(); 
   }
 
 

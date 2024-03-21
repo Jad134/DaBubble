@@ -4,7 +4,8 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import { AllUser } from '../../models/allUser.class';
 
 
 
@@ -30,12 +31,13 @@ export class FirestoreService {
   auth = getAuth(this.app);
   db = getFirestore(this.app);
   users = new User();
+  allUsers = new AllUser();
   user = this.auth.currentUser;
 
 
 
   constructor(private router: Router, public ngZone: NgZone) { }
-
+ 
   //Send Password Reset Email
   async sendPasswordResetEmails(email: string) {
     sendPasswordResetEmail(this.auth, email)
@@ -45,6 +47,25 @@ export class FirestoreService {
       .catch((error) => {
         window.alert(error.message);
       });
+  }
+
+
+  /**
+   * 
+   * @returns ddwdw
+   * 
+   */
+  async getAllUsers(): Promise<AllUser[]> {
+    const users: AllUser[] = [];
+    const querySnapshot = await getDocs(collection(this.db, 'Users'));
+    querySnapshot.forEach((doc) => {
+      const userData = doc.data();
+      const user = new AllUser(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
+      users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
+      console.log(user); 
+      
+    });
+    return users; // Geben Sie das Array der Benutzer zurück
   }
 
 
