@@ -51,9 +51,12 @@
               </p>
             </div>
           </div>
-          <div class="checkbox-container">
-            <input type="checkbox" id="meineCheckbox" />
+          <div class="checkbox-container pos-rel">
+            <input type="checkbox" id="meineCheckbox" [(ngModel)]="isAgreed"/>
             Ich stimme der <a href="">Datenschutzerklärung</a> zu.
+            <p class="dataprotec-error" [ngStyle]="{ display: dataprotectionFailed ? 'block' : 'none' }">
+              Sie müssen der Datenschuterklärung zustimmen.
+            </p>
           </div>
           <div class="forward-button">
             <button class="forward" (click)="createAccount()">Weiter</button>

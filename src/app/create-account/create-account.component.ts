@@ -7,7 +7,6 @@ import { FirestoreService } from '../services/firestore.service';
 import { CreateAccountService } from '../services/create-account.service';
 import { RouterModule } from '@angular/router';
 
-
 @Component({
   selector: 'app-create-account',
   standalone: true,
@@ -16,24 +15,26 @@ import { RouterModule } from '@angular/router';
   styleUrl: './create-account.component.scss',
 })
 export class CreateAccountComponent {
-
-  createAccountService = inject(CreateAccountService)
+  createAccountService = inject(CreateAccountService);
   newUser = new User();
   nameFailed = false;
   mailFailed = false;
   pswFailed = false;
+  dataprotectionFailed = false;
+  isAgreed!: boolean;
 
   createAccount() {
-    if (this.checkNameInputNotEmpty()) {
-      console.log(this.newUser.name);
-    }
-    if (this.checkIfCorrectMailFormat()) {
-      console.log(this.newUser.eMail);
-    }
-    if (this.checkCorrectPasswordFormat()) {
-      console.log(this.newUser.password);
-      
-      this.createAccountService.createUserWithEmailAndPassword(this.newUser.eMail, this.newUser.password, this.newUser) // Testweise die funktion zum erstellen der user und übergabe der daten implementiert
+    if (
+      this.checkNameInputNotEmpty() &&
+      this.checkIfCorrectMailFormat() &&
+      this.checkCorrectPasswordFormat() &&
+      this.checkDataprotectionIsSet()
+    ) {
+      this.createAccountService.createUserWithEmailAndPassword(
+        this.newUser.eMail,
+        this.newUser.password,
+        this.newUser
+      ); // Testweise die funktion zum erstellen der user und übergabe der daten implementiert
     }
   }
 
@@ -53,5 +54,10 @@ export class CreateAccountComponent {
   checkCorrectPasswordFormat() {
     this.pswFailed = this.newUser.password.length < 8;
     return !this.pswFailed;
+  }
+
+  checkDataprotectionIsSet() {
+    this.dataprotectionFailed = !this.isAgreed;
+    return !this.dataprotectionFailed;
   }
 }
