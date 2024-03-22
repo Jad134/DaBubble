@@ -1,16 +1,11 @@
 import { Component, inject, AfterViewInit } from '@angular/core';
 import { HeadDashboardComponent } from './head-dashboard/head-dashboard.component';
 import { SidenavDashboardComponent } from './sidenav-dashboard/sidenav-dashboard.component';
-<<<<<<< HEAD
 import { ChatDashboardComponent } from './chat-dashboard/chat-dashboard.component';
-=======
 import { FirestoreService } from '../services/firestore.service';
-
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { AllUser } from '../../models/allUser.class';
-
->>>>>>> 87e6d35db5871eba19f3d60dd44ca6b9106c4d9c
 
 @Component({
   selector: 'app-dashboard',

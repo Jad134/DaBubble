@@ -1,9 +1,6 @@
 <app-head-dashboard></app-head-dashboard>
-<app-sidenav-dashboard [allUsers]="allUsers"></app-sidenav-dashboard>
-<<<<<<< HEAD
-<app-chat-dashboard></app-chat-dashboard>
-=======
->>>>>>> 87e6d35db5871eba19f3d60dd44ca6b9106c4d9c
+<button class="test" (click)="firestoreService.checkIfUserOnline(userId)"> button</button>
 <section>
-    <button class="test" (click)="firestoreService.checkIfUserOnline(userId)"> button</button>
+<app-sidenav-dashboard [allUsers]="allUsers"></app-sidenav-dashboard>
+<app-chat-dashboard></app-chat-dashboard>
 </section>
