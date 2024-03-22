@@ -1,0 +1,62 @@
+<div class="overlay_add_channel">
+  <div class="container_add_channel">
+    <div *ngIf="!userOverlay" class="place_add_channel">
+      <div class="container_heading">
+        <h2>Channel erstellen</h2>
+        <button
+          (click)="closeOverlay()"
+          mat-mini-fab
+          color="primary"
+          class="back-button"
+        >
+          <mat-icon class="back-icon">close</mat-icon>
+        </button>
+      </div>
+      <p>
+        Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
+        themenbezogen sein #marketing zum Beispiel
+      </p>
+      <h3>Channel-Name</h3>
+      <input
+        class="input_channel input_add"
+        type="text"
+        placeholder="z.B.Kooperationsprojekte"
+      />
+      <div class="container_heading_Description">
+        <h3>Beschreibung</h3>
+        <p>(optional)</p>
+      </div>
+      <input type="text" class="input_add" />
+      <div>
+        <button (click)="toggleUserOverlay()" class="create_btn">
+          Erstellen
+        </button>
+      </div>
+    </div>
+    <div *ngIf="userOverlay" class="place_user_to_channel">
+      <div class="container_heading">
+        <h2>Leute hinzufügen</h2>
+        <button
+          (click)="closeOverlay()"
+          mat-mini-fab
+          color="primary"
+          class="back-button"
+        >
+          <mat-icon class="back-icon">close</mat-icon>
+        </button>
+      </div>
+      <div class="container_input_add_user">
+        <input type="radio" />
+        <p>Alle Mitglieder von <span>Office Team</span> hinzufügen</p>
+      </div>
+      <div class="container_input_add_user">
+        <input type="radio" />
+        <p>Bestimmte Leute hinzufügen</p>
+      </div>
+      <input type="text" class="input_add" />
+      <div class="place_btn">
+        <button class="create_btn">Erstellen</button>
+      </div>
+    </div>
+  </div>
+</div>
