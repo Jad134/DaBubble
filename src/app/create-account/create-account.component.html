@@ -53,7 +53,7 @@
           </div>
           <div class="checkbox-container pos-rel">
             <input type="checkbox" id="meineCheckbox" [(ngModel)]="isAgreed"/>
-            Ich stimme der <a href="">Datenschutzerklärung</a> zu.
+            Ich stimme der <a routerLink="/dataprotection">Datenschutzerklärung</a> zu.
             <p class="dataprotec-error" [ngStyle]="{ display: dataprotectionFailed ? 'block' : 'none' }">
               Sie müssen der Datenschuterklärung zustimmen.
             </p>
