@@ -56,7 +56,7 @@ export class LogInService {
       const user = userCredential.user;
       const userId = user.uid;
       const userDoc = await getDoc(doc(this.db, "Users", userId));
-      const userData = this.setUserData(user);
+      const userData = this.setUserData(user, userId);
 
       this.checkUserStatus(userDoc, userId, userData);
     } catch (error) {
@@ -85,11 +85,12 @@ export class LogInService {
    * @param user Datas from the user with firebase authentication
    * @returns JSON
    */
-  setUserData(user: any) {
+  setUserData(user: any, userId:any) {
     return {
       name: user.displayName,
       email: user.email,
       avatar: '',
+      id: userId
     };
   }
 

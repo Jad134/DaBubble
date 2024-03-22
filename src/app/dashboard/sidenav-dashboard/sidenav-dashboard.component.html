@@ -62,12 +62,11 @@
     <div
       *ngIf="allUsers && allUsers.length > 0"
       [@menuVisibility]="userMenu ? 'visible' : 'hidden'"
-      class="sidenav_container_user"
-    >
+      class="sidenav_container_user">
       <button *ngFor="let user of allUsers" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
-            <img #profilePicture [src]="user.avatar" class="user_picture" alt="" />
+            <img [id]="'profilePicture_' + user.id"  [src]="user.avatar" class="user_picture" alt="" />
             <div class="statuslight" src="" alt=""></div>
           </div>
           <p>{{ user.name }}</p>

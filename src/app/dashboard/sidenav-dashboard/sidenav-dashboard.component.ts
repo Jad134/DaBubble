@@ -59,18 +59,23 @@ export class SidenavDashboardComponent {
     
   // }
 
-  ngOnInit(): void {
-    this.firestoreService.getAllUserIds().then(userIds => {
-      console.log('Dokument-IDs:', userIds);
+  ngAfterViewInit(): void {
+    this.firestoreService.getAllUsers().then(users => {
+      // Handle users data
+      this.allUsers = users;
+      console.log(this.allUsers);
   
-      userIds.forEach(async (userId) => {
-       //testfunktion
+      // Nachdem die Benutzerdaten abgerufen wurden, rufen Sie die Funktion für jeden Benutzer auf
+      this.allUsers.forEach(user => {
+        this.controlIfOwnPictureUsed(user);
       });
   
     }).catch(error => {
-      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+      console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
     });
   }
+
+  
 
 
   channelsmenu: boolean = true;
@@ -88,4 +93,32 @@ export class SidenavDashboardComponent {
     this.channelOverlay = !this.channelOverlay;
   }
 
+
+
+
+  async controlIfOwnPictureUsed(user: AllUser) {
+    const profilePictureElement = document.getElementById('profilePicture_' + user.id) as HTMLImageElement;
+    if (profilePictureElement) {
+      if (user.avatar === 'ownPictureDA') {
+        // User has uploaded their own picture
+        // Download the picture from storage
+        const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
+        try {
+          const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
+          // Set the downloaded image URL as the source of the profile picture element
+          profilePictureElement.src = downloadedImageUrl;
+        } catch (error) {
+          console.error('Error downloading user profile picture:', error);
+        }
+      } else {
+        // User is using a default picture or no picture
+        // Set the user's default picture URL as the source of the profile picture element
+        profilePictureElement.src = user.avatar;
+      }
+    } else {
+      console.error('Bild-Element nicht gefunden für Benutzer mit ID:', user.id);
+    }
+  }
 }
+
+

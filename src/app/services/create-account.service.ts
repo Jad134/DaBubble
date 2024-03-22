@@ -57,6 +57,7 @@ async setDocForDataBase(userid:string, userDatas:any){
     name: userDatas.name,
     email: userDatas.eMail,
     avatar: userDatas.avatar,
+    id: userid,
   });
 }
 

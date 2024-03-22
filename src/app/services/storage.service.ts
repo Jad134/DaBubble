@@ -16,6 +16,7 @@ export class StorageService {
   pic: File | any;
   downloadedProfileImg: any;
   userId :any;
+  
 
   // Create a reference from a Google Cloud Storage URI
 
@@ -91,4 +92,20 @@ export class StorageService {
     
   }
 
+
+
+  
+
+  
+  async downloadImage(imagePath: string): Promise<string> {
+  const imgReference = ref(this.storage, imagePath);
+  try {
+    const imageUrl = await getDownloadURL(imgReference);
+    return imageUrl;
+  } catch (error) {
+    throw new Error('Error downloading image from storage: ' + error);
+  }
 }
+}
+
+
