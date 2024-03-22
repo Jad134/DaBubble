@@ -6,6 +6,8 @@ import {
   Renderer2,
   inject,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -18,12 +20,11 @@ import {
 } from '@angular/animations';
 import { FirestoreService } from '../../services/firestore.service';
 import { AllUser } from '../../../models/allUser.class';
-
-
+import { AddChannelComponent } from './add-channel/add-channel.component';
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AddChannelComponent],
   templateUrl: './sidenav-dashboard.component.html',
   styleUrl: './sidenav-dashboard.component.scss',
   animations: [
@@ -35,13 +36,14 @@ import { AllUser } from '../../../models/allUser.class';
   ],
 })
 export class SidenavDashboardComponent {
-  firestoreService = inject(FirestoreService)
+  firestoreService = inject(FirestoreService);
+  channelOverlay: boolean = false;
   // allUsers: AllUser[] = [];
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) {}
 
   @Input() allUsers: AllUser[] = [];
-
+  addChannelOverlay: boolean = false
   ngOnInit(): void {
     // this.firestoreService.getAllUsers().then(users => {
     //   this.allUsers = users;
@@ -49,7 +51,7 @@ export class SidenavDashboardComponent {
     // }).catch(error => {
     //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
     // });
-  } 
+  }
 
   channelsmenu: boolean = true;
   userMenu: boolean = true;
@@ -60,5 +62,9 @@ export class SidenavDashboardComponent {
 
   toggleUsersMenu() {
     this.userMenu = !this.userMenu;
+  }
+
+  toggleChannelOverlay() {
+    this.channelOverlay = !this.channelOverlay;
   }
 }

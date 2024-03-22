@@ -23,7 +23,7 @@
         <h4>Channels</h4>
       </div>
       <div class="box_add">
-        <button class="btn_add">
+        <button (click)="toggleChannelOverlay()" class="btn_add">
           <img src="/assets/img/19. add.png" alt="" />
         </button>
       </div>
@@ -47,28 +47,36 @@
     </div>
     <div class="sidenav_container_directmessages">
       <button (click)="toggleUsersMenu()">
-        <img [class.rotated]="!userMenu"
-        [class.rotatedBack]="userMenu" src="assets/img/arrow_drop_down.png" alt="" />
+        <img
+          [class.rotated]="!userMenu"
+          [class.rotatedBack]="userMenu"
+          src="assets/img/arrow_drop_down.png"
+          alt=""
+        />
       </button>
       <div>
         <img src="/assets/img/account_circle.png" alt="" />
         <h4>Direktnachrichten</h4>
       </div>
     </div>
-    <div  *ngIf="allUsers && allUsers.length > 0" [@menuVisibility]="userMenu ? 'visible' : 'hidden'" class="sidenav_container_user">
+    <div
+      *ngIf="allUsers && allUsers.length > 0"
+      [@menuVisibility]="userMenu ? 'visible' : 'hidden'"
+      class="sidenav_container_user"
+    >
       <button *ngFor="let user of allUsers" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
-            <img [src]="user.avatar"
-              class="user_picture"
-              
-              alt=""
-            />
+            <img [src]="user.avatar" class="user_picture" alt="" />
             <div class="statuslight" src="" alt=""></div>
           </div>
-          <p >{{user.name}}</p>
+          <p>{{ user.name }}</p>
         </div>
       </button>
     </div>
   </div>
+  <app-add-channel
+    (close)="toggleChannelOverlay()"
+    *ngIf="channelOverlay"
+  ></app-add-channel>
 </section>
