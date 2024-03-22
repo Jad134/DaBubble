@@ -33,6 +33,7 @@ export class FirestoreService {
   users = new User();
   allUsers = new AllUser();
   user = this.auth.currentUser;
+  userIds :any;
 
 
 
@@ -59,11 +60,22 @@ export class FirestoreService {
     querySnapshot.forEach((doc) => {
       const userData = doc.data();
       const user = new AllUser(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
+      this.userIds = doc.id
       users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
       console.log(user); 
     });
     
     return users; // Geben Sie das Array der Benutzer zurück
+  }
+
+
+  async getAllUserIds(): Promise<string[]> {
+    const userIds: string[] = [];
+    const querySnapshot = await getDocs(collection(this.db, 'Users'));
+    querySnapshot.forEach((doc) => {
+      userIds.push(doc.id);
+    });
+    return userIds;
   }
 
 

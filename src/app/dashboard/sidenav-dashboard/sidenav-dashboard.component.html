@@ -67,7 +67,7 @@
       <button *ngFor="let user of allUsers" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
-            <img [src]="user.avatar" class="user_picture" alt="" />
+            <img #profilePicture [src]="user.avatar" class="user_picture" alt="" />
             <div class="statuslight" src="" alt=""></div>
           </div>
           <p>{{ user.name }}</p>

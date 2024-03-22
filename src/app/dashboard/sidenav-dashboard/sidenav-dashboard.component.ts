@@ -21,6 +21,7 @@ import {
 import { FirestoreService } from '../../services/firestore.service';
 import { AllUser } from '../../../models/allUser.class';
 import { AddChannelComponent } from './add-channel/add-channel.component';
+import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
@@ -37,21 +38,40 @@ import { AddChannelComponent } from './add-channel/add-channel.component';
 })
 export class SidenavDashboardComponent {
   firestoreService = inject(FirestoreService);
+  downloadService = inject(StorageService)
   channelOverlay: boolean = false;
+  userIds: any;
   // allUsers: AllUser[] = [];
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2) { }
 
   @Input() allUsers: AllUser[] = [];
+  @ViewChild('profilePicture') profilePicture!: ElementRef;
   addChannelOverlay: boolean = false
+  // ngOnInit(): void {
+  //   // this.firestoreService.getAllUsers().then(users => {
+  //   //   this.allUsers = users;
+  //   //   console.log(this.allUsers); // Hier haben Sie Zugriff auf die heruntergeladenen Benutzerdaten
+  //   // }).catch(error => {
+  //   //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+  //   // });
+
+    
+  // }
+
   ngOnInit(): void {
-    // this.firestoreService.getAllUsers().then(users => {
-    //   this.allUsers = users;
-    //   console.log(this.allUsers); // Hier haben Sie Zugriff auf die heruntergeladenen Benutzerdaten
-    // }).catch(error => {
-    //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-    // });
+    this.firestoreService.getAllUserIds().then(userIds => {
+      console.log('Dokument-IDs:', userIds);
+  
+      userIds.forEach(async (userId) => {
+       //testfunktion
+      });
+  
+    }).catch(error => {
+      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+    });
   }
+
 
   channelsmenu: boolean = true;
   userMenu: boolean = true;
@@ -67,4 +87,5 @@ export class SidenavDashboardComponent {
   toggleChannelOverlay() {
     this.channelOverlay = !this.channelOverlay;
   }
+
 }
