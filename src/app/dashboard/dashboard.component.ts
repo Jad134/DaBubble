@@ -6,11 +6,12 @@ import { FirestoreService } from '../services/firestore.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { AllUser } from '../../models/allUser.class';
+import { ThreadComponent } from './thread/thread.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [HeadDashboardComponent, SidenavDashboardComponent,ChatDashboardComponent],
+  imports: [HeadDashboardComponent, SidenavDashboardComponent,ChatDashboardComponent, ThreadComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
