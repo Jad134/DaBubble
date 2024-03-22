@@ -1,10 +1,11 @@
 import { Injectable, inject, NgZone } from '@angular/core';
 import { Firestore, getDoc, getFirestore, onSnapshot } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
-import { confirmPasswordReset, getAuth, sendPasswordResetEmail, updatePassword, verifyPasswordResetCode } from '@angular/fire/auth';
+import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import { AllUser } from '../../models/allUser.class';
 
 
 
@@ -30,12 +31,13 @@ export class FirestoreService {
   auth = getAuth(this.app);
   db = getFirestore(this.app);
   users = new User();
+  allUsers = new AllUser();
   user = this.auth.currentUser;
-  
+
 
 
   constructor(private router: Router, public ngZone: NgZone) { }
-
+ 
   //Send Password Reset Email
   async sendPasswordResetEmails(email: string) {
     sendPasswordResetEmail(this.auth, email)
@@ -47,7 +49,23 @@ export class FirestoreService {
       });
   }
 
-  
+
+  /**
+   * This function download all UserDatas and is started after the storage.service function downloadAvatar() to pretend download mistakes 
+   */
+  async getAllUsers(): Promise<AllUser[]> {
+    const users: AllUser[] = [];
+    const querySnapshot = await getDocs(collection(this.db, 'Users'));
+    querySnapshot.forEach((doc) => {
+      const userData = doc.data();
+      const user = new AllUser(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
+      users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
+      console.log(user); 
+    });
+    
+    return users; // Geben Sie das Array der Benutzer zurück
+  }
+
 
   async getUser(id: string) {
     const unsub = onSnapshot(doc(this.firestore, 'users', id), (doc) => {
@@ -81,5 +99,17 @@ export class FirestoreService {
       avatar: avatarRef
     });
     console.log(id, avatarRef)
+  }
+
+
+  //---------------------------------------------------------------------- check Online function (vorerst)-------------------------
+  async checkIfUserOnline(uid: string) {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        console.log('Benutzer online:', user.uid);
+      } else {
+        console.log('Benutzer offline');
+      }
+    });
   }
 }

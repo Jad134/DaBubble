@@ -8,7 +8,6 @@
         <div class="back-arrow-box" routerLink="/">
           <div class="back-arrow"></div>
         </div>
-<<<<<<< HEAD
         <mat-card-content>
           <mat-card-header>
             <h1>Konto erstellen</h1>
@@ -52,9 +51,12 @@
               </p>
             </div>
           </div>
-          <div class="checkbox-container">
-            <input type="checkbox" id="meineCheckbox" />
+          <div class="checkbox-container pos-rel">
+            <input type="checkbox" id="meineCheckbox" [(ngModel)]="isAgreed"/>
             Ich stimme der <a href="">Datenschutzerklärung</a> zu.
+            <p class="dataprotec-error" [ngStyle]="{ display: dataprotectionFailed ? 'block' : 'none' }">
+              Sie müssen der Datenschuterklärung zustimmen.
+            </p>
           </div>
           <div class="forward-button">
             <button class="forward" (click)="createAccount()">Weiter</button>
@@ -66,11 +68,5 @@
       <a routerLink="/imprint">Impressum</a>
       <a routerLink="/dataprotection">Datenschutz</a>
     </div>
-=======
-        <div class="footer-links">
-          <a  routerLink="/imprint">Impressum</a>
-          <a  routerLink="/dataprotection">Datenschutz</a>
-      </div>
->>>>>>> 3f4139983a96455fe4b0850b6c65983c7570670b
   </div>
 </section>

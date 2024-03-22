@@ -4,6 +4,8 @@ import {
   ViewChild,
   viewChild,
   Renderer2,
+  inject,
+  Input,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -14,6 +16,9 @@ import {
   style,
   transition,
 } from '@angular/animations';
+import { FirestoreService } from '../../services/firestore.service';
+import { AllUser } from '../../../models/allUser.class';
+
 
 @Component({
   selector: 'app-sidenav-dashboard',
@@ -30,7 +35,21 @@ import {
   ],
 })
 export class SidenavDashboardComponent {
-  constructor(private renderer: Renderer2) {}
+  firestoreService = inject(FirestoreService)
+  // allUsers: AllUser[] = [];
+
+  constructor(private renderer: Renderer2) { }
+
+  @Input() allUsers: AllUser[] = [];
+
+  ngOnInit(): void {
+    // this.firestoreService.getAllUsers().then(users => {
+    //   this.allUsers = users;
+    //   console.log(this.allUsers); // Hier haben Sie Zugriff auf die heruntergeladenen Benutzerdaten
+    // }).catch(error => {
+    //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+    // });
+  } 
 
   channelsmenu: boolean = true;
   userMenu: boolean = true;

@@ -55,57 +55,18 @@
         <h4>Direktnachrichten</h4>
       </div>
     </div>
-    <div [@menuVisibility]="userMenu ? 'visible' : 'hidden'" class="sidenav_container_user">
-      <button class="sidenav_box_user">
+    <div  *ngIf="allUsers && allUsers.length > 0" [@menuVisibility]="userMenu ? 'visible' : 'hidden'" class="sidenav_container_user">
+      <button *ngFor="let user of allUsers" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
-            <img
+            <img [src]="user.avatar"
               class="user_picture"
-              src="assets/img/00c.Charaters.png"
+              
               alt=""
             />
             <div class="statuslight" src="" alt=""></div>
           </div>
-          <p>Frederick Beck (Du)</p>
-        </div>
-      </button>
-      <button class="sidenav_box_user">
-        <div class="sidenav_place_user">
-          <div>
-            <img
-              class="user_picture"
-              src="assets/img/00c.Charaters.png"
-              alt=""
-            />
-            <div class="statuslight" src="" alt=""></div>
-          </div>
-          <p>Frederick Beck (Du)</p>
-        </div>
-      </button>
-      <button class="sidenav_box_user">
-        <div class="sidenav_place_user">
-          <div>
-            <img
-              class="user_picture"
-              src="assets/img/00c.Charaters.png"
-              alt=""
-            />
-            <div class="statuslight" src="" alt=""></div>
-          </div>
-          <p>Frederick Beck (Du)</p>
-        </div>
-      </button>
-      <button class="sidenav_box_user">
-        <div class="sidenav_place_user">
-          <div>
-            <img
-              class="user_picture"
-              src="assets/img/00c.Charaters.png"
-              alt=""
-            />
-            <div class="statuslight" src="" alt=""></div>
-          </div>
-          <p>Frederick Beck (Du)</p>
+          <p >{{user.name}}</p>
         </div>
       </button>
     </div>

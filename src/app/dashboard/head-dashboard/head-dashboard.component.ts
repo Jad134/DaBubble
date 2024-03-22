@@ -58,9 +58,9 @@ export class HeadDashboardComponent {
 
 
 
-  controlIfOwnPictureUsed(userID:any){
+  async controlIfOwnPictureUsed(userID:any){
     if (this.actualUser.avatar === 'ownPictureDA'){
-      this.downloadService.downloadAvatar(userID);
+    await  this.downloadService.downloadAvatar(userID);
     }else if (this.profilePicture && this.profilePicture.nativeElement) {
       this.profilePicture.nativeElement.src = this.actualUser.avatar;
     } else {
