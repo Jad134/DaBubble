@@ -1,0 +1,189 @@
+section{
+    height: 80vh;
+    background-color: white;
+    border-radius: 45px;
+    width: 80%;
+    margin: auto;
+    position: relative;
+}
+
+.icon{
+    color: black;
+    &:hover{
+       display: none;
+    }
+}
+button{
+    .icon{
+        &:hover{
+            display: none;
+        }
+    }
+}
+
+
+.DF{
+    display: flex;
+}
+//header
+
+.chat-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    div{
+        display: flex;
+        flex-direction: row; 
+        align-items: center;
+    }
+}
+
+.chat-header-left{
+    font-size: large;
+    margin-left: 35px;
+    img{
+        width: 70%;
+    }
+}
+
+.header-avatar{
+    img{
+        margin-left: -15px;
+    }
+}
+
+.chat-header-right{
+    img{
+        width: 25%;
+    }
+}
+.chat-members-num{
+    margin-left: -85px;
+    margin-right: 10px;
+    font-size: larger;
+    font-weight: 500;
+}
+
+.add-person{
+    width: 100px;
+}
+
+//chat
+.line{
+    width: 50%;
+    height: 3px;
+    background-color: #ADB0D9;
+}
+
+.date-div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.date{
+    border: solid #ADB0D9;
+    padding: 5px;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.chat-message{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.message-avatar{
+    img{
+        width: 80%;
+    }
+}
+
+.message{
+ background-color:#ECEEFE;  
+ padding: 10px; 
+ border-radius: 0 1em 1em;
+}
+
+.time{
+    color: #686868;
+}
+
+.name{
+    font-weight: 600;
+    font-size: medium;
+}
+
+.name-time-div{
+    margin-bottom: 10px;
+}
+
+.you-chat-message{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.you-message{
+    background-color:#797EF3;  
+    padding: 10px; 
+    border-radius: 1em 0 1em 1em;
+}
+
+//message
+
+.message-input{
+    border:solid #ADB0D9;
+    border-radius: 20px;
+    width: 90%;
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 25px;
+}
+
+.message-reaction{
+    margin-top: 15px;
+    width: 75px;
+    display: flex;
+    justify-content: space-around;
+}
+
+textarea{
+    width: 99%;
+    outline: none;
+    border: none;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 20px
+}
+
+form{
+    padding: 2px;
+}
+
+.message-icons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.message-icons-img{
+border:solid ;
+}
+
+.border{
+    width: 2px;
+    height: 25px;
+    background-color: grey;
+}
+
+.img-gap{
+    img{
+    margin-right: 10px;
+    }
+}

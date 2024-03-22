@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'select-avatar/:id', component: SelectAvatarComponent },
   { path: 'reset-password', component: ResetPasswortComponent },
   { path: 'new-password', component: NewPasswortComponent },
-  { path: 'dashboard/:id', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'dataprotection', component: DataprotectionComponent },
   { path: 'thread', component: ThreadComponent },
