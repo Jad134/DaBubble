@@ -7,11 +7,12 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
 import { AllUser } from '../../models/allUser.class';
 import { StorageService } from '../services/storage.service';
+import { ThreadComponent } from './thread/thread.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [HeadDashboardComponent, SidenavDashboardComponent, ChatDashboardComponent],
+  imports: [HeadDashboardComponent, SidenavDashboardComponent,ChatDashboardComponent, ThreadComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
