@@ -8,6 +8,8 @@ import {
   Input,
   Output,
   EventEmitter,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -41,41 +43,31 @@ export class SidenavDashboardComponent {
   downloadService = inject(StorageService)
   channelOverlay: boolean = false;
   userIds: any;
-  // allUsers: AllUser[] = [];
+  profilePicturesLoaded: boolean = false;
+  @Input() allUsers: AllUser[] = [];
+  @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
+  addChannelOverlay: boolean = false
+
 
   constructor(private renderer: Renderer2) { }
 
-  @Input() allUsers: AllUser[] = [];
-  @ViewChild('profilePicture') profilePicture!: ElementRef;
-  addChannelOverlay: boolean = false
-  // ngOnInit(): void {
-  //   // this.firestoreService.getAllUsers().then(users => {
-  //   //   this.allUsers = users;
-  //   //   console.log(this.allUsers); // Hier haben Sie Zugriff auf die heruntergeladenen Benutzerdaten
-  //   // }).catch(error => {
-  //   //   console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-  //   // });
 
-    
-  // }
+  /**
+   * This function downloaded the userdata and starts the imagedownloadfunction. After this, the datas are rendering at html
+   */
 
   ngAfterViewInit(): void {
-    this.firestoreService.getAllUsers().then(users => {
+    this.firestoreService.getAllUsers().then(async users => {
+      // Laden Sie die Bilder aus dem Storage für jeden Benutzer
+      await this.loadProfilePictures(users);
+      
       // Handle users data
       this.allUsers = users;
       console.log(this.allUsers);
-  
-      // Nachdem die Benutzerdaten abgerufen wurden, rufen Sie die Funktion für jeden Benutzer auf
-      this.allUsers.forEach(user => {
-        this.controlIfOwnPictureUsed(user);
-      });
-  
     }).catch(error => {
       console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
     });
   }
-
-  
 
 
   channelsmenu: boolean = true;
@@ -94,30 +86,25 @@ export class SidenavDashboardComponent {
   }
 
 
-
-
-  async controlIfOwnPictureUsed(user: AllUser) {
-    const profilePictureElement = document.getElementById('profilePicture_' + user.id) as HTMLImageElement;
-    if (profilePictureElement) {
+  /**
+   * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
+   */
+  async loadProfilePictures(users: AllUser[]) {
+    let allProfilePicturesLoaded = true; // Annahme: Alle Bilder sind zunächst geladen
+    for (const user of users) {
       if (user.avatar === 'ownPictureDA') {
-        // User has uploaded their own picture
-        // Download the picture from storage
         const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
         try {
           const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
-          // Set the downloaded image URL as the source of the profile picture element
-          profilePictureElement.src = downloadedImageUrl;
+          // Weisen Sie die heruntergeladenen Bild-URL dem Benutzerobjekt zu
+          user.avatar = downloadedImageUrl;
         } catch (error) {
           console.error('Error downloading user profile picture:', error);
+          allProfilePicturesLoaded = false; // Setzen Sie den Zustand auf falsch, wenn ein Bild nicht geladen werden konnte
         }
-      } else {
-        // User is using a default picture or no picture
-        // Set the user's default picture URL as the source of the profile picture element
-        profilePictureElement.src = user.avatar;
       }
-    } else {
-      console.error('Bild-Element nicht gefunden für Benutzer mit ID:', user.id);
     }
+    this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
 }
 
