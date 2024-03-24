@@ -68,7 +68,7 @@
         <div class="sidenav_place_user">
           <div>
             <img    #profilePicture [src]="user.avatar" class="user_picture" alt="" />
-            <div class="statuslight" src="" alt=""></div>
+            <div  [ngStyle]="{'background-color': user.isOnline ? 'green' : 'red'}" #statusLight class="statuslight" src="" alt=""></div>
           </div>
           <p>{{ user.name }}</p>
         </div>

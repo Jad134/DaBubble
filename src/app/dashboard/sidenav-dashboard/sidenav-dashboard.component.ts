@@ -46,6 +46,7 @@ export class SidenavDashboardComponent {
   profilePicturesLoaded: boolean = false;
   @Input() allUsers: AllUser[] = [];
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
+  @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
   addChannelOverlay: boolean = false
 
 
@@ -60,7 +61,7 @@ export class SidenavDashboardComponent {
     this.firestoreService.getAllUsers().then(async users => {
       // Laden Sie die Bilder aus dem Storage für jeden Benutzer
       await this.loadProfilePictures(users);
-      
+
       // Handle users data
       this.allUsers = users;
       console.log(this.allUsers);
@@ -106,6 +107,10 @@ export class SidenavDashboardComponent {
     }
     this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
+
+
+ 
 }
+
 
 
