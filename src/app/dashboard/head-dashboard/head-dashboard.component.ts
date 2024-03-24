@@ -83,6 +83,7 @@ export class HeadDashboardComponent {
       top: '100px',
       right: '20px'
     };
+    dialogConfig.panelClass = 'transparent-dialog';
     this.dialog.open(UserMenuDialogComponent, dialogConfig);
   }
 }
