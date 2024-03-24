@@ -4,6 +4,14 @@ import { StorageService } from '../../services/storage.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { log } from 'console';
 import { User } from '../../../models/user.class';
+import {MatDialogConfig, MatDialogModule} from '@angular/material/dialog';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+} from '@angular/material/dialog';
+import { UserMenuDialogComponent } from './user-menu-dialog/user-menu-dialog.component';
 
 @Component({
   selector: 'app-head-dashboard',
@@ -13,6 +21,7 @@ import { User } from '../../../models/user.class';
   styleUrl: './head-dashboard.component.scss'
 })
 export class HeadDashboardComponent {
+
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
   userId = '';
@@ -20,7 +29,7 @@ export class HeadDashboardComponent {
   name: any;
   @ViewChild('profilePicture') profilePicture!: ElementRef;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getIdFromURL();
@@ -66,6 +75,15 @@ export class HeadDashboardComponent {
     } else {
       console.error('Das Bild-Element wurde nicht richtig initialisiert.');
     }
+  }
+
+  openDialog(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = {
+      top: '100px',
+      right: '20px'
+    };
+    this.dialog.open(UserMenuDialogComponent, dialogConfig);
   }
 }
 
