@@ -90,7 +90,8 @@ export class LogInService {
       name: user.displayName,
       email: user.email,
       avatar: '',
-      id: userId
+      id: userId,
+      isOnline: false,
     };
   }
 

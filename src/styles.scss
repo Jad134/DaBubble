@@ -97,3 +97,11 @@ button {
 .d-none {
   display: none;
 }
+
+.mat-mdc-dialog-container, .mdc-dialog__surface {
+  box-shadow: none !important;
+}
+
+.mat-mdc-dialog-container, .mdc-dialog__surface {
+ background-color: none !important;
+}

@@ -98,9 +98,9 @@ export class SelectAvatarComponent {
    */
   controllIfOwnPictureUsed() {
     if (this.selectOwnPicture) {
-      this.firestore.updateUser(this.userId, 'ownPictureDA');
+      this.firestore.updateUserAvatar(this.userId, 'ownPictureDA');
     } else if (!this.selectOwnPicture) {
-      this.firestore.updateUser(this.userId, this.avatar);
+      this.firestore.updateUserAvatar(this.userId, this.avatar);
     }
   }
 

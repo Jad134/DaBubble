@@ -105,7 +105,7 @@ export class FirestoreService {
 
   // --------------------------Update Db with avatar?--------------------------------------
 
-  async updateUser(id: string, avatarRef: string) {
+  async updateUserAvatar(id: string, avatarRef: string) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
       avatar: avatarRef
@@ -119,9 +119,29 @@ export class FirestoreService {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         console.log('Benutzer online:', user.uid);
+        this.updateUserToOnline(uid)
       } else {
         console.log('Benutzer offline');
+        this.updateUserToOffline(uid)
       }
     });
   }
+
+
+  async updateUserToOnline(id: string, ) {
+    const userRef = doc(this.db, "Users", id);
+    await updateDoc(userRef, {
+      isOnline: true
+    });
+  }
+
+
+  async updateUserToOffline(id: string, ) {
+    const userRef = doc(this.db, "Users", id);
+    await updateDoc(userRef, {
+      isOnline: false
+    });
+  }
+
+
 }

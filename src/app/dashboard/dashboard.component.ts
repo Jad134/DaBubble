@@ -30,6 +30,7 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     this.getIdFromURL();
+    this.firestoreService.checkIfUserOnline(this.userId)
   }
 
   ngAfterViewInit(): void {
@@ -51,7 +52,4 @@ export class DashboardComponent {
       this.userId = id;
     }
   }
-
-
-  
 }
