@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { DataprotectionComponent } from './dataprotection/dataprotection.component';
 import { ThreadComponent } from './dashboard/thread/thread.component';
+import { UserMenuDialogComponent } from './dashboard/head-dashboard/user-menu-dialog/user-menu-dialog.component';
 
 export const routes: Routes = [
   { path: '', component: LogInComponent },
@@ -19,4 +20,5 @@ export const routes: Routes = [
   { path: 'imprint', component: ImprintComponent },
   { path: 'dataprotection', component: DataprotectionComponent },
   { path: 'thread', component: ThreadComponent },
+  { path: 'dialog', component: UserMenuDialogComponent},
 ];
