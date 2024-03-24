@@ -2,7 +2,7 @@
 import { Injectable, inject, NgZone } from '@angular/core';
 import { Firestore, getDoc, getFirestore, } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
-import { getAuth, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
 import { GoogleAuthProvider } from '@angular/fire/auth'
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -115,6 +115,16 @@ export class LogInService {
     await setDoc(doc(this.db, "Users", userId), userData); // Benutzerdaten erstellen
     this.ngZone.run(() => {
       this.router.navigate(['/select-avatar/' + userId]);
+    });
+  }
+
+
+  async logOut(){
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
     });
   }
 }
