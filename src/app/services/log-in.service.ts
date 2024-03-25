@@ -92,6 +92,7 @@ export class LogInService {
       avatar: '',
       id: userId,
       isOnline: false,
+      channels: '',
     };
   }
 

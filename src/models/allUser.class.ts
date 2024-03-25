@@ -4,6 +4,8 @@ export class AllUser{
     avatar: any;
     id:any;
     isOnline: any;
+    channels: any;
+
 
     constructor(obj? : any){
         this.name = obj ? obj.name : '';
@@ -11,6 +13,7 @@ export class AllUser{
         this.avatar = obj ? obj.avatar : '';
         this.id = obj ? obj.id : '';
         this.isOnline = obj ? obj.isOnline :'';
+        this.channels = obj ? obj.channels: '';
     }
 
     public toJSON() {
@@ -19,7 +22,8 @@ export class AllUser{
           email: this.eMail,
           avatar: this.avatar,
           id: this.id,
-          isOnline: this.isOnline
+          isOnline: this.isOnline,
+          channels: this.channels
         };
       }
 
