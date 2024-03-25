@@ -17,21 +17,29 @@
         themenbezogen sein #marketing zum Beispiel
       </p>
       <h3>Channel-Name</h3>
-      <input
-        class="input_channel input_add"
-        type="text"
-        placeholder="z.B.Kooperationsprojekte"
-      />
-      <div class="container_heading_Description">
-        <h3>Beschreibung</h3>
-        <p>(optional)</p>
-      </div>
-      <input type="text" class="input_add" />
-      <div>
-        <button (click)="toggleUserOverlay()" class="create_btn">
-          Erstellen
-        </button>
-      </div>
+      <form (ngSubmit)="toggleUserOverlay()">
+        <input
+          required
+          name="name"
+          [(ngModel)]="newChannel.name"
+          class="input_channel input_add"
+          type="text"
+          placeholder="z.B.Kooperationsprojekte"
+        />
+        <div class="container_heading_Description">
+          <h3>Beschreibung</h3>
+          <p>(optional)</p>
+        </div>
+        <input
+          name="description"
+          [(ngModel)]="newChannel.description"
+          type="text"
+          class="input_add"
+        />
+        <div>
+          <button type="submit" class="create_btn">Erstellen</button>
+        </div>
+      </form>
     </div>
     <div *ngIf="userOverlay" class="place_user_to_channel">
       <div class="container_heading">
@@ -45,18 +53,38 @@
           <mat-icon class="back-icon">close</mat-icon>
         </button>
       </div>
-      <div class="container_input_add_user">
-        <input type="radio" />
-        <p>Alle Mitglieder von <span>Office Team</span> hinzufügen</p>
-      </div>
-      <div class="container_input_add_user">
-        <input type="radio" />
-        <p>Bestimmte Leute hinzufügen</p>
-      </div>
-      <input type="text" class="input_add" />
-      <div class="place_btn">
-        <button class="create_btn">Erstellen</button>
-      </div>
+      <form action="">
+        <div class="container_input_add_user">
+          <input
+            type="radio"
+            name="addOption"
+            [(ngModel)]="selectedOption"
+            value="allUsers"
+          />
+          <p>Alle Mitglieder von <span>Office Team</span> hinzufügen</p>
+        </div>
+        <div class="container_input_add_user">
+          <input
+            type="radio"
+            name="addOption"
+            [(ngModel)]="selectedOption"
+            value="specificPeople"
+          />
+          <p>Bestimmte Leute hinzufügen</p>
+        </div>
+        <input
+          [(ngModel)]="currentName"
+          name="currentName"
+          (keydown)="showUser()"
+          *ngIf="selectedOption === 'specificPeople'"
+          [@fadeIn]
+          type="text"
+          class="input_add inputAddUser"
+        />
+        <div class="place_btn">
+          <button class="create_btn">Erstellen</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

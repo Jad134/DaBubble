@@ -26,7 +26,11 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
-
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
   p {
     font-size: 18px;
     font-weight: 400;
@@ -121,6 +125,11 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
   .container_heading {
     margin: 8px;
   }
@@ -128,6 +137,9 @@
     display: flex;
     gap: 16px;
     align-items: center;
+    input {
+      cursor: pointer;
+    }
     p {
       font-size: 18px;
       font-weight: 400;
@@ -146,3 +158,4 @@
     }
   }
 }
+

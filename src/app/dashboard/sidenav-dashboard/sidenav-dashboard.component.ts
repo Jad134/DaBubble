@@ -40,50 +40,37 @@ import { StorageService } from '../../services/storage.service';
 })
 export class SidenavDashboardComponent {
   firestoreService = inject(FirestoreService);
-  downloadService = inject(StorageService)
+  downloadService = inject(StorageService);
   channelOverlay: boolean = false;
   userIds: any;
   profilePicturesLoaded: boolean = false;
+  addChannelOverlay: boolean = false;
+  channelsmenu: boolean = true;
+  userMenu: boolean = true;
   @Input() allUsers: AllUser[] = [];
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
-  addChannelOverlay: boolean = false
 
-
-  constructor(private renderer: Renderer2) { }
-
+  constructor() {}
 
   /**
    * This function downloaded the userdata and starts the imagedownloadfunction. After this, the datas are rendering at html
    */
 
   ngAfterViewInit(): void {
-    this.firestoreService.getAllUsers().then(async users => {
-      // Laden Sie die Bilder aus dem Storage für jeden Benutzer
-      await this.loadProfilePictures(users);
+    this.firestoreService
+      .getAllUsers()
+      .then(async (users) => {
+        // Laden Sie die Bilder aus dem Storage für jeden Benutzer
+        await this.loadProfilePictures(users);
 
-      // Handle users data
-      this.allUsers = users;
-      console.log(this.allUsers);
-    }).catch(error => {
-      console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
-    });
-  }
-
-
-  channelsmenu: boolean = true;
-  userMenu: boolean = true;
-
-  togglechannelsMenu() {
-    this.channelsmenu = !this.channelsmenu;
-  }
-
-  toggleUsersMenu() {
-    this.userMenu = !this.userMenu;
-  }
-
-  toggleChannelOverlay() {
-    this.channelOverlay = !this.channelOverlay;
+        // Handle users data
+        this.allUsers = users;
+        console.log(this.allUsers);
+      })
+      .catch((error) => {
+        console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
+      });
   }
 
 
@@ -96,7 +83,9 @@ export class SidenavDashboardComponent {
       if (user.avatar === 'ownPictureDA') {
         const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
         try {
-          const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
+          const downloadedImageUrl = await this.downloadService.downloadImage(
+            profilePictureURL
+          );
           // Weisen Sie die heruntergeladenen Bild-URL dem Benutzerobjekt zu
           user.avatar = downloadedImageUrl;
         } catch (error) {
@@ -108,9 +97,16 @@ export class SidenavDashboardComponent {
     this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
 
+  
+  togglechannelsMenu() {
+    this.channelsmenu = !this.channelsmenu;
+  }
 
- 
+  toggleUsersMenu() {
+    this.userMenu = !this.userMenu;
+  }
+
+  toggleChannelOverlay() {
+    this.channelOverlay = !this.channelOverlay;
+  }
 }
-
-
-

@@ -23,7 +23,7 @@
         <h4>Channels</h4>
       </div>
       <div class="box_add">
-        <button (click)="toggleChannelOverlay()" class="btn_add">
+        <button class="btn_add">
           <img src="/assets/img/19. add.png" alt="" />
         </button>
       </div>
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="sidenav_container_add_channel">
-        <button>
+        <button (click)="toggleChannelOverlay()">
           <img src="assets/img/add_circle.png" alt="" />
           <p>Channel hinzufügen</p>
         </button>
@@ -67,8 +67,21 @@
       <button *ngFor="let user of allUsers" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
-            <img    #profilePicture [src]="user.avatar" class="user_picture" alt="" />
-            <div  [ngStyle]="{'background-color': user.isOnline ? 'green' : 'red'}" #statusLight class="statuslight" src="" alt=""></div>
+            <img
+              #profilePicture
+              [src]="user.avatar"
+              class="user_picture"
+              alt=""
+            />
+            <div
+              [ngStyle]="{
+                'background-color': user.isOnline ? 'green' : 'red'
+              }"
+              #statusLight
+              class="statuslight"
+              src=""
+              alt=""
+            ></div>
           </div>
           <p>{{ user.name }}</p>
         </div>
@@ -76,6 +89,7 @@
     </div>
   </div>
   <app-add-channel
+    [allUsers]="allUsers"
     (close)="toggleChannelOverlay()"
     *ngIf="channelOverlay"
   ></app-add-channel>
