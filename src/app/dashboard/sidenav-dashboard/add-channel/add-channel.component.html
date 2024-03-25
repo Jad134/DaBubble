@@ -72,15 +72,35 @@
           />
           <p>Bestimmte Leute hinzufügen</p>
         </div>
-        <input
-          [(ngModel)]="currentName"
-          name="currentName"
-          (keydown)="showUser()"
-          *ngIf="selectedOption === 'specificPeople'"
-          [@fadeIn]
-          type="text"
-          class="input_add inputAddUser"
-        />
+        <div class="place_input_choose_user">
+          <input
+            [(ngModel)]="currentName"
+            name="currentName"
+            (keydown)="showUser()"
+            *ngIf="selectedOption === 'specificPeople'"
+            [@fadeIn]
+            type="text"
+            class="input_add inputAddUser"
+          />
+          <div
+            *ngIf="currentName.length > 0 && userList.length > 0"
+            class="container_show_user"
+          >
+            <div *ngFor="let user of userList" class="box_user">
+              <button>
+                <img class="user_picture" [src]="user.avatar" alt="" />
+                <div
+                  class="statuslight"
+                  [ngStyle]="{
+                    'background-color': user.isOnline ? 'green' : 'red'
+                  }"
+                  alt=""
+                ></div>
+              </button>
+              <p>{{ user.name }}</p>
+            </div>
+          </div>
+        </div>
         <div class="place_btn">
           <button class="create_btn">Erstellen</button>
         </div>

@@ -39,6 +39,7 @@ export class AddChannelComponent {
   userOverlay: boolean = false;
   selectedOption: string = '';
   currentName: string = '';
+  userList!: any[];
 
   firestore = inject(FirestoreService);
 
@@ -51,7 +52,7 @@ export class AddChannelComponent {
   }
 
   showUser() {
-    const userList = this.allUsers.filter((user) => {
+    this.userList = this.allUsers.filter((user) => {
       const userClean = user.name.replace(/\s/g, '');
       const userCleanSmall = userClean.toLowerCase();
       if (userCleanSmall.includes(this.currentName)) {
