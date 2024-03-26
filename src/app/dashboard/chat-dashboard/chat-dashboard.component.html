@@ -63,11 +63,19 @@
 
     <div class="message-input">
         <form><textarea placeholder="Nachricht an #[Chat-Name]"></textarea></form>
+        <emoji-mart
+        #emojiPicker
+         class="emoji-picker"
+        title="Pick your emoji…"
+        (emojiSelect)="addEmoji($event)"
+        [hideObsolete]="true"
+        [isNative]="true">
+     </emoji-mart>
         <div class="message-icons">
             <div class="DF img-gap">  
                 <img src="assets/img/add.png">
                 <div class="border"></div>
-                <img src="assets/img/sentiment_satisfied.png">
+                <img (click)="openEmojiPicker()" src="assets/img/sentiment_satisfied.png">
                 <img src="assets/img/alternate_email.png">
             </div>
             <div> <img  src="assets/img/send.png"> </div>

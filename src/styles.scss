@@ -2,6 +2,8 @@
   margin: 0;
 }
 
+@import '@ctrl/ngx-emoji-mart/picker';
+
 /* nunito-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -108,4 +110,9 @@ button {
 
 .mdc-dialog__surface{
   background-color: transparent !important;
+}
+
+.emoji-picker{
+  display: none;
+  position: absolute;
 }
