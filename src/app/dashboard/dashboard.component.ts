@@ -5,7 +5,6 @@ import { ChatDashboardComponent } from './chat-dashboard/chat-dashboard.componen
 import { FirestoreService } from '../services/firestore.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.class';
-import { AllUser } from '../../models/allUser.class';
 import { StorageService } from '../services/storage.service';
 import { ThreadComponent } from './thread/thread.component';
 
@@ -23,7 +22,6 @@ export class DashboardComponent {
   downloadService = inject(StorageService)
   userId: any;
   users: User[] = [];
-  allUsers: AllUser[] = [];
   profilePictureReady = false;
   @ViewChild('sidenav') sidenav!: SidenavDashboardComponent;
   
@@ -36,8 +34,8 @@ export class DashboardComponent {
   ngAfterViewInit(): void {
     this.firestoreService.getAllUsers().then(users => {
       // Handle users data
-      this.allUsers = users;
-      console.log(this.allUsers);
+      this.users = users;
+      console.log(this.users);
 
 
     }).catch(error => {

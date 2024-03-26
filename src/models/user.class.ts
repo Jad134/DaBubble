@@ -24,6 +24,4 @@ export class User {
       isOnline: this.isOnline,
     };
   }
-
-
 }

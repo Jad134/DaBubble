@@ -54,12 +54,12 @@ export class FirestoreService {
   /**
    * This function download all UserDatas and is started after the storage.service function downloadAvatar() to pretend download mistakes 
    */
-  async getAllUsers(): Promise<AllUser[]> {
-    const users: AllUser[] = [];
+  async getAllUsers(): Promise<User[]> {
+    const users: User[] = [];
     const querySnapshot = await getDocs(collection(this.db, 'Users'));
     querySnapshot.forEach((doc) => {
       const userData = doc.data();
-      const user = new AllUser(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
+      const user = new User(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
       this.userIds = doc.id
       users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
       console.log(user); 

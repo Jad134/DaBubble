@@ -21,9 +21,9 @@ import {
   transition,
 } from '@angular/animations';
 import { FirestoreService } from '../../services/firestore.service';
-import { AllUser } from '../../../models/allUser.class';
 import { AddChannelComponent } from './add-channel/add-channel.component';
 import { StorageService } from '../../services/storage.service';
+import { User } from '../../../models/user.class';
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
@@ -47,7 +47,7 @@ export class SidenavDashboardComponent {
   addChannelOverlay: boolean = false;
   channelsmenu: boolean = true;
   userMenu: boolean = true;
-  @Input() allUsers: AllUser[] = [];
+  @Input() users: User[] = [];
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
 
@@ -65,8 +65,8 @@ export class SidenavDashboardComponent {
         await this.loadProfilePictures(users);
 
         // Handle users data
-        this.allUsers = users;
-        console.log(this.allUsers);
+        this.users = users;
+        console.log(this.users);
       })
       .catch((error) => {
         console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
@@ -77,7 +77,7 @@ export class SidenavDashboardComponent {
   /**
    * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
    */
-  async loadProfilePictures(users: AllUser[]) {
+  async loadProfilePictures(users: User[]) {
     let allProfilePicturesLoaded = true; // Annahme: Alle Bilder sind zunächst geladen
     for (const user of users) {
       if (user.avatar === 'ownPictureDA') {

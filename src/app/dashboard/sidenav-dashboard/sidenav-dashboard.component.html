@@ -23,7 +23,7 @@
         <h4>Channels</h4>
       </div>
       <div class="box_add">
-        <button class="btn_add">
+        <button  (click)="toggleChannelOverlay()" class="btn_add">
           <img src="/assets/img/19. add.png" alt="" />
         </button>
       </div>
@@ -60,11 +60,11 @@
       </div>
     </div>
     <div
-      *ngIf="allUsers && allUsers.length > 0 && profilePicturesLoaded"
+      *ngIf="users && users.length > 0 && profilePicturesLoaded"
       [@menuVisibility]="userMenu ? 'visible' : 'hidden'"
       class="sidenav_container_user"
     >
-      <button *ngFor="let user of allUsers" class="sidenav_box_user">
+      <button *ngFor="let user of users" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
             <img
@@ -89,7 +89,7 @@
     </div>
   </div>
   <app-add-channel
-    [allUsers]="allUsers"
+    [users]="users"
     (close)="toggleChannelOverlay()"
     *ngIf="channelOverlay"
   ></app-add-channel>

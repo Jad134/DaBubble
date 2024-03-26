@@ -17,20 +17,24 @@
         themenbezogen sein #marketing zum Beispiel
       </p>
       <h3>Channel-Name</h3>
-      <form (ngSubmit)="toggleUserOverlay()">
+      <form (ngSubmit)="checkFormChannelName()">
         <input
+          #channelName
           required
+          minlength="3"
           name="name"
           [(ngModel)]="newChannel.name"
           class="input_channel input_add"
           type="text"
           placeholder="z.B.Kooperationsprojekte"
         />
+        <span #validChannelName>Channel name is invalid</span>
         <div class="container_heading_Description">
           <h3>Beschreibung</h3>
           <p>(optional)</p>
         </div>
         <input
+          #channelDescription
           name="description"
           [(ngModel)]="newChannel.description"
           type="text"
@@ -53,15 +57,15 @@
           <mat-icon class="back-icon">close</mat-icon>
         </button>
       </div>
-      <form action="">
+      <form >
         <div class="container_input_add_user">
-          <input
+          <input 
             type="radio"
             name="addOption"
             [(ngModel)]="selectedOption"
             value="allUsers"
           />
-          <p>Alle Mitglieder von <span>Office Team</span> hinzufügen</p>
+          <p>Alle Mitglieder zu <span>{{ newChannel.name }}</span> hinzufügen</p>
         </div>
         <div class="container_input_add_user">
           <input
