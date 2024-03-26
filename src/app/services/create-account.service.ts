@@ -59,6 +59,7 @@ async setDocForDataBase(userid:string, userDatas:any){
     avatar: userDatas.avatar,
     id: userid,
     isOnline: false,
+    channels: {},
   });
 }
 
