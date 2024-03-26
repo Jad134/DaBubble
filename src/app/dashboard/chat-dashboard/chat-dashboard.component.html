@@ -1,4 +1,4 @@
-<section>
+<section [ngClass]="{ 'd-none': isSmallScreen }">
     <div class="chat-header">
 
         <div class="chat-header-left">
@@ -31,10 +31,10 @@
                     <span class="name">Noah Braun</span>
                     <span class="time">14:45 Uhr</span>
                 </div>
-                <span class="message">Welche Version von Angular ist gerade aktuell</span>
+                <div class="message">Welche Version von Angular ist gerade aktuell</div>
                 <div class="message-reaction">
-                    <img src="assets/img/add_reaction.png">
-                    <img src="assets/img/comment.png">
+                    <div class="reaction w-h-40"></div>
+                    <div class="comment w-h-40"></div>
                 </div>
             </div>
             
@@ -50,35 +50,43 @@
                     <span class="time">02:42 Uhr</span>
                     <span class="name">Fredika Brend</span>
                 </div>
-                <span class="you-message">die aktuellste!!</span>
+                <div class="you-message">die aktuellste!!</div>
                 <div class="message-reaction">
-                    <img src="assets/img/add_reaction.png">
-                    <img src="assets/img/comment.png">
+                    <div class="reaction w-h-40"></div>
+                    <div class="comment w-h-40"></div>
                 </div>
             </div>
             <div class="message-avatar"><img src="assets/img/avatars/avatar-1.svg"></div>
         </div>
 
     </div>
-
-    <div class="message-input">
-        <form><textarea placeholder="Nachricht an #[Chat-Name]"></textarea></form>
-        <emoji-mart
-        #emojiPicker
-         class="emoji-picker"
-        title="Pick your emoji…"
-        (emojiSelect)="addEmoji($event)"
-        [hideObsolete]="true"
-        [isNative]="true">
-     </emoji-mart>
-        <div class="message-icons">
-            <div class="DF img-gap">  
-                <img src="assets/img/add.png">
-                <div class="border"></div>
-                <img (click)="openEmojiPicker()" src="assets/img/sentiment_satisfied.png">
-                <img src="assets/img/alternate_email.png">
+<div class="answer-section">
+        <div class="answer-field">
+        <textarea
+          name="answer"
+          id="answer"
+          cols="1"
+          rows="40"
+          placeholder="Antworten..."
+        ></textarea>
+        <div class="button-row">
+            <div class="d-flex-sb">  
+                <div class="add w-h-40">
+                <emoji-mart
+                #emojiPicker
+                class="emoji-picker"
+                title="Pick your emoji…"
+                (emojiSelect)="addEmoji($event)"
+                [hideObsolete]="true"
+                [isNative]="true">
+                </emoji-mart>
+                </div>
+                <div class="vector"></div>
+                <div class="emoji w-h-40"></div>
+            <div class="email w-h-40" (click)="openEmojiPicker()"></div>
             </div>
-            <div> <img  src="assets/img/send.png"> </div>
+            <div class="send w-h-40"></div>
+        </div>
         </div>
     </div>
 </section>

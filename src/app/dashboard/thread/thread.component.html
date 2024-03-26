@@ -1,4 +1,4 @@
-<section>
+<section [ngClass]="{ 'd-none': isSmallScreen || closeTab}">
   <div class="thread-container">
     <div class="thread-head">
       <div class="head-text">
@@ -6,7 +6,7 @@
         <p>#</p>
         <p>Entwicklerteam</p>
       </div>
-      <div class="close w-h-40"></div>
+      <div class="close w-h-40" (click)="Dnone()"></div>
     </div>
     <div class="thread-content">hier steht der Chatverlauf</div>
     <div class="answer-section">

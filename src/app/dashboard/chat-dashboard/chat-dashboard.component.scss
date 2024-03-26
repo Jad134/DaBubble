@@ -1,10 +1,11 @@
+@import "./../../../styles.scss";
 
 section{
-    min-width: 100% ;
+    min-width: 100%;
     height: 85vh;
     background-color: white;
     border-radius: 45px;
-    width: 80%;
+    width: 100%;
     margin-top: 20px;
     position: relative;
 }
@@ -108,6 +109,7 @@ button{
  background-color:#ECEEFE;  
  padding: 10px; 
  border-radius: 0 1em 1em;
+margin-right: 10px;
 }
 
 .time{
@@ -191,3 +193,126 @@ border:solid ;
     margin-right: 10px;
     }
 }
+
+.comment{
+    cursor: pointer;
+    background: url("../../../assets/img/comment.svg") no-repeat;
+  
+    &:hover {
+      background: url("../../../assets/img/hover-comment.svg") no-repeat;
+    }
+}
+
+.reaction{
+    cursor: pointer;
+    background: url("../../../assets/img/add_reaction.svg") no-repeat;
+  
+    &:hover {
+      background: url("../../../assets/img/hover-add_reaction.svg") no-repeat;
+    }
+}
+
+.answer-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    position: absolute;
+    left: 23px;
+    right: 23px;
+    bottom: 25px;
+  }
+  
+  .answer-field {
+    height: 103px;
+    width: 90%;
+    border: 1px solid $light-purple;
+    border-radius: 20px;
+    padding: 20px;
+  
+    textarea {
+      border: none;
+      font-size: 18px;
+      font-weight: 400;
+      width: 255px;;
+      height: 65px;
+  
+      &:focus-visible{
+        outline: none;
+      }
+    }
+  }
+  
+  #answer {
+    resize: none;
+  }
+  
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .d-flex-sb {
+    display: flex;
+  }
+  
+  .add {
+    cursor: pointer;
+    background: url("../../../assets/img/add.svg") no-repeat;
+  
+    &:hover {
+      background: url("../../../assets/img/add-hover.svg") no-repeat;
+    }
+  }
+  
+  .emoji {
+    cursor: pointer;
+    background: url("../../../assets/img/emoji.svg") no-repeat;
+  
+    &:hover {
+      background: url("../../../assets/img/emoji-hover.svg") no-repeat;
+    }
+  }
+  
+  .email {
+    cursor: pointer;
+    background: url("../../../assets/img/email.svg") no-repeat;
+  
+    &:hover {
+      background: url("../../../assets/img/email-hover.svg") no-repeat;
+    }
+  }
+  
+  .send {
+    cursor: pointer;
+    background: url("../../../assets/img/send.svg") no-repeat;
+  
+    &:hover {
+      background: url("../../../assets/img/send-hover.svg") no-repeat;
+    }
+  }
+  
+  .close {
+      cursor: pointer;
+      background: url("../../../assets/img/close.svg") no-repeat;
+    
+      &:hover {
+        background: url("../../../assets/img/close-hover.svg") no-repeat;
+      }
+    }
+  
+  .vector {
+    background: url("../../../assets/img/vector 4.svg") no-repeat;
+    width: 4px;
+    height: 40px;
+  }
+  
+  .w-h-40 {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .d-none{
+    display: none;
+  }

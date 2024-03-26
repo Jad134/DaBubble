@@ -1,7 +1,7 @@
 @import "./../../../styles.scss";
 
 .thread-container {
-  width: 485px;
+  width: 350px;
   border-radius: 30px;
   position: relative;
   height: 940px;
@@ -52,7 +52,7 @@
 
 .answer-field {
   height: 103px;
-  width: calc(445px - 40px);
+  width: calc(280px - 40px);
   border: 1px solid $light-purple;
   border-radius: 20px;
   padding: 20px;
@@ -62,7 +62,7 @@
     border: none;
     font-size: 18px;
     font-weight: 400;
-    width: 400px;
+    width: 255px;;
     height: 65px;
 
     &:focus-visible{
@@ -139,4 +139,8 @@
 .w-h-40 {
   width: 40px;
   height: 40px;
+}
+
+.d-none{
+  display: none;
 }
