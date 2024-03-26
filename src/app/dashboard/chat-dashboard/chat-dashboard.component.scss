@@ -194,23 +194,23 @@ border:solid ;
     }
 }
 
-.comment{
-    cursor: pointer;
-    background: url("../../../assets/img/comment.svg") no-repeat;
+// .comment{
+//     cursor: pointer;
+//     background: url("../../../assets/img/comment.svg") no-repeat;
   
-    &:hover {
-      background: url("../../../assets/img/hover-comment.svg") no-repeat;
-    }
-}
+//     &:hover {
+//       background: url("../../../assets/img/hover-comment.svg") no-repeat;
+//     } 
+// }
 
-.reaction{
-    cursor: pointer;
-    background: url("../../../assets/img/add_reaction.svg") no-repeat;
+// .reaction{
+//     cursor: pointer;
+//     background: url("../../../assets/img/add_reaction.svg") no-repeat;
   
-    &:hover {
-      background: url("../../../assets/img/hover-add_reaction.svg") no-repeat;
-    }
-}
+//     &:hover {
+//       background: url("../../../assets/img/hover-add_reaction.svg") no-repeat;
+//     }
+// }
 
 .answer-section {
     display: flex;
