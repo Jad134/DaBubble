@@ -23,7 +23,7 @@ isSmallScreen: boolean = false;
   }
 
   checkScreenSize() {
-    if(window != undefined){
+    if(typeof window !== 'undefined'){
     this.isSmallScreen = window.innerWidth < 1200;
     }
   }
