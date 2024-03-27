@@ -80,6 +80,7 @@ export class AddChannelComponent {
     } else if (this.selectedOption === 'specificPeople') {
       this.newChannel.usersInChannel = this.selectedUser;
     }
+    // Hier kann die Service funktion eingefügt werden 
   }
 
   checkFormChannelName() {
