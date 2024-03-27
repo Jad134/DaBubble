@@ -35,7 +35,6 @@ export class SelectAvatarComponent {
       .getUserDataById(this.userId)
       .then((data) => {
         this.actualUser = new User(data);
-        console.log(this.actualUser);
 
         if (this.actualUser) {
           this.name = this.actualUser.name;
