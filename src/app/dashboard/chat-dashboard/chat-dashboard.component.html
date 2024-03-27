@@ -1,4 +1,4 @@
-<!-- <section [ngClass]="{ 'd-none': isSmallScreen }">
+ <section [ngClass]="{ 'd-none': isSmallScreen }">
     <div class="chat-header">
 
         <div class="chat-header-left">
@@ -72,21 +72,13 @@
         <div class="button-row">
             <div class="d-flex-sb">  
                 <div class="add w-h-40">
-                <emoji-mart
-                #emojiPicker
-                class="emoji-picker"
-                title="Pick your emoji…"
-                (emojiSelect)="addEmoji($event)"
-                [hideObsolete]="true"
-                [isNative]="true">
-                </emoji-mart>
                 </div>
                 <div class="vector"></div>
                 <div class="emoji w-h-40"></div>
-            <div class="email w-h-40" (click)="openEmojiPicker()"></div>
+            <div class="email w-h-40" ></div>
             </div>
             <div class="send w-h-40"></div>
         </div>
         </div>
     </div>
-</section> -->
+</section> 
