@@ -51,6 +51,7 @@ export class AddChannelComponent {
   selectedOption: string = '';
   currentName: string = '';
   userList!: any[];
+  selectedUser: any[] = [];
 
   firestore = inject(FirestoreService);
   channelDataclient = inject(channelDataclientService);
@@ -61,6 +62,24 @@ export class AddChannelComponent {
 
   toggleUserOverlay() {
     this.userOverlay = !this.userOverlay;
+  }
+
+  chooseUser(userId: string) {
+    this.selectedUser = [];
+    this.users.find((user) => {
+      if (userId === user.id) {
+        this.selectedUser.push(user);
+      }
+    });
+  }
+
+  addUsersToChannel() {
+    if (this.selectedOption === 'allUsers') {
+      this.selectedUser = [...this.users];
+      this.newChannel.usersInChannel = this.selectedUser;
+    } else if (this.selectedOption === 'specificPeople') {
+      this.newChannel.usersInChannel = this.selectedUser;
+    }
   }
 
   checkFormChannelName() {

@@ -57,15 +57,17 @@
           <mat-icon class="back-icon">close</mat-icon>
         </button>
       </div>
-      <form >
+      <form>
         <div class="container_input_add_user">
-          <input 
+          <input
             type="radio"
             name="addOption"
             [(ngModel)]="selectedOption"
             value="allUsers"
           />
-          <p>Alle Mitglieder zu <span>{{ newChannel.name }}</span> hinzufügen</p>
+          <p>
+            Alle Mitglieder zu <span>{{ newChannel.name }}</span> hinzufügen
+          </p>
         </div>
         <div class="container_input_add_user">
           <input
@@ -79,6 +81,7 @@
         <div class="place_input_choose_user">
           <input
             [(ngModel)]="currentName"
+            (ngModelChange)="showUser()"
             name="currentName"
             (keydown)="showUser()"
             *ngIf="selectedOption === 'specificPeople'"
@@ -91,7 +94,7 @@
             class="container_show_user"
           >
             <div *ngFor="let user of userList" class="box_user">
-              <button>
+              <button (click)="chooseUser(user.id)">
                 <img class="user_picture" [src]="user.avatar" alt="" />
                 <div
                   class="statuslight"
@@ -106,7 +109,7 @@
           </div>
         </div>
         <div class="place_btn">
-          <button class="create_btn">Erstellen</button>
+          <button (click)="addUsersToChannel()" class="create_btn">Erstellen</button>
         </div>
       </form>
     </div>

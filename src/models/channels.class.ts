@@ -1,7 +1,7 @@
 export class channel {
   name: string;
   description: string;
-  usersInChannel: {};
+  usersInChannel: any[] = []
   threads: {};
   
   constructor(obj?: any) {

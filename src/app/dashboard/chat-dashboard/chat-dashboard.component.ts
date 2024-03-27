@@ -2,12 +2,12 @@ import { Component, ViewChild, ElementRef, HostListener} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { PickerModule } from '@ctrl/ngx-emoji-mart'
+/* import { PickerModule } from '@ctrl/ngx-emoji-mart' */
 import { ThreadComponent } from '../thread/thread.component';
 @Component({
   selector: 'app-chat-dashboard',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, PickerModule,CommonModule],
+  imports: [MatIconModule, MatButtonModule,CommonModule],
   templateUrl: './chat-dashboard.component.html',
   styleUrl: './chat-dashboard.component.scss'
 })
