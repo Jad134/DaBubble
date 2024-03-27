@@ -23,7 +23,9 @@ isSmallScreen: boolean = false;
   }
 
   checkScreenSize() {
+    if(typeof window !== 'undefined'){
     this.isSmallScreen = window.innerWidth < 1200;
+    }
   }
 
   Dnone(){

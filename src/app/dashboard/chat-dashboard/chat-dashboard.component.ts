@@ -38,7 +38,9 @@ export class ChatDashboardComponent {
     }
   
     checkScreenSize() {
+      if(typeof window !== 'undefined'){
       this.isSmallScreen = window.innerWidth < 770;
+      }
     }
   
     openThread() {
