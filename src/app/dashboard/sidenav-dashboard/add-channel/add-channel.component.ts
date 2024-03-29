@@ -81,6 +81,8 @@ export class AddChannelComponent {
       this.newChannel.usersInChannel = this.selectedUser;
     }
     // Hier kann die Service funktion eingefügt werden 
+    console.log(this.newChannel);
+    this.channelDataclient.storeNewChannel(this.newChannel);
   }
 
   checkFormChannelName() {
