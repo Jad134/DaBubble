@@ -36,7 +36,11 @@ export class channelDataclientService {
         description: channel.description,
         usersInChannel: simplifiedUsersInChannel,
       });
+      let channelId = docRef.id
       console.log('Dokument written with ID: ', docRef.id);
+      for (const user of simplifiedUsersInChannel) {
+        await this.firestoreService.updateUsersChannels(user.id, channelId);
+      }
     } catch (error) {
       console.log('Error writing document: ', error);
     }

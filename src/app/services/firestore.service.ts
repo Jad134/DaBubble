@@ -144,4 +144,13 @@ export class FirestoreService {
   }
 
 
+  /**
+   * This function update the channels and import the channelid for every user which is added to an channel.
+   */
+  async updateUsersChannels(id: string, channelId:string ) {
+    const userRef = doc(this.db, "Users", id);
+    await updateDoc(userRef, {
+      channels: channelId
+    });
+  }
 }
