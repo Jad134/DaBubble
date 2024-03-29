@@ -65,12 +65,13 @@ export class AddChannelComponent {
   }
 
   chooseUser(userId: string) {
-    this.selectedUser = [];
-    this.users.find((user) => {
-      if (userId === user.id) {
-        this.selectedUser.push(user);
-      }
-    });
+    const userToAdd = this.users.filter(user => user.id === userId);
+    if (userToAdd.length > 0) {
+      this.selectedUser.push(...userToAdd);
+      console.log('Selected users:', this.selectedUser);
+    } else {
+      console.log('User not found with ID:', userId);
+    }
   }
 
   addUsersToChannel() {
