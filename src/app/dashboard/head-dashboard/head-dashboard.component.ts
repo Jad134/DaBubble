@@ -84,6 +84,9 @@ export class HeadDashboardComponent {
       right: '20px'
     };
     dialogConfig.panelClass = 'transparent-dialog';
+    dialogConfig.data = {
+      userId: this.userId,
+    }
     this.dialog.open(UserMenuDialogComponent, dialogConfig);
   }
 }
