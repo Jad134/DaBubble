@@ -51,14 +51,16 @@ button{
 }
 
 .header-avatar{
+  justify-content: center;
+  margin-right: 100px;
     img{
-        margin-left: -15px;
+        margin-left: -30px;
     }
 }
 
 .chat-header-right{
     img{
-        width: 25%;
+      width: 25%;
     }
 }
 .chat-members-num{
@@ -70,6 +72,12 @@ button{
 
 .add-person{
     width: 100px;
+}
+
+.avatar-img{
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 45px;
 }
 
 //chat

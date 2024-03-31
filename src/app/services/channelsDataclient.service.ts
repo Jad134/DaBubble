@@ -4,7 +4,7 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
@@ -20,7 +20,7 @@ export class channelDataclientService {
   app = initializeApp(this.firestoreService.firebaseConfig);
   auth = getAuth(this.app);
   db = getFirestore(this.app);
-
+  channelDB = collection(this.firestore, 'Channels');
   /**
    * this function stores a new Channel in firestore
    * @param channel 
@@ -58,5 +58,21 @@ export class channelDataclientService {
       avatar: user.avatar,
       id: user.id,
     }));
+  }
+
+  async getAllChannels() {
+    const channelList: any[] = [];
+    const querySnapshot = await getDocs(this.channelDB);
+    querySnapshot.forEach((doc) => {
+      const channelData = doc.data();
+      const channel: any = {
+        id: doc.id,
+        name: channelData['name'],
+        description: channelData['description'],
+        usersInChannel: channelData['usersInChannel']
+      };
+      channelList.push(channel);
+    });
+    return channelList;
   }
 }
