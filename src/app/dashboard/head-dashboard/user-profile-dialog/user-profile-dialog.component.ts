@@ -24,24 +24,10 @@ export class UserProfileDialogComponent {
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
   userId: any;
-  //Mockdaten für User
-  // actualUser = new User({
-  //   name: "Tobias",
-  //   avatar: "assets/img/avatars/avatar-1.svg",
-  //   email: "tobias@mail.de",
-  //   id: "6r9ooQYUY7VrjbcdEmpwx4gGTRG3",
-  //   isOnline: true,
-  // })
   actualUser: any = new User;
   @ViewChild('profilePicture') profilePicture!: ElementRef;
 
-  // ngOnInit(): void{
-  //   this.userId = this.data.userId;
-  //   console.log('User ID im Dialog:', this.userId);
-  //       console.log(this.actualUser);
-  // }
-
-  ngAfterViewInit(){
+  ngOnInit(){
     this.userId = this.data.userId;
     this.firestoreService.getUserDataById(this.userId).then((data) => {
       this.actualUser = new User(data);
@@ -49,27 +35,11 @@ export class UserProfileDialogComponent {
     }).catch((error) =>{
       console.error('Fehler beim abrufen der Benutzerdaten: ', error);
     });
+    this.controlIfOwnPictureUsed(this.userId);
   }
 
-  /**
-   * load the actual user datas from firestore
-   * @param userID 
-   */
-  async downloadProfileDatas(userID: any) {
-    await this.firestoreService
-        .getUserDataById(this.userId)
-       .then((data) => {
-         this.actualUser = new User(data);
-         console.log('Actual logged User is: ', this.actualUser);
-       })
-       .catch((error) => {
-         console.log('Fehler beim Laden des Benutzers: ', error);
-       });
-       this.controlIfOwnPictureUsed(this.userId)  
-   }
-
    /**
-    * checks if user profile a personal uploaded picture
+    * checks if user profile is a personal uploaded picture and download it from Firestore
     * @param userID 
     */
    async controlIfOwnPictureUsed(userID:any){

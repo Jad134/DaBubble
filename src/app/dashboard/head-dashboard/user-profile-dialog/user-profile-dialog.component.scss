@@ -83,3 +83,13 @@ mat-card{
   padding-left: 75px;
   cursor: pointer;
 }
+
+.profilePicture{
+  display: flex;
+  justify-content: center;
+
+  img{
+    width: 200px;
+    height: 200px;
+  }
+}
