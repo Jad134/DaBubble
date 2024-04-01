@@ -31,7 +31,6 @@ export class UserProfileDialogComponent {
     this.userId = this.data.userId;
     this.firestoreService.getUserDataById(this.userId).then((data) => {
       this.actualUser = new User(data);
-      console.log(this.actualUser);
     }).catch((error) =>{
       console.error('Fehler beim abrufen der Benutzerdaten: ', error);
     });
