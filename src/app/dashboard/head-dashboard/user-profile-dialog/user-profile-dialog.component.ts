@@ -8,11 +8,14 @@ import { FirestoreService } from '../../../services/firestore.service';
 import { User } from '../../../../models/user.class';
 import { StorageService } from '../../../services/storage.service';
 import { ElementSchemaRegistry } from '@angular/compiler';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { onSnapshot } from 'firebase/firestore';
 
 @Component({
   selector: 'app-user-profile-dialog',
   standalone: true,
-  imports: [MatCard, MatDialogContent, MatDialogActions, MatButton, MatButtonModule, MatDialogModule, MatDialogTitle],
+  imports: [MatCard, MatDialogContent, MatDialogActions, MatButton, MatButtonModule, MatDialogModule, MatDialogTitle, CommonModule],
   templateUrl: './user-profile-dialog.component.html',
   styleUrl: './user-profile-dialog.component.scss'
 })
@@ -21,14 +24,31 @@ export class UserProfileDialogComponent {
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
   userId: any;
-  actualUser: any;
-  name: any;
+  //Mockdaten für User
+  // actualUser = new User({
+  //   name: "Tobias",
+  //   avatar: "assets/img/avatars/avatar-1.svg",
+  //   email: "tobias@mail.de",
+  //   id: "6r9ooQYUY7VrjbcdEmpwx4gGTRG3",
+  //   isOnline: true,
+  // })
+  actualUser: any = new User;
   @ViewChild('profilePicture') profilePicture!: ElementRef;
 
-  ngOnInit(): void{
+  // ngOnInit(): void{
+  //   this.userId = this.data.userId;
+  //   console.log('User ID im Dialog:', this.userId);
+  //       console.log(this.actualUser);
+  // }
+
+  ngAfterViewInit(){
     this.userId = this.data.userId;
-    console.log('User ID im Dialog:', this.userId);
-    this.downloadProfileDatas(this.userId);
+    this.firestoreService.getUserDataById(this.userId).then((data) => {
+      this.actualUser = new User(data);
+      console.log(this.actualUser);
+    }).catch((error) =>{
+      console.error('Fehler beim abrufen der Benutzerdaten: ', error);
+    });
   }
 
   /**
@@ -40,10 +60,7 @@ export class UserProfileDialogComponent {
         .getUserDataById(this.userId)
        .then((data) => {
          this.actualUser = new User(data);
-         console.log(this.actualUser.avatar);
-         if (this.actualUser) {
-           this.name = this.actualUser.name;
-         }
+         console.log('Actual logged User is: ', this.actualUser);
        })
        .catch((error) => {
          console.log('Fehler beim Laden des Benutzers: ', error);

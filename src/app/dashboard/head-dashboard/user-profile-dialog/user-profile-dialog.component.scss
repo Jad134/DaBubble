@@ -28,3 +28,58 @@ mat-card{
     align-items: center;
     justify-content: space-between;
 }
+
+.userName{
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.nameSection{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;  
+}
+
+.bearbeiten{
+  cursor: pointer;
+  color: $purple3;
+  font-size: 18px;
+  font-weight: 600;
+
+  &:hover{
+    font-weight: 700;
+  }
+}
+
+.isOnline{
+  padding-left: 30px;
+  padding-bottom: 30px;
+  color: $text-gray;
+  font-size: 20px;
+  font-weight: 400;
+  img{
+    padding-right: 15px;
+  }
+}
+
+.eMail-head{
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  padding-bottom: 5px;
+
+  img{
+    padding-right: 15px;
+  }
+}
+
+.eMail{
+  color: $email;
+  font-size: 18px;
+  font-weight: 400;
+  padding-left: 75px;
+  cursor: pointer;
+}
