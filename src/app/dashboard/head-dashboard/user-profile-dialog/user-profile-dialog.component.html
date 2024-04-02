@@ -13,7 +13,7 @@
   </div>
   <div class="nameSection">
     <div class="userName">{{ this.actualUser.name }}</div>
-    <div class="bearbeiten">Bearbeiten</div>
+    <div class="bearbeiten" (click)="openEdit()">Bearbeiten</div>
   </div>
   <div class="isOnline">
     <div *ngIf="actualUser.isOnline">

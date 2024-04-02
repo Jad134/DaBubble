@@ -1,12 +1,13 @@
 import { Component, ElementRef, Inject, ViewChild, inject } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogConfig, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FirestoreService } from '../../../services/firestore.service';
 import { User } from '../../../../models/user.class';
 import { StorageService } from '../../../services/storage.service';
 import { CommonModule } from '@angular/common';
+import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
 
 @Component({
   selector: 'app-user-profile-dialog',
@@ -52,5 +53,21 @@ export class UserProfileDialogComponent {
    */
   close(){
     this.dialog.closeAll();
+  }
+
+  /**
+   * open the edit user dialog
+   */
+  openEdit(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = {
+      top: '100px',
+      right: '20px'
+    };
+    dialogConfig.panelClass = 'transparent-dialog';
+    dialogConfig.data = {
+      userId: this.data.userId,
+    }
+    this.dialog.open(EditProfileDialogComponent, dialogConfig);
   }
 }
