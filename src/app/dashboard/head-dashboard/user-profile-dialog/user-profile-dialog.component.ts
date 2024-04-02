@@ -1,5 +1,4 @@
 import { Component, ElementRef, Inject, ViewChild, inject } from '@angular/core';
-import { user } from '@angular/fire/auth';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
@@ -7,10 +6,7 @@ import { Router } from '@angular/router';
 import { FirestoreService } from '../../../services/firestore.service';
 import { User } from '../../../../models/user.class';
 import { StorageService } from '../../../services/storage.service';
-import { ElementSchemaRegistry } from '@angular/compiler';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
-import { onSnapshot } from 'firebase/firestore';
 
 @Component({
   selector: 'app-user-profile-dialog',
