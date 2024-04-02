@@ -150,7 +150,9 @@ export class FirestoreService {
   async updateUsersChannels(id: string, channelId:string ) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
-      channels: channelId
+      channels: { 
+        channelId}
+     
     });
   }
 }

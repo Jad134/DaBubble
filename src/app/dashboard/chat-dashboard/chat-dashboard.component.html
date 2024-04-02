@@ -1,14 +1,14 @@
  <section [ngClass]="{ 'd-none': isSmallScreen }">
     <div class="chat-header">
 
-        <div class="chat-header-left">
+        <div *ngIf="testChannel" class="chat-header-left">
             <div><img src="assets/img/black_tag.png"></div>
             <span>{{testChannel.description}}</span>
             <div><img src="assets/img/arrow_drop_down.png"></div>
         </div>
 
-        <div class="chat-header-right">
-            <div class="header-avatar">
+        <div  *ngIf="testChannel"  class="chat-header-right">
+            <div class="header-avatar"> 
             
                     <img *ngFor="let users of testChannel.usersInChannel" [src]="users.avatar" class="avatar-img">
                 
