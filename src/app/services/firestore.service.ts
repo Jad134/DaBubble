@@ -33,12 +33,12 @@ export class FirestoreService {
   users = new User();
   allUsers = new AllUser();
   user = this.auth.currentUser;
-  userIds :any;
+  userIds: any;
 
 
 
   constructor(private router: Router, public ngZone: NgZone) { }
- 
+
   //Send Password Reset Email
   async sendPasswordResetEmails(email: string) {
     sendPasswordResetEmail(this.auth, email)
@@ -62,9 +62,9 @@ export class FirestoreService {
       const user = new User(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
       this.userIds = doc.id
       users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
-      console.log(user); 
+      console.log(user);
     });
-    
+
     return users; // Geben Sie das Array der Benutzer zurück
   }
 
@@ -128,7 +128,7 @@ export class FirestoreService {
   }
 
 
-  async updateUserToOnline(id: string, ) {
+  async updateUserToOnline(id: string,) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
       isOnline: true
@@ -136,7 +136,7 @@ export class FirestoreService {
   }
 
 
-  async updateUserToOffline(id: string, ) {
+  async updateUserToOffline(id: string,) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
       isOnline: false
@@ -147,12 +147,33 @@ export class FirestoreService {
   /**
    * This function update the channels and import the channelid for every user which is added to an channel.
    */
-  async updateUsersChannels(id: string, channelId:string ) {
-    const userRef = doc(this.db, "Users", id);
-    await updateDoc(userRef, {
-      channels: { 
-        channelId}
-     
-    });
+  async updateUsersChannels(id: string, channelId: string) {
+    try {
+      const existingUserData = await this.getUserDataById(id);
+      
+      if (existingUserData) {
+        let existingChannels: string[] = existingUserData['channels'] || []; // Wenn keine Kanäle vorhanden sind, initialisieren Sie ein leeres Array
+  
+        // Stellen Sie sicher, dass existingChannels ein Array ist
+        if (!Array.isArray(existingChannels)) {
+          existingChannels = [existingChannels]; // Konvertieren Sie es in ein Array
+        }
+  
+        // Fügen Sie den neuen Kanal zur Liste der vorhandenen Kanäle hinzu
+        existingChannels.push(channelId);
+  
+        // Entfernen Sie doppelte Kanäle, falls erforderlich
+        existingChannels = existingChannels.filter((id, index, self) => self.indexOf(id) === index);
+  
+        const userRef = doc(this.db, "Users", id);
+        await updateDoc(userRef, {
+          channels: existingChannels
+        });
+      } else {
+        console.log('Keine Benutzerdaten mit dieser ID gefunden');
+      }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der Kanäle:', error);
+    }
   }
 }
