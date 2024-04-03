@@ -105,3 +105,15 @@ mat-card{
   gap: 30px;
   padding-top: 15px;
 }
+
+.profilePicture{
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+
+  img{
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+  }
+}

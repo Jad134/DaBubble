@@ -3,6 +3,13 @@
     <h2 mat-dialog-title>Dein Profil bearbeiten</h2>
     <div class="close" (click)="close()"></div>
   </div>
+  <div class="profilePicture">
+    <img
+      #profilePicture
+      [src]="this.downloadService.downloadedProfileImg"
+      alt=""
+    />
+  </div>
   <div class="input-section">
     <div class="d-flex-align-center">
       <img src="../../../../assets/img/account_circle.svg" />Vollständiger Name
