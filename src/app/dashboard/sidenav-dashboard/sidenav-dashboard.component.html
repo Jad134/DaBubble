@@ -32,10 +32,10 @@
       [@menuVisibility]="channelsmenu ? 'visible' : 'hidden'"
       class="sidenav_place_channel_infos"
     >
-      <div class="sidenav_container_channel_info">
+      <div *ngFor="let channels of firestoreService.channels" class="sidenav_container_channel_info">
         <div class="sidenav_info">
           <img src="/assets/img/tag.png" alt="" />
-          <p>Enwicklerteam</p>
+          <p>{{channels.name}}</p>
         </div>
       </div>
       <div class="sidenav_container_add_channel">
