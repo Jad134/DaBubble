@@ -4,8 +4,9 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import { doc, updateDoc, getDocs, collection, query, where, } from "firebase/firestore";
 import { AllUser } from '../../models/allUser.class';
+import { channel } from '../../models/channels.class';
 
 
 
@@ -32,8 +33,12 @@ export class FirestoreService {
   db = getFirestore(this.app);
   users = new User();
   allUsers = new AllUser();
+  channels = new channel();
   user = this.auth.currentUser;
   userIds: any;
+  channelIds = [];
+  channelNames: string[] = [];
+
 
 
 
@@ -178,8 +183,61 @@ export class FirestoreService {
   }
 
 
-  async getUserChannels(id: any) {
-    
-    
+  /**
+   * This function returns the Ids for the Channels, which show at the sideNav
+   * @param id 
+   */
+  async getUserChannelId(id: any) {
+    const unsub = onSnapshot(doc(this.db, "Users", id), (doc) => {
+      const UserData = doc.data();
+
+      if (UserData) {
+        console.log("Current data: ", UserData['channels']);
+        const channels = UserData['channels']
+
+
+        this.channelIds = channels
+        console.log(this.channelIds);
+        // this.getChannelNames()
+        return channels
+      }
+
+    });
   }
+
+
+   async getChannels() {
+    for (const channelId of this.channelIds) {
+      const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
+        if (channelDoc.exists()) {
+          const channelData = channelDoc.data();
+          const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
+          this.channels = newChannel; // Das neue channel-Objekt zuweisen
+          console.log(this.channels); 
+          
+        } else {
+          console.log("Kanal mit ID", channelId, "nicht gefunden.");
+        }
+      });
+    }
+}
+
+  //Namen werdne eigentlich nicht gebraucht, ehr die ganzen channels
+  // async getChannelNames() {
+  //   for (const channelId of this.channelIds) {
+  //     const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
+  //       if (channelDoc.exists()) {
+  //         const channelData = channelDoc.data();
+  //         console.log("Name des Kanals:", channelData['name']);
+  //         this.channelNames.push(channelData['name'])
+  //         console.log(this.channelNames);
+
+  //         return channelData['name']
+  //         // Führen Sie hier weitere Operationen mit dem Kanalnamen durch
+  //       } else {
+  //         console.log("Kanal mit ID", channelId, "nicht gefunden.");
+  //       }
+  //     });
+  //   }
+  // }
 }

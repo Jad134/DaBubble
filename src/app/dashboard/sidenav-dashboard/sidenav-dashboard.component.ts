@@ -25,6 +25,8 @@ import { AddChannelComponent } from './add-channel/add-channel.component';
 import { StorageService } from '../../services/storage.service';
 import { User } from '../../../models/user.class';
 import { ActivatedRoute } from '@angular/router';
+
+
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
@@ -44,16 +46,17 @@ export class SidenavDashboardComponent {
   downloadService = inject(StorageService);
   channelOverlay: boolean = false;
   userIds: any;
-  currentUserId:any;
+  currentUserId: any;
   profilePicturesLoaded: boolean = false;
   addChannelOverlay: boolean = false;
   channelsmenu: boolean = true;
   userMenu: boolean = true;
+  channelNames :any;
   @Input() users: User[] = [];
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) { }
 
   /**
    * This function downloaded the userdata and starts the imagedownloadfunction. After this, the datas are rendering at html
@@ -74,6 +77,8 @@ export class SidenavDashboardComponent {
       .catch((error) => {
         console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
       });
+
+    this.downloadChannels(this.currentUserId)
   }
 
 
@@ -100,7 +105,7 @@ export class SidenavDashboardComponent {
     this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
 
-  
+
   togglechannelsMenu() {
     this.channelsmenu = !this.channelsmenu;
   }
@@ -119,5 +124,11 @@ export class SidenavDashboardComponent {
     if (id != null) {
       this.currentUserId = id;
     }
+  }
+
+
+ async downloadChannels(userId: any) {
+    await this.firestoreService.getUserChannelId(userId);
+
   }
 }
