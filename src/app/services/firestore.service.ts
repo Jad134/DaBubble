@@ -148,6 +148,18 @@ export class FirestoreService {
     });
   }
 
+  /**
+   * Update the user data in DB
+   * @param user User Object 
+   */
+  async updateUserNameAndMail(user: User){
+    const userRef = doc(this.db, "Users", user.id);
+    await updateDoc(userRef, {
+      name: user.name,
+      email: user.eMail,
+    });
+  }
+
 
   /**
    * This function update the channels and import the channelid for every user which is added to an channel.

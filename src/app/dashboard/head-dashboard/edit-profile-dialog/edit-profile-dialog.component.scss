@@ -28,3 +28,80 @@ mat-card{
     align-items: center;
     justify-content: space-between;
 }
+
+.d-flex-align-center{
+  display: flex;
+  align-items: center;
+
+  img{
+    padding-right: 15px;
+  }
+}
+
+.input-section{
+  padding-left: 30px;
+  padding-bottom: 10px;
+}
+
+.input-field {
+  cursor: pointer;
+  width: 380px;
+  border-radius: 100px;
+  height: 25px;
+  border: 1px solid $purple2;
+  font-size: 18px;
+  font-family: $nunito;
+  font-weight: 500;
+  padding: 15px 20px;
+
+  &:focus {
+    border: 1px solid $purple1 !important;
+    border-color: $purple1;
+    outline: none;
+  }
+}
+
+.save {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: $nunito;
+  color: white;
+  border: none;
+  background-color: $purple1;
+  width: 137px;
+  height: 49px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 125ms ease-in-out;
+
+  &:hover {
+    background-color: lighten($purple1, 10%);
+  }
+}
+
+.cancle {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: $nunito;
+  color: $purple1;
+  border: 1px solid $purple2;
+  background-color: white;
+  width: 137px;
+  height: 49px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 125ms ease-in-out;
+
+  &:hover {
+      background-color: $purple1;
+      color: white;
+  }
+}
+
+.button-section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding-top: 15px;
+}
