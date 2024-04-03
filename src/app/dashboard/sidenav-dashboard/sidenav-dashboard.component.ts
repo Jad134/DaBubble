@@ -24,6 +24,7 @@ import { FirestoreService } from '../../services/firestore.service';
 import { AddChannelComponent } from './add-channel/add-channel.component';
 import { StorageService } from '../../services/storage.service';
 import { User } from '../../../models/user.class';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
@@ -43,6 +44,7 @@ export class SidenavDashboardComponent {
   downloadService = inject(StorageService);
   channelOverlay: boolean = false;
   userIds: any;
+  currentUserId:any;
   profilePicturesLoaded: boolean = false;
   addChannelOverlay: boolean = false;
   channelsmenu: boolean = true;
@@ -51,13 +53,14 @@ export class SidenavDashboardComponent {
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
 
   /**
    * This function downloaded the userdata and starts the imagedownloadfunction. After this, the datas are rendering at html
    */
 
   ngAfterViewInit(): void {
+    this.getIdFromURL();
     this.firestoreService
       .getAllUsers()
       .then(async (users) => {
@@ -108,5 +111,13 @@ export class SidenavDashboardComponent {
 
   toggleChannelOverlay() {
     this.channelOverlay = !this.channelOverlay;
+  }
+
+
+  getIdFromURL() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id != null) {
+      this.currentUserId = id;
+    }
   }
 }
