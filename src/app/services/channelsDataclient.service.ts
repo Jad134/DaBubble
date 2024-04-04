@@ -4,7 +4,7 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
@@ -13,7 +13,7 @@ import { Channel } from 'diagnostics_channel';
   providedIn: 'root',
 })
 export class channelDataclientService {
-  constructor() {}
+  constructor() { }
 
   firestoreService = inject(FirestoreService);
   firestore: Firestore = inject(Firestore);
@@ -21,6 +21,10 @@ export class channelDataclientService {
   auth = getAuth(this.app);
   db = getFirestore(this.app);
   channelDB = collection(this.firestore, 'Channels');
+  channelIds = [];
+  channels: channel[] = [];
+
+
   /**
    * this function stores a new Channel in firestore
    * @param channel 
@@ -32,19 +36,32 @@ export class channelDataclientService {
       );
 
       const docRef = await addDoc(collection(this.db, 'Channels'), {
+        id: channel.id,
         name: channel.name,
         description: channel.description,
         usersInChannel: simplifiedUsersInChannel,
       });
       let channelId = docRef.id
+      this.updateChannelId(channelId)
       console.log('Dokument written with ID: ', docRef.id);
       for (const user of simplifiedUsersInChannel) {
         await this.firestoreService.updateUsersChannels(user.id, channelId);
       }
+
+
     } catch (error) {
       console.log('Error writing document: ', error);
     }
   }
+
+
+  async updateChannelId(channelId: any) {
+    const channelRef = doc(this.db, "Channels", channelId);
+    await updateDoc(channelRef, {
+      id: channelId
+    });
+  }
+
 
   /**
    * Convert the usersInChannel object in a storeable object for Firestore
@@ -60,6 +77,7 @@ export class channelDataclientService {
     }));
   }
 
+
   async getAllChannels() {
     const channelList: any[] = [];
     const querySnapshot = await getDocs(this.channelDB);
@@ -74,5 +92,50 @@ export class channelDataclientService {
       channelList.push(channel);
     });
     return channelList;
+  }
+
+
+   /**
+   * This function returns the Ids for the Channels, which show at the sideNav
+   * @param id 
+   */
+   async getUserChannelId(id: any) {
+    const unsub = onSnapshot(doc(this.db, "Users", id), (doc) => {
+      const UserData = doc.data();
+
+      if (UserData) {
+        console.log("Current data: ", UserData['channels']);
+        const channels = UserData['channels']
+
+        this.channelIds = channels
+        console.log(this.channelIds);
+        // this.getChannelNames()
+        this.getChannels()
+        return channels
+      }
+
+    });
+  }
+
+
+   /***
+   * This function gets all chanels from the current user with the getUserChannelIds() ids.
+   */
+   async getChannels() {
+    for (const channelId of this.channelIds) {
+      // Überprüfen Sie, ob der Kanal bereits in this.channels vorhanden ist
+      if (!this.channels.find(channel => channel.id === channelId)) {
+        const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
+          if (channelDoc.exists()) {
+            const channelData = channelDoc.data();
+            const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
+            this.channels.push(newChannel); // Das neue channel-Objekt zum Array hinzufügen
+            console.log(this.channels); 
+          } else {
+            console.log("Kanal mit ID", channelId, "nicht gefunden.");
+          }
+        });
+      }
+    }
   }
 }

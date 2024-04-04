@@ -25,6 +25,7 @@ import { AddChannelComponent } from './add-channel/add-channel.component';
 import { StorageService } from '../../services/storage.service';
 import { User } from '../../../models/user.class';
 import { ActivatedRoute } from '@angular/router';
+import { channelDataclientService } from '../../services/channelsDataclient.service';
 
 
 @Component({
@@ -44,6 +45,7 @@ import { ActivatedRoute } from '@angular/router';
 export class SidenavDashboardComponent {
   firestoreService = inject(FirestoreService);
   downloadService = inject(StorageService);
+  channelService =inject(channelDataclientService)
   channelOverlay: boolean = false;
   userIds: any;
   currentUserId: any;
@@ -128,7 +130,6 @@ export class SidenavDashboardComponent {
 
 
  async downloadChannels(userId: any) {
-    await this.firestoreService.getUserChannelId(userId);
-
+    await this.channelService.getUserChannelId(userId);
   }
 }
