@@ -52,7 +52,7 @@
         <div class="place_input_choose_user">
           <input [(ngModel)]="currentName" (click)="showUser()" (ngModelChange)="showUser()" name="currentName" (keydown)="showUser()"
             *ngIf="selectedOption === 'specificPeople'" [@fadeIn] type="text" class="input_add inputAddUser" />
-          <div *ngIf="currentName.length > 0 && userList.length > 0" class="container_show_user">
+          <div *ngIf=" userList && userList.length > 0" class="container_show_user">
             <div (click)="chooseUser(user.id)" *ngFor="let user of userList" class="box_user">
               <button>
                 <img class="user_picture" [src]="user.avatar" alt="" />
