@@ -1,7 +1,7 @@
 @import "./../../../styles.scss";
 
 .thread-container {
-  width: 350px;
+  width: 485px;
   border-radius: 30px;
   position: relative;
   height: 940px;
@@ -52,7 +52,7 @@
 
 .answer-field {
   height: 103px;
-  width: calc(280px - 40px);
+  width: calc(445px - 40px);
   border: 1px solid $light-purple;
   border-radius: 20px;
   padding: 20px;
