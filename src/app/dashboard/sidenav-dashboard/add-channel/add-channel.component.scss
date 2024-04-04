@@ -26,27 +26,33 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
+
   form {
     display: flex;
     flex-direction: column;
     gap: 28px;
+
     span {
       color: red;
       opacity: 0;
     }
   }
+
   p {
     font-size: 18px;
     font-weight: 400;
     line-height: 24px;
   }
+
   h3 {
     font-size: 18px;
     font-weight: 700;
   }
+
   div {
     width: 100%;
     position: relative;
+
     button {
       position: absolute;
       right: 32px;
@@ -70,6 +76,7 @@
   justify-content: space-between;
   width: 100%;
   margin-bottom: 16px;
+
   h2 {
     font-family: $nunito;
     font-weight: 800;
@@ -113,13 +120,16 @@
   justify-content: center;
   align-items: center;
   padding: 5px;
-  > mat-icon {
+
+  >mat-icon {
     color: black;
   }
+
   &:hover {
     background-color: $bg-color;
     box-shadow: none;
-    > mat-icon {
+
+    >mat-icon {
       color: $purple3;
     }
   }
@@ -129,24 +139,30 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+
   form {
     display: flex;
     flex-direction: column;
     gap: 28px;
   }
+
   .container_heading {
     margin: 8px;
   }
+
   .container_input_add_user {
     display: flex;
     gap: 16px;
     align-items: center;
+
     input {
       cursor: pointer;
     }
+
     p {
       font-size: 18px;
       font-weight: 400;
+
       span {
         color: $purple1;
       }
@@ -156,6 +172,7 @@
   .place_btn {
     width: 100%;
     position: relative;
+
     button {
       position: absolute;
       right: 32px;
@@ -165,6 +182,7 @@
   .place_input_choose_user {
     position: relative;
   }
+
   .inputAddUser {
     padding-left: 28px;
     font-size: 18px;
@@ -198,16 +216,20 @@
       padding: 0 16px;
       border-radius: 48px;
       cursor: pointer;
+
       &:hover {
         background-color: $light-purple;
       }
+
       button {
         position: relative;
+
         .user_picture {
           border-radius: 50%;
           width: 60px;
           height: 60px;
         }
+
         .statuslight {
           border-radius: 50%;
           border: solid white 2px;
@@ -218,6 +240,7 @@
           bottom: 4.5px;
         }
       }
+
       p {
         font-size: 18px;
         font-weight: 500;
@@ -252,4 +275,48 @@
 #validChannelName {
   color: red;
   opacity: 0;
+}
+
+.current-user-picture {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.choosed-user-box {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  gap: 8px;
+  display: flex;
+  background-color: $light-purple;
+  width: fit-content;
+  padding: 0 16px;
+  border-radius: 48px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+
+  >button {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.show-choosed-user {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.statuslight-choosed-user {
+  border-radius: 50%;
+  border: solid white 2px;
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  right: 2px;
+  bottom: 4.5px;
 }

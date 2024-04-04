@@ -98,12 +98,26 @@ export class AddChannelComponent {
   }
 
   showUser() {
-    this.userList = this.users.filter((user) => {
-      const userClean = user.name.replace(/\s/g, '');
-      const userCleanSmall = userClean.toLowerCase();
-      if (userCleanSmall.includes(this.currentName)) {
-        return user;
-      }
-    });
+    if (this.currentName.trim() === '') {
+      this.userList = this.users;
+    } else {
+      this.userList = this.users.filter((user) => {
+        const userClean = user.name.replace(/\s/g, '');
+        const userCleanSmall = userClean.toLowerCase();
+        if (userCleanSmall.includes(this.currentName)) {
+          return user;
+        }
+      });
+    }
+  }
+
+
+  /**
+   * This function removes the selected user for the Channel 
+   */
+  removeSelectedUser(userId: any) {
+    this.selectedUser = this.selectedUser.filter(user => user.id !== userId);
+    console.log('Selected users after removal:', this.selectedUser);
+
   }
 }
