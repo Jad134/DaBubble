@@ -8,12 +8,13 @@ section {
 }
 
 .sidenav {
-  min-height: 680px;
+  height: calc(940px - 40px - 40px);
   width: 306px;
   padding: 40px 30px 40px 30px;
   background-color: white;
   border-radius: 32px;
   margin: 20px 20px 0 20px;
+  overflow: hidden;
 }
 
 .sidenav_head {
@@ -134,6 +135,8 @@ section {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow-y: auto;
+  max-height: 520px;
 
   .sidenav_box_user {
     display: flex;
@@ -178,4 +181,23 @@ section {
 .rotatedBack {
   transform: rotate(0deg); /* Rotate the image by 90 degrees */
   transition: transform 0.1s ease;
+}
+
+/* Design Scrollbar */
+.sidenav_container_user::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+
+.sidenav_container_user::-webkit-scrollbar-track {
+  background: $bg-color;
+}
+
+.sidenav_container_user::-webkit-scrollbar-thumb {
+  background: $purple2; 
+  border-radius: 8px; 
+}
+
+.sidenav_container_user::-webkit-scrollbar-thumb:hover {
+  background: $purple3; 
 }
