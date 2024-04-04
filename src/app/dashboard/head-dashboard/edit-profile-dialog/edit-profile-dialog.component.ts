@@ -26,9 +26,9 @@ export class EditProfileDialogComponent {
 
   @ViewChild('profilePicture') profilePicture!: ElementRef;
 
-  ngOnInit(){
+ async ngOnInit(){
     this.userId = this.data.userId;
-    this.firestoreService.getUserDataById(this.userId).then((data) => {
+  await  this.firestoreService.getUserDataById(this.userId).then((data) => {
       this.actualUser = new User(data);
       this.nameValue = this.actualUser.name;
       this.mailValue = this.actualUser.eMail;
