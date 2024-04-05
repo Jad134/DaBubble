@@ -22,6 +22,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { channelDataclientService } from '../../../services/channelsDataclient.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-channel',
@@ -52,9 +53,17 @@ export class AddChannelComponent {
   currentName: string = '';
   userList!: any[];
   selectedUser: any[] = [];
-
+  currentUserId: any;
   firestore = inject(FirestoreService);
   channelDataclient = inject(channelDataclientService);
+
+  constructor(private route: ActivatedRoute) { 
+    this.getIdFromURL()
+  }
+
+  ngAfterViewInit(): void {
+    this.addChannelAdmin()
+  }
 
   closeOverlay() {
     this.close.emit();
@@ -64,14 +73,33 @@ export class AddChannelComponent {
     this.userOverlay = !this.userOverlay;
   }
 
+  getIdFromURL() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id != null) {
+      this.currentUserId = id;
+    }
+  }
+
+  addChannelAdmin() {
+    const channelAdmin = this.users.find(user => user.id === this.currentUserId);
+    if (channelAdmin) {
+      this.selectedUser.push(channelAdmin);
+      console.log('Channel Admin added:', channelAdmin);
+    } else {
+      console.log('Channel Admin not found with ID:', this.currentUserId);
+    }
+  }
+
+
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);
     if (userToAdd.length > 0) {
-      this.selectedUser.push(...userToAdd);
+      this.selectedUser.push(...userToAdd );
       console.log('Selected users:', this.selectedUser);
     } else {
       console.log('User not found with ID:', userId);
     }
+    this.showUser()
   }
 
   addUsersToChannel() {
@@ -99,17 +127,19 @@ export class AddChannelComponent {
 
   showUser() {
     if (this.currentName.trim() === '') {
-      this.userList = this.users;
+        // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
+        this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
     } else {
-      this.userList = this.users.filter((user) => {
-        const userClean = user.name.replace(/\s/g, '');
-        const userCleanSmall = userClean.toLowerCase();
-        if (userCleanSmall.includes(this.currentName)) {
-          return user;
-        }
-      });
+        // Wenn ein Suchbegriff vorhanden ist, nach dem Suchbegriff filtern und dann nur die Benutzer anzeigen, die nicht ausgewählt wurden
+        this.userList = this.users.filter((user) => {
+            const userClean = user.name.replace(/\s/g, '');
+            const userCleanSmall = userClean.toLowerCase();
+            if (userCleanSmall.includes(this.currentName)) {
+                return user;
+            }
+        }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
     }
-  }
+}
 
 
   /**
