@@ -13,6 +13,8 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { channel } from '../../../../models/channels.class';
 import { FirestoreService } from '../../../services/firestore.service';
+import { MatDialog, MatDialogModule, MatDialogConfig } from '@angular/material/dialog';
+
 
 import {
   animate,
@@ -23,6 +25,7 @@ import {
 } from '@angular/animations';
 import { channelDataclientService } from '../../../services/channelsDataclient.service';
 import { ActivatedRoute } from '@angular/router';
+import { AddUserChannelDialogComponent } from './add-user-channel-dialog/add-user-channel-dialog.component';
 
 @Component({
   selector: 'app-add-channel',
@@ -57,7 +60,7 @@ export class AddChannelComponent {
   firestore = inject(FirestoreService);
   channelDataclient = inject(channelDataclientService);
 
-  constructor(private route: ActivatedRoute) { 
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {
     this.getIdFromURL()
   }
 
@@ -69,9 +72,9 @@ export class AddChannelComponent {
     this.close.emit();
   }
 
-  toggleUserOverlay() {
-    this.userOverlay = !this.userOverlay;
-  }
+  // toggleUserOverlay() {
+  //   this.userOverlay = !this.userOverlay;
+  // }
 
   getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -94,7 +97,7 @@ export class AddChannelComponent {
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);
     if (userToAdd.length > 0) {
-      this.selectedUser.push(...userToAdd );
+      this.selectedUser.push(...userToAdd);
       console.log('Selected users:', this.selectedUser);
     } else {
       console.log('User not found with ID:', userId);
@@ -118,28 +121,37 @@ export class AddChannelComponent {
     const channelName = this.channelName.nativeElement;
     const validChannelName = this.validChannelName.nativeElement;
     if (channelName.validity.valid) {
-      this.toggleUserOverlay();
+      // this.toggleUserOverlay();
+      this.openDialog()
       validChannelName.style = 'opacity: 0';
     } else {
       validChannelName.style = 'opacity: 1';
     }
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(AddUserChannelDialogComponent, {
+      data: {
+        users: this.users // Übergeben Sie die Benutzerdaten hier
+      }
+    });
+  }
+
   showUser() {
     if (this.currentName.trim() === '') {
-        // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
-        this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+      // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
+      this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
     } else {
-        // Wenn ein Suchbegriff vorhanden ist, nach dem Suchbegriff filtern und dann nur die Benutzer anzeigen, die nicht ausgewählt wurden
-        this.userList = this.users.filter((user) => {
-            const userClean = user.name.replace(/\s/g, '');
-            const userCleanSmall = userClean.toLowerCase();
-            if (userCleanSmall.includes(this.currentName)) {
-                return user;
-            }
-        }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+      // Wenn ein Suchbegriff vorhanden ist, nach dem Suchbegriff filtern und dann nur die Benutzer anzeigen, die nicht ausgewählt wurden
+      this.userList = this.users.filter((user) => {
+        const userClean = user.name.replace(/\s/g, '');
+        const userCleanSmall = userClean.toLowerCase();
+        if (userCleanSmall.includes(this.currentName)) {
+          return user;
+        }
+      }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
     }
-}
+  }
 
 
   /**
