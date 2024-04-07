@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-dataprotection',
@@ -11,4 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './dataprotection.component.html',
   styleUrl: './dataprotection.component.scss',
 })
-export class DataprotectionComponent {}
+export class DataprotectionComponent {
+  constructor(private location: Location){}
+
+  goBack(){
+    this.location.back();
+  }
+
+
+}
