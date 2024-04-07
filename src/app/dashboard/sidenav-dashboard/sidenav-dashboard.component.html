@@ -32,19 +32,22 @@
       [@menuVisibility]="channelsmenu ? 'visible' : 'hidden'"
       class="sidenav_place_channel_infos"
     >
+    <div class="channel-overview">
       <div *ngFor="let channels of channelService.channels" class="sidenav_container_channel_info">
         <div class="sidenav_info">
           <img src="/assets/img/tag.png" alt="" />
           <p>{{channels.name}}</p>
         </div>
       </div>
-      <div class="sidenav_container_add_channel">
-        <button (click)="toggleChannelOverlay()">
-          <img src="assets/img/add_circle.png" alt="" />
-          <p>Channel hinzufügen</p>
-        </button>
-      </div>
     </div>
+    <!-- button neuer Channel -->
+    <div class="sidenav_container_add_channel">
+      <button (click)="toggleChannelOverlay()">
+        <img src="assets/img/add_circle.png" alt="" />
+        <p>Channel hinzufügen</p>
+      </button>
+    </div>
+  </div>
     <div class="sidenav_container_directmessages">
       <button (click)="toggleUsersMenu()">
         <img

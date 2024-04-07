@@ -71,16 +71,20 @@ section {
     }
   }
 }
+.channel-overview{
+  max-height: 150px;
+  overflow: auto;
+}
 
 .sidenav_place_channel_infos {
   margin-left: 26px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
 
   .sidenav_container_channel_info {
     display: flex;
     justify-content: start;
+    padding-bottom: 24px;
     div {
       display: flex;
       justify-content: center;
@@ -199,5 +203,23 @@ section {
 }
 
 .sidenav_container_user::-webkit-scrollbar-thumb:hover {
+  background: $purple3; 
+}
+
+.channel-overview::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+
+.channel-overview::-webkit-scrollbar-track {
+  background: $bg-color;
+}
+
+.channel-overview::-webkit-scrollbar-thumb {
+  background: $purple2; 
+  border-radius: 8px; 
+}
+
+.channel-overview::-webkit-scrollbar-thumb:hover {
   background: $purple3; 
 }
