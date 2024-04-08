@@ -60,10 +60,15 @@ export class SidenavDashboardComponent {
 
   constructor(private route: ActivatedRoute) { }
 
+  sidenavIsHide: boolean = false;
+
+  toggleSidenav() {
+    this.sidenavIsHide = !this.sidenavIsHide;
+  }
+  
   /**
    * This function downloaded the userdata and starts the imagedownloadfunction. After this, the datas are rendering at html
    */
-
   ngAfterViewInit(): void {
     this.getIdFromURL();
     this.firestoreService

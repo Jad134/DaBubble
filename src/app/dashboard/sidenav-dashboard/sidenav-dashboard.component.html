@@ -1,4 +1,5 @@
-<section class="sidenav">
+<section >
+  <div class="sidenav">
   <div class="sidenav_head">
     <div class="sidenav_head_left">
       <img src="assets/img/Workspace logo.png" alt="" />
@@ -91,9 +92,17 @@
       </button>
     </div>
   </div>
+  <!-- Button zum ausblenden der Sidenav -->
+  <div class="hide-sidenav" (click)="toggleSidenav()">
+    <p>{{ sidenavIsHide ? 'Workspace-Menü anzeigen' : 'Workspace-Menü schließen' }}</p>
+    <img src="../../../assets/img/{{ sidenavIsHide ? 'open-menu.svg' : 'close-menu.svg' }}" alt="Toggle menu">
+  </div>
+
+
   <app-add-channel
     [users]="users"
     (close)="toggleChannelOverlay()"
     *ngIf="channelOverlay"
   ></app-add-channel>
+</div>
 </section>
