@@ -1,8 +1,8 @@
 import { Component, Inject, TemplateRef, ViewChild, inject } from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { NgModule }      from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { channel } from '../../../../../models/channels.class';
 import { CommonModule } from '@angular/common';
@@ -12,24 +12,26 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogRef,
+  MatDialogConfig,
 } from '@angular/material/dialog';
 import { channelDataclientService } from '../../../../services/channelsDataclient.service';
 
 @Component({
   selector: 'app-add-user-channel-dialog',
   standalone: true,
-  imports: [MatCardModule, MatButton,MatIcon, FormsModule, ReactiveFormsModule, CommonModule, MatDialogTitle, MatDialogContent],
+  imports: [MatCardModule, MatButton, MatIcon, FormsModule, ReactiveFormsModule, CommonModule, MatDialogTitle, MatDialogContent],
   templateUrl: './add-user-channel-dialog.component.html',
   styleUrl: './add-user-channel-dialog.component.scss'
 })
 export class AddUserChannelDialogComponent {
-  constructor(public dialog: MatDialog,  @Inject(MAT_DIALOG_DATA) public data:any) {
+  constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) {
     console.log('Übergebene Daten:', data);
     this.users = data.users;
-    
+
   }
   newChannel: channel = new channel();
   @ViewChild('userListDialog') userListDialog: any;
+  dialogRef: MatDialogRef<any> | null = null;
 
   selectedOption: string = '';
   currentName: string = '';
@@ -39,8 +41,8 @@ export class AddUserChannelDialogComponent {
   channelDataclient = inject(channelDataclientService);
 
 
-  showUser(){
-    this.dialog.open(this.userListDialog)
+  showUser() {
+    this.openDialog()
     if (this.currentName.trim() === '') {
       // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
       this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
@@ -55,6 +57,25 @@ export class AddUserChannelDialogComponent {
       }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
     }
   }
+
+
+  openDialog() {
+    if (!this.dialogRef) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.hasBackdrop = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      // dialogConfig.position = {
+      //   top: '218px', // Definieren Sie die gewünschte Top-Position
+      //   left: '416px' // Definieren Sie die gewünschte Left-Position
+      // };
+      this.dialogRef = this.dialog.open(this.userListDialog, dialogConfig);
+      
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.dialogRef = null;
+      });
+    }
+  }
+
 
 
   chooseUser(userId: string) {

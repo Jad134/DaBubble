@@ -207,7 +207,7 @@
 }
 
 .container_show_user {
-    
+
     background-color: white;
     left: 28px;
     top: 50px;
@@ -227,7 +227,7 @@
     z-index: 2;
 
 
-    
+
     .box_user {
         display: flex;
         gap: 16px;
@@ -236,36 +236,36 @@
         padding: 0 16px;
         border-radius: 48px;
         cursor: pointer;
-  
+
         &:hover {
-          background-color: $light-purple;
+            background-color: $light-purple;
         }
-  
+
         button {
-          position: relative;
-  
-          .user_picture {
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-          }
-  
-          .statuslight {
-            border-radius: 50%;
-            border: solid white 2px;
-            position: absolute;
-            height: 10px;
-            width: 10px;
-            right: 2px;
-            bottom: 4.5px;
-          }
+            position: relative;
+
+            .user_picture {
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+            }
+
+            .statuslight {
+                border-radius: 50%;
+                border: solid white 2px;
+                position: absolute;
+                height: 10px;
+                width: 10px;
+                right: 2px;
+                bottom: 4.5px;
+            }
         }
-  
+
         p {
-          font-size: 18px;
-          font-weight: 500;
+            font-size: 18px;
+            font-weight: 500;
         }
-      }
+    }
 }
 
 .show-choosed-user {
@@ -273,9 +273,9 @@
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
-  }
+}
 
-  .choosed-user-box {
+.choosed-user-box {
     display: flex;
     align-items: center;
     height: 60px;
@@ -288,21 +288,21 @@
     cursor: pointer;
     font-size: 18px;
     font-weight: 500;
-  
-    >button {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-  }
 
-  .current-user-picture {
+    >button {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.current-user-picture {
     border-radius: 50%;
     width: 50px;
     height: 50px;
-  }
+}
 
-  .statuslight-choosed-user {
+.statuslight-choosed-user {
     border-radius: 50%;
     border: solid white 2px;
     position: absolute;
@@ -310,4 +310,13 @@
     width: 10px;
     right: 2px;
     bottom: 4.5px;
-  }
+}
+
+.input_add {
+    position: relative;
+}
+
+.inputAddUser {
+    position: relative;
+}
+
