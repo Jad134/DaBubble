@@ -89,14 +89,9 @@ export class StorageService {
     } catch (error) {
       console.error('Fehler beim Herunterladen des Bildes:', error);
     }
-    
   }
 
 
-
-  
-
-  
   async downloadImage(imagePath: string): Promise<string> {
   const imgReference = ref(this.storage, imagePath);
   try {
