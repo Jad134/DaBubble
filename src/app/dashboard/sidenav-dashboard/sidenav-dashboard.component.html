@@ -34,7 +34,7 @@
       class="sidenav_place_channel_infos"
     >
     <div class="channel-overview">
-      <div (click)="openGroupChat()" *ngFor="let channels of channelService.channels" class="sidenav_container_channel_info">
+      <div (click)="openGroupChat(channels.id)" *ngFor="let channels of channelService.channels" class="sidenav_container_channel_info">
         <div class="sidenav_info">
           <img src="/assets/img/tag.png" alt="" />
           <p>{{channels.name}}</p>

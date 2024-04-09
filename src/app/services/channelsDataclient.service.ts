@@ -25,6 +25,7 @@ export class channelDataclientService {
   channels: channel[] = [];
 
 
+
   /**
    * this function stores a new Channel in firestore
    * @param channel 
@@ -138,4 +139,24 @@ export class channelDataclientService {
       }
     }
   }
+
+
+  /**
+   * This function waits for the channeldatas which is get by id and returns the datas. Used at the group-chat-component.
+   */
+  async getCurrentChannel(id: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const docRef = doc(this.firestore, 'Channels', id);
+
+        const unsub = onSnapshot(docRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                resolve(data);
+            } else {
+                console.log('Der Kanal mit der ID', id, 'existiert nicht.');
+                resolve(null);
+            }
+        });
+    });
+}
 }

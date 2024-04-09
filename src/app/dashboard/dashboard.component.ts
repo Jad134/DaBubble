@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [HeadDashboardComponent, SidenavDashboardComponent, ChatDashboardComponent, ThreadComponent, DirectChatComponent, GroupChatComponent,CommonModule ],
+  imports: [HeadDashboardComponent, SidenavDashboardComponent, ChatDashboardComponent, ThreadComponent, DirectChatComponent, GroupChatComponent, CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -28,7 +28,8 @@ export class DashboardComponent {
   profilePictureReady = false;
   @ViewChild('sidenav') sidenav!: SidenavDashboardComponent;
   groupChatVisible: boolean = false;
-  directChatVisible : boolean = false;
+  directChatVisible: boolean = false;
+  currentGroupChat!: string;
 
 
 
@@ -61,9 +62,9 @@ export class DashboardComponent {
   }
 
 
-   /**
-   * This function sets the boolean to true or false to show with ngIf the right chat variant
-   */
+  /**
+  * This function sets the boolean to true or false to show with ngIf the right chat variant
+  */
   handleGroupChatVisibility(event: boolean) {
     this.groupChatVisible = event;
   }
@@ -72,8 +73,14 @@ export class DashboardComponent {
   /**
    * This function sets the boolean to true or false to show with ngIf the right chat variant
    */
-  handleDirectChatVisibility(event: boolean){
+  handleDirectChatVisibility(event: boolean) {
     this.directChatVisible = event;
   }
 
+
+  handleCurrentGroupId(id: string) {
+    this.currentGroupChat = id;
+    console.log(this.currentGroupChat);
+    
+  }
 }

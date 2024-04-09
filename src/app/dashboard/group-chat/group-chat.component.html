@@ -1,27 +1,28 @@
-<section >
+<section>
     <div class="chat-header">
-<!-- 
-        <div *ngIf="testChannel" class="chat-header-left">
+
+        <div class="chat-header-left">
             <div><img src="assets/img/black_tag.png"></div>
-            <span>{{testChannel.description}}</span>
+            <span *ngIf="currentChannelData">{{currentChannelData.name}}</span>
             <div><img src="assets/img/arrow_drop_down.png"></div>
         </div>
 
-        <div  *ngIf="testChannel"  class="chat-header-right">
-            <div class="header-avatar"> 
-            
-                    <img *ngFor="let users of testChannel.usersInChannel" [src]="users.avatar" class="avatar-img">
-                
+        <div class="chat-header-right">
+            <div class="header-avatar">
+
+                <!-- <img *ngFor="let users of testChannel.usersInChannel" [src]="users.avatar" class="avatar-img"> -->
+
             </div>
             <span class="chat-members-num">3</span>
             <div class="add-person"><img src="assets/img/person_add.png"></div>
-        </div> -->
+        </div>
 
     </div>
 
     <div class="chat">
         <div class="date-div">
-            <div class="line"></div> <span class="date">18.03.2024</span> <div class="line"></div>
+            <div class="line"></div> <span class="date">18.03.2024</span>
+            <div class="line"></div>
         </div>
 
         <div class="chat-message">
@@ -37,11 +38,12 @@
                     <div class="comment w-h-40"></div>
                 </div>
             </div>
-            
+
         </div>
-        
+
         <div class="date-div">
-            <div class="line"></div> <span class="date">19.03.2024</span> <div class="line"></div>
+            <div class="line"></div> <span class="date">19.03.2024</span>
+            <div class="line"></div>
         </div>
 
         <div class="you-chat-message">
@@ -60,25 +62,19 @@
         </div>
 
     </div>
-<div class="answer-section">
+    <div class="answer-section">
         <div class="answer-field">
-        <textarea
-          name="answer"
-          id="answer"
-          cols="1"
-          rows="40"
-          placeholder="Antworten..."
-        ></textarea>
-        <div class="button-row">
-            <div class="d-flex-sb">  
-                <div class="add w-h-40">
+            <textarea name="answer" id="answer" cols="1" rows="40" placeholder="Antworten..."></textarea>
+            <div class="button-row">
+                <div class="d-flex-sb">
+                    <div class="add w-h-40">
+                    </div>
+                    <div class="vector"></div>
+                    <div class="emoji w-h-40"></div>
+                    <div class="email w-h-40"></div>
                 </div>
-                <div class="vector"></div>
-                <div class="emoji w-h-40"></div>
-            <div class="email w-h-40" ></div>
+                <div class="send w-h-40"></div>
             </div>
-            <div class="send w-h-40"></div>
-        </div>
         </div>
     </div>
-</section> 
+</section>
