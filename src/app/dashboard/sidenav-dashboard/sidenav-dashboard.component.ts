@@ -27,7 +27,6 @@ import { User } from '../../../models/user.class';
 import { ActivatedRoute } from '@angular/router';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 
-
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
@@ -45,7 +44,7 @@ import { channelDataclientService } from '../../services/channelsDataclient.serv
 export class SidenavDashboardComponent {
   firestoreService = inject(FirestoreService);
   downloadService = inject(StorageService);
-  channelService = inject(channelDataclientService)
+  channelService = inject(channelDataclientService);
   channelOverlay: boolean = false;
   userIds: any;
   currentUserId: any;
@@ -62,13 +61,37 @@ export class SidenavDashboardComponent {
   @Output() clickedChannelIdEvent = new EventEmitter<string>();
   @Output() clickedUserIdEvent = new EventEmitter<string>();
 
-
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {}
 
   sidenavIsHide: boolean = false;
+  imageUrl: string = '../../../assets/img/close-menu.svg';
 
+  /**
+   *this function toggle the variable sidenavIsHide to true, if sidenav closed
+   */
   toggleSidenav() {
     this.sidenavIsHide = !this.sidenavIsHide;
+  }
+  /**
+   * change the src für the "Workspace Menü" button bei hover it
+   */
+  onMouseEnter(): void {
+    if (!this.sidenavIsHide) {
+      this.imageUrl = '../../../assets/img/close-menu-hover.svg';
+    } else {
+      this.imageUrl = '../../../assets/img/open-menu-hover.svg';
+    }
+  }
+
+   /**
+   * change the src für the "Workspace Menü" button bei hover it
+   */
+  onMouseLeave(): void {
+    if (!this.sidenavIsHide) {
+      this.imageUrl = '../../../assets/img/close-menu.svg';
+    } else {
+      this.imageUrl = '../../../assets/img/open-menu.svg';
+    }
   }
 
   /**
@@ -90,9 +113,8 @@ export class SidenavDashboardComponent {
         console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
       });
 
-    this.downloadChannels(this.currentUserId)
+    this.downloadChannels(this.currentUserId);
   }
-
 
   /**
    * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
@@ -117,7 +139,6 @@ export class SidenavDashboardComponent {
     this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
 
-
   togglechannelsMenu() {
     this.channelsmenu = !this.channelsmenu;
   }
@@ -130,7 +151,6 @@ export class SidenavDashboardComponent {
     this.channelOverlay = !this.channelOverlay;
   }
 
-
   getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
@@ -138,24 +158,19 @@ export class SidenavDashboardComponent {
     }
   }
 
-
   async downloadChannels(userId: any) {
     await this.channelService.getUserChannelId(userId);
   }
 
-
-  openGroupChat(id:any) {
-    this.directChatEvent.emit(false)
-    this.groupChatEvent.emit(true)
-    this.clickedChannelIdEvent.emit(id)
-    
-
+  openGroupChat(id: any) {
+    this.directChatEvent.emit(false);
+    this.groupChatEvent.emit(true);
+    this.clickedChannelIdEvent.emit(id);
   }
 
-
-  openDirectChat(id:any) {
-    this.groupChatEvent.emit(false)
-    this.directChatEvent.emit(true)
-    this.clickedUserIdEvent.emit(id)
+  openDirectChat(id: any) {
+    this.groupChatEvent.emit(false);
+    this.directChatEvent.emit(true);
+    this.clickedUserIdEvent.emit(id);
   }
 }
