@@ -1,5 +1,5 @@
 <section>
-    <div class="chat-header">
+    <div *ngIf="currentChannelData" class="chat-header">
 
         <div class="chat-header-left">
             <div><img src="assets/img/black_tag.png"></div>
@@ -10,10 +10,10 @@
         <div class="chat-header-right">
             <div class="header-avatar">
 
-                <!-- <img *ngFor="let users of testChannel.usersInChannel" [src]="users.avatar" class="avatar-img"> -->
+                <img  *ngFor="let users of currentChannelData.usersInChannel" [src]="users.avatar" class="avatar-img">
 
             </div>
-            <span class="chat-members-num">3</span>
+            <span *ngIf="currentChannelData && currentChannelData.usersInChannel" class="chat-members-num">{{currentChannelData.usersInChannel.length}}</span>
             <div class="add-person"><img src="assets/img/person_add.png"></div>
         </div>
 

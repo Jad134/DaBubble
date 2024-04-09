@@ -33,6 +33,8 @@ export class GroupChatComponent {
     try {
         const data = await this.chatService.getCurrentChannel(this.currentId);
         this.currentChannelData = data;
+        console.log(this.currentChannelData);
+        
     } catch (error) {
         console.error('Fehler beim Laden der Daten:', error);
     }
