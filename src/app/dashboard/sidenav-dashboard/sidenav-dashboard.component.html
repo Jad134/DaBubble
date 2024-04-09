@@ -34,7 +34,7 @@
       class="sidenav_place_channel_infos"
     >
     <div class="channel-overview">
-      <div *ngFor="let channels of channelService.channels" class="sidenav_container_channel_info">
+      <div (click)="openGroupChat()" *ngFor="let channels of channelService.channels" class="sidenav_container_channel_info">
         <div class="sidenav_info">
           <img src="/assets/img/tag.png" alt="" />
           <p>{{channels.name}}</p>
@@ -68,7 +68,7 @@
       [@menuVisibility]="userMenu ? 'visible' : 'hidden'"
       class="sidenav_container_user"
     >
-      <button *ngFor="let user of users" class="sidenav_box_user">
+      <button (click)="openDirectChat()" *ngFor="let user of users" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
             <img

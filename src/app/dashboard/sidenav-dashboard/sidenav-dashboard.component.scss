@@ -86,6 +86,7 @@ section {
     display: flex;
     justify-content: start;
     padding-bottom: 24px;
+    
     div {
       display: flex;
       justify-content: center;
@@ -95,6 +96,7 @@ section {
       padding: 2px 20px 2px 20px;
       background-color: $bg-color;
       color: $purple1;
+      cursor: pointer;
       p {
         font-weight: 600;
         font-size: 600;

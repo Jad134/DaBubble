@@ -45,7 +45,7 @@ import { channelDataclientService } from '../../services/channelsDataclient.serv
 export class SidenavDashboardComponent {
   firestoreService = inject(FirestoreService);
   downloadService = inject(StorageService);
-  channelService =inject(channelDataclientService)
+  channelService = inject(channelDataclientService)
   channelOverlay: boolean = false;
   userIds: any;
   currentUserId: any;
@@ -53,10 +53,13 @@ export class SidenavDashboardComponent {
   addChannelOverlay: boolean = false;
   channelsmenu: boolean = true;
   userMenu: boolean = true;
-  channelNames :any;
+  channelNames: any;
   @Input() users: User[] = [];
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
+  @Output() groupChatEvent = new EventEmitter<boolean>();
+  @Output() directChatEvent = new EventEmitter<boolean>();
+
 
   constructor(private route: ActivatedRoute) { }
 
@@ -65,7 +68,7 @@ export class SidenavDashboardComponent {
   toggleSidenav() {
     this.sidenavIsHide = !this.sidenavIsHide;
   }
-  
+
   /**
    * This function downloaded the userdata and starts the imagedownloadfunction. After this, the datas are rendering at html
    */
@@ -134,7 +137,21 @@ export class SidenavDashboardComponent {
   }
 
 
- async downloadChannels(userId: any) {
+  async downloadChannels(userId: any) {
     await this.channelService.getUserChannelId(userId);
+  }
+
+
+  openGroupChat() {
+    this.directChatEvent.emit(false)
+    this.groupChatEvent.emit(true)
+    
+
+  }
+
+
+  openDirectChat() {
+    this.groupChatEvent.emit(false)
+    this.directChatEvent.emit(true)
   }
 }

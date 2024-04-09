@@ -1,6 +1,8 @@
 <app-head-dashboard></app-head-dashboard>
 <section>
-<app-sidenav-dashboard  #sideNav  [users]="users"></app-sidenav-dashboard>
-<app-chat-dashboard class="dashboard"></app-chat-dashboard>
+<app-sidenav-dashboard (directChatEvent)="handleDirectChatVisibility($event)" (groupChatEvent)="handleGroupChatVisibility($event)"   #sideNav  [users]="users"></app-sidenav-dashboard>
+<!-- <app-chat-dashboard class="dashboard"></app-chat-dashboard> -->
+<app-group-chat *ngIf="groupChatVisible"  class="chat-components"></app-group-chat>
+<app-direct-chat *ngIf="directChatVisible" class="chat-components"></app-direct-chat>
 <app-thread></app-thread>
 </section>
