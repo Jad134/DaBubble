@@ -10,7 +10,7 @@
         <div class="chat-header-right">
             <div class="header-avatar">
 
-                <img  *ngFor="let users of currentChannelData.usersInChannel" [src]="users.avatar" class="avatar-img">
+                <img *ngFor="let users of currentChannelData.usersInChannel" [src]="users.avatar" class="avatar-img">
 
             </div>
             <span *ngIf="currentChannelData && currentChannelData.usersInChannel" class="chat-members-num">{{currentChannelData.usersInChannel.length}}</span>

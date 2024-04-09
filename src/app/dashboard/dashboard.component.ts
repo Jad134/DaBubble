@@ -30,6 +30,7 @@ export class DashboardComponent {
   groupChatVisible: boolean = false;
   directChatVisible: boolean = false;
   currentGroupChat!: string;
+  currentDirectChat!: string;
 
 
 
@@ -81,6 +82,11 @@ export class DashboardComponent {
   handleCurrentGroupId(id: string) {
     this.currentGroupChat = id;
     console.log(this.currentGroupChat);
-    
+
+  }
+
+
+  handleDirectChatId(id: string) {
+    this.currentDirectChat = id;
   }
 }

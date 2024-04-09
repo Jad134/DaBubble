@@ -59,7 +59,8 @@ export class SidenavDashboardComponent {
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
   @Output() groupChatEvent = new EventEmitter<boolean>();
   @Output() directChatEvent = new EventEmitter<boolean>();
-  @Output() clickedIdEvent = new EventEmitter<string>();
+  @Output() clickedChannelIdEvent = new EventEmitter<string>();
+  @Output() clickedUserIdEvent = new EventEmitter<string>();
 
 
   constructor(private route: ActivatedRoute) { }
@@ -146,14 +147,15 @@ export class SidenavDashboardComponent {
   openGroupChat(id:any) {
     this.directChatEvent.emit(false)
     this.groupChatEvent.emit(true)
-    this.clickedIdEvent.emit(id)
+    this.clickedChannelIdEvent.emit(id)
     
 
   }
 
 
-  openDirectChat() {
+  openDirectChat(id:any) {
     this.groupChatEvent.emit(false)
     this.directChatEvent.emit(true)
+    this.clickedUserIdEvent.emit(id)
   }
 }

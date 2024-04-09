@@ -68,7 +68,7 @@
       [@menuVisibility]="userMenu ? 'visible' : 'hidden'"
       class="sidenav_container_user"
     >
-      <button (click)="openDirectChat()" *ngFor="let user of users" class="sidenav_box_user">
+      <button (click)="openDirectChat(user.id)" *ngFor="let user of users" class="sidenav_box_user">
         <div class="sidenav_place_user">
           <div>
             <img

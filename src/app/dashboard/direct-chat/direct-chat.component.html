@@ -1,11 +1,11 @@
 <section>
-    <div class="chat-header">
+    <div *ngIf="currentUserData" class="chat-header">
         <div class="dm-image-container">
-            <img src="assets/img/avatars/avatar-1.svg" class="avatar-img">
+            <img [src]="currentUserData.avatar" class="avatar-img">
             <div class="statuslight"></div>
             
         </div>
-        <p>Jad Testet Desings</p>
+        <p>{{currentUserData.name}}</p>
     </div>
 
     <div class="chat">
