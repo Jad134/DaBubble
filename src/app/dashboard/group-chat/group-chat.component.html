@@ -1,7 +1,7 @@
 <section>
     <div *ngIf="currentChannelData" class="chat-header">
 
-        <div class="chat-header-left">
+        <div class="chat-header-left" (click)="openEditDialog()">
             <div><img src="assets/img/black_tag.png"></div>
             <span *ngIf="currentChannelData">{{currentChannelData.name}}</span>
             <div><img src="assets/img/arrow_drop_down.png"></div>
