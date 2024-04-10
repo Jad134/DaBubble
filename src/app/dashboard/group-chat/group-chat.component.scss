@@ -34,7 +34,9 @@ button{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     box-shadow: 0 2px 0px rgba(0, 0, 0, 0.1);
+    height: 96px;
     div{
         display: flex;
         flex-direction: row; 
@@ -43,10 +45,47 @@ button{
 }
 
 .chat-header-left{
-    font-size: large;
+    cursor: pointer;
+    padding: 6px 10px;
+    height: 33px;
     margin-left: 35px;
-    img{
-        width: 70%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    span{
+      font-size: 24px;
+      font-weight: 700;
+      font-family: $nunito;
+      }
+
+    .arrow-down{
+      background: url('../../../assets/img/keyboard_arrow_down.svg') no-repeat;
+      width: 30px;
+      height: 30px;
+    }
+
+    .tag{
+      background: url('../../../assets/img/tag.svg') no-repeat;
+      width: 30px;
+      height: 30px;
+    }
+
+    &:hover{
+      background-color: $bg-color;
+      border-radius: 100px;
+
+      .arrow-down{
+        background: url('../../../assets/img/keyboard_arrow_down-hover.svg') no-repeat;
+      }
+
+      .tag{
+        background: url('../../../assets/img/tag-hover.svg') no-repeat;
+      }
+
+      span{
+        color: $purple1;
+      }
     }
 }
 

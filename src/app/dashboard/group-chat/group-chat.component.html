@@ -2,9 +2,9 @@
     <div *ngIf="currentChannelData" class="chat-header">
 
         <div class="chat-header-left" (click)="openEditDialog()">
-            <div><img src="assets/img/black_tag.png"></div>
+            <div class="tag"></div>
             <span *ngIf="currentChannelData">{{currentChannelData.name}}</span>
-            <div><img src="assets/img/arrow_drop_down.png"></div>
+            <div class="arrow-down"></div>
         </div>
 
         <div class="chat-header-right">
