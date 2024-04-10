@@ -15,11 +15,11 @@ export class DirectChatComponent {
   fireStoreService = inject(FirestoreService)
   downloadService = inject(StorageService);
   currentUserData: any;
-  
-  
-/**
- * This function checks changes for updating the chat component
- */
+
+
+  /**
+   * This function checks changes for updating the chat component
+   */
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['currentId']) {
       await this.loadCurrentDatas();
@@ -35,7 +35,7 @@ export class DirectChatComponent {
     try {
       const data = await this.fireStoreService.getUserDataById(this.currentId);
       this.currentUserData = data;
-    
+
       console.log(this.currentUserData);
 
     } catch (error) {
@@ -52,14 +52,10 @@ export class DirectChatComponent {
       if (!this.currentUserData || typeof this.currentUserData !== 'object') {
         throw new Error('currentUserData is not an object');
       }
-  
-      // Überprüfen, ob das Benutzerobjekt ein Bild aktualisieren muss
       if (this.currentUserData.avatar === 'ownPictureDA') {
         const profilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentUserData.id}/ownPictureDA`;
         try {
-          const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
-          // Aktualisieren Sie das Avatar-Attribut des Benutzerobjekts mit der heruntergeladenen Bild-URL
-          this.currentUserData.avatar = downloadedImageUrl;
+          this.setProfilePictureToUser(profilePictureURL)
         } catch (error) {
           console.error('Error downloading user profile picture:', error);
         }
@@ -67,5 +63,11 @@ export class DirectChatComponent {
     } catch (error) {
       console.error('Error loading profile pictures:', error);
     }
+  }
+
+
+ async setProfilePictureToUser(profilePictureURL: string) {
+    const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
+    this.currentUserData.avatar = downloadedImageUrl;
   }
 }
