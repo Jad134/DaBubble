@@ -1,3 +1,23 @@
 <mat-card>
-  <h2 mat-dialog-title># Channelname</h2>
+  <div class="header">
+    <h2 mat-dialog-title># {{name}}</h2>
+    <div class="close" (click)="close()"></div>
+  </div>
+  <div class="chan-name">
+    <div class="head-cont">
+      <h3>Channel-Name</h3>
+      <div class="edit-btn">Bearbeiten</div>
+    </div>
+    <div class="pdlr-15"># {{name}}</div>
+  </div>
+  <div class="descr-sect">
+    <div class="head-cont">
+      <h3>Beschreibung</h3>
+      <div class="edit-btn">Bearbeiten</div>
+    </div>
+    <span class="pdlr-15">{{description}}</span>
+    <div class="line"></div>
+    <h3 class="pdb-15 pdlr-15">Erstellt von</h3>
+    <div class="name pdlr-15">Name</div>
+  </div>
 </mat-card>
