@@ -1,4 +1,4 @@
-import { Component, Inject, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Inject, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -31,6 +31,7 @@ export class AddUserChannelDialogComponent {
   }
   newChannel: channel = new channel();
   @ViewChild('userListDialog') userListDialog: any;
+  @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
   dialogRef: MatDialogRef<any> | null = null;
 
   selectedOption: string = '';
@@ -42,7 +43,7 @@ export class AddUserChannelDialogComponent {
 
 
   showUser() {
-    this.openDialog()
+   this.openDialog()
     if (this.currentName.trim() === '') {
       // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
       this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
@@ -68,7 +69,14 @@ export class AddUserChannelDialogComponent {
       //   top: '218px', // Definieren Sie die gewünschte Top-Position
       //   left: '416px' // Definieren Sie die gewünschte Left-Position
       // };
+      dialogConfig.autoFocus = false; // Dialog erhält keinen Fokus automatisch
+      dialogConfig.closeOnNavigation = true; // Dialog bleibt ge
+
       this.dialogRef = this.dialog.open(this.userListDialog, dialogConfig);
+
+      this.dialogRef.afterOpened().subscribe(() => {
+        this.userInput.nativeElement.focus();
+      });
       
       this.dialogRef.afterClosed().subscribe(() => {
         this.dialogRef = null;
@@ -76,7 +84,9 @@ export class AddUserChannelDialogComponent {
     }
   }
 
-
+  preventDialogClose(event: MouseEvent): void {
+    event.stopPropagation(); // Verhindert, dass das Klickereignis den Dialog schließt
+  }
 
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);

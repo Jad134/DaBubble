@@ -20,7 +20,7 @@
                 <p>Bestimmte Leute hinzufügen</p>
             </div>
             <div class="place_input_choose_user">
-                <input [(ngModel)]="currentName" (click)="showUser()" (ngModelChange)="showUser()" name="currentName"
+                <input #userInput  (click)="preventDialogClose($event)" [(ngModel)]="currentName" (click)="showUser(); openDialog()" (ngModelChange)="showUser()" name="currentName"
                     (keydown)="showUser()" *ngIf="selectedOption === 'specificPeople'" type="text"
                     class="input_add inputAddUser" />
                 <ng-template #userListDialog>

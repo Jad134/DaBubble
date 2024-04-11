@@ -45,7 +45,7 @@ export class DirectChatComponent {
 
 
   /**
-   * This function checks if the user used a own profile picture and downloaded the url with the function from downloadService. After that the currentU will be updatet.
+   * This function checks if the user used a own profile picture and downloaded the url with the function from downloadService. After that the currentUser will be updatet.
    */
   async loadProfilePictures() {
     try {
@@ -66,6 +66,9 @@ export class DirectChatComponent {
   }
 
 
+  /**
+   * This function push the right url for own profile pictures to the user 
+   */
  async setProfilePictureToUser(profilePictureURL: string) {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
