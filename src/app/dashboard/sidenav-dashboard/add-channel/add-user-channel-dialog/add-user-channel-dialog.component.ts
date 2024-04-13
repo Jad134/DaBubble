@@ -13,18 +13,19 @@ import {
   MatDialogContent,
   MatDialogRef,
   MatDialogConfig,
+  MatDialogClose,
 } from '@angular/material/dialog';
 import { channelDataclientService } from '../../../../services/channelsDataclient.service';
 
 @Component({
   selector: 'app-add-user-channel-dialog',
   standalone: true,
-  imports: [MatCardModule, MatButton, MatIcon, FormsModule, ReactiveFormsModule, CommonModule, MatDialogTitle, MatDialogContent],
+  imports: [MatCardModule, MatButton, MatIcon, FormsModule, ReactiveFormsModule, CommonModule, MatDialogTitle, MatDialogContent, MatDialogClose],
   templateUrl: './add-user-channel-dialog.component.html',
   styleUrl: './add-user-channel-dialog.component.scss'
 })
 export class AddUserChannelDialogComponent {
-  constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,   public originalDialogRef: MatDialogRef<AddUserChannelDialogComponent>) {
     console.log('Übergebene Daten:', data);
     this.users = data.users;
 
@@ -33,6 +34,8 @@ export class AddUserChannelDialogComponent {
   @ViewChild('userListDialog') userListDialog: any;
   @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
   dialogRef: MatDialogRef<any> | null = null;
+  
+
 
   selectedOption: string = '';
   currentName: string = '';
@@ -85,9 +88,19 @@ export class AddUserChannelDialogComponent {
     }
   }
 
+
+  closeDialog(): void {
+   this.originalDialogRef.close()
+  }
+
+
+  /**
+   * Prevent Closing the userlist dialog, when click on inputfield for searching user
+   */
   preventDialogClose(event: MouseEvent): void {
     event.stopPropagation(); // Verhindert, dass das Klickereignis den Dialog schließt
   }
+
 
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);
