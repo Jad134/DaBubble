@@ -87,3 +87,27 @@ h3{
     font-weight: 400;
     color: $purple3;
 }
+
+.edit-channelname{
+    height: 24px;
+    border: 1px solid $light-purple;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 20px;
+
+    input{
+        border: none;
+        font-family: $nunito;
+        font-size: 18px;
+        font-weight: 400;
+        width: 100%;
+
+        &:focus-visible{
+            border: none;
+        }
+    }
+
+}
+

@@ -3,48 +3,105 @@ import { MatCard } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FirestoreService } from '../../../services/firestore.service';
 import { channelDataclientService } from '../../../services/channelsDataclient.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-group-channel-dialog',
   standalone: true,
-  imports: [MatCard],
+  imports: [MatCard, CommonModule],
   templateUrl: './edit-group-channel-dialog.component.html',
-  styleUrl: './edit-group-channel-dialog.component.scss'
+  styleUrl: './edit-group-channel-dialog.component.scss',
 })
 export class EditGroupChannelDialogComponent {
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(
+    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   channelId!: string;
   currentChannelData!: any;
-  firestoreService = inject(FirestoreService)
-  channelsDataclientService = inject(channelDataclientService)
-  name!:string;
+  firestoreService = inject(FirestoreService);
+  channelsDataclientService = inject(channelDataclientService);
+  name!: string;
   description!: string;
-
+  isChannelNameEdit: boolean = false;
+  isDescriptionEdit: boolean = false;
+  updatedDescriptionValue: string = "";
+  updatedNameValue: string = "";
 
   async ngOnInit() {
     this.channelId = this.data.channelId;
     await this.loadCurrentDatas();
-    console.log("Aktueller Channel ist: ", this.currentChannelData);
+    console.log('Aktueller Channel ist: ', this.currentChannelData);
     this.name = this.currentChannelData.name;
     this.description = this.currentChannelData.description;
+  }
+
+  /**
+   * This function download the channeldatas from the channelService per id.
+   */
+  async loadCurrentDatas() {
+    try {
+      const data = await this.channelsDataclientService.getCurrentChannel(
+        this.channelId
+      );
+      this.currentChannelData = data;
+    } catch (error) {
+      console.error('Fehler beim Laden der Daten:', error);
+    }
+  }
+
+  /**
+   * Close the dialog
+   */
+  close() {
+    this.dialog.closeAll();
+  }
+
+  /**
+   * open the edit name view
+   */
+  editName() {
+    this.isChannelNameEdit = true;
+  }
+
+  /**
+   * open the edit description view
+   */
+  editDescription() {
+    this.isDescriptionEdit = true;
+  }
+
+  /**
+   * save the changed name value
+   */
+  saveName() {
+    this.isChannelNameEdit = false;
+    this.name = this.updatedNameValue;
 
   }
 
-    /**
-   * This function download the channeldatas from the channelService per id.
+  /**
+   * save the changed description value
    */
-    async loadCurrentDatas() {
-      try {
-        const data = await this.channelsDataclientService.getCurrentChannel(this.channelId);
-        this.currentChannelData = data;
-      } catch (error) {
-        console.error('Fehler beim Laden der Daten:', error);
-      }
-    }
+  saveDescription() {
+    this.isDescriptionEdit = false;
+    this.description = this.updatedDescriptionValue;
+  }
 
+  /**
+   * update the description variable with the input value
+   * @param event 
+   */
+  updateDescriptionValue(event: any){
+    this.updatedDescriptionValue = event.target.value;
+  }
 
-  close(){
-    this.dialog.closeAll();
+  /**
+   * update the name variable with the input value
+   * @param event 
+   */
+  updateNameValue(event: any){
+    this.updatedNameValue = event.target.value;
   }
 }
