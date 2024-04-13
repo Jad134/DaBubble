@@ -74,6 +74,7 @@ export class AddUserChannelDialogComponent {
 
       this.dialogRef = this.dialog.open(this.userListDialog, dialogConfig);
 
+      
       this.dialogRef.afterOpened().subscribe(() => {
         this.userInput.nativeElement.focus();
       });
