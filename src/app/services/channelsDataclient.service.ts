@@ -159,4 +159,26 @@ export class channelDataclientService {
         });
     });
 }
+
+  /**
+   * Update the channel name in DB
+   */
+  async updateChannelName(id:string, name:string){
+    const channelRef = doc(this.db, "Channels", id);
+    await updateDoc(channelRef, {
+      name: name,
+    });
+  }
+
+  /**
+   * Update the channel description in DB
+   */
+  async updateChannelDescription(id:string, description:string){
+    const channelRef = doc(this.db, "Channels", id);
+    await updateDoc(channelRef, {
+      description: description,
+    });
+  }
+
+
 }

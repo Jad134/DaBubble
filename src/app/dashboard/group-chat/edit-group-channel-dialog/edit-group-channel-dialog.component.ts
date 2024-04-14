@@ -75,18 +75,20 @@ export class EditGroupChannelDialogComponent {
   /**
    * save the changed name value
    */
-  saveName() {
+  async saveName() {
     this.isChannelNameEdit = false;
     this.name = this.updatedNameValue;
+    await this.channelsDataclientService.updateChannelName(this.channelId, this.name);
 
   }
 
   /**
    * save the changed description value
    */
-  saveDescription() {
+  async saveDescription() {
     this.isDescriptionEdit = false;
     this.description = this.updatedDescriptionValue;
+    await this.channelsDataclientService.updateChannelDescription(this.channelId, this.description);
   }
 
   /**
