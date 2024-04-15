@@ -49,10 +49,42 @@ export class channelDataclientService {
         await this.firestoreService.updateUsersChannels(user.id, channelId);
       }
 
+      await this.createChatCollection(channelId)
 
     } catch (error) {
       console.log('Error writing document: ', error);
     }
+  }
+
+
+  /**
+  * This function create a subcollection which is called 'chat' for the chat function
+  */
+  async createChatCollection(collectionId: string) {
+    const parentDocRef = doc(this.db, 'Channels', collectionId);
+    await addDoc(collection(parentDocRef, 'chat'), {
+
+    })
+  }
+
+
+  /**
+   * This function sets the document with the timestamp as id. This doc has the information for the chats 
+   */
+  async sendChat(channelId:string, timeStamp:string, message:string, user:string,){
+    const chatRef = doc(this.db, "Channels", channelId, 'chat', timeStamp);
+     
+    try {
+      await setDoc(chatRef, {
+          message: message,
+          user: user,
+          time: timeStamp,
+          emoji:{},
+      });
+      console.log("Chat-Dokument erfolgreich erstellt.");
+  } catch (error) {
+      console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
+  }
   }
 
 
@@ -96,11 +128,11 @@ export class channelDataclientService {
   }
 
 
-   /**
-   * This function returns the Ids for the Channels, which show at the sideNav
-   * @param id 
-   */
-   async getUserChannelId(id: any) {
+  /**
+  * This function returns the Ids for the Channels, which show at the sideNav
+  * @param id 
+  */
+  async getUserChannelId(id: any) {
     const unsub = onSnapshot(doc(this.db, "Users", id), (doc) => {
       const UserData = doc.data();
 
@@ -119,10 +151,10 @@ export class channelDataclientService {
   }
 
 
-   /***
-   * This function gets all chanels from the current user with the getUserChannelIds() ids.
-   */
-   async getChannels() {
+  /***
+  * This function gets all chanels from the current user with the getUserChannelIds() ids.
+  */
+  async getChannels() {
     for (const channelId of this.channelIds) {
       // Überprüfen Sie, ob der Kanal bereits in this.channels vorhanden ist
       if (!this.channels.find(channel => channel.id === channelId)) {
@@ -131,7 +163,7 @@ export class channelDataclientService {
             const channelData = channelDoc.data();
             const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
             this.channels.push(newChannel); // Das neue channel-Objekt zum Array hinzufügen
-            console.log(this.channels); 
+            console.log(this.channels);
           } else {
             console.log("Kanal mit ID", channelId, "nicht gefunden.");
           }
@@ -146,24 +178,24 @@ export class channelDataclientService {
    */
   async getCurrentChannel(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
-        const docRef = doc(this.firestore, 'Channels', id);
+      const docRef = doc(this.firestore, 'Channels', id);
 
-        const unsub = onSnapshot(docRef, (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-                resolve(data);
-            } else {
-                console.log('Der Kanal mit der ID', id, 'existiert nicht.');
-                resolve(null);
-            }
-        });
+      const unsub = onSnapshot(docRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          resolve(data);
+        } else {
+          console.log('Der Kanal mit der ID', id, 'existiert nicht.');
+          resolve(null);
+        }
+      });
     });
-}
+  }
 
   /**
    * Update the channel name in DB
    */
-  async updateChannelName(id:string, name:string){
+  async updateChannelName(id: string, name: string) {
     const channelRef = doc(this.db, "Channels", id);
     await updateDoc(channelRef, {
       name: name,
@@ -173,12 +205,15 @@ export class channelDataclientService {
   /**
    * Update the channel description in DB
    */
-  async updateChannelDescription(id:string, description:string){
+  async updateChannelDescription(id: string, description: string) {
     const channelRef = doc(this.db, "Channels", id);
     await updateDoc(channelRef, {
       description: description,
     });
   }
+
+
+
 
 
 }

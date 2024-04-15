@@ -62,9 +62,9 @@
         </div>
 
     </div>
-    <div class="answer-section">
+    <div *ngIf="currentChannelData" class="answer-section">
         <div class="answer-field">
-            <textarea name="answer" id="answer" cols="1" rows="40" placeholder="Antworten..."></textarea>
+            <textarea  [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40" placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">
                     <div class="add w-h-40">
@@ -73,7 +73,7 @@
                     <div class="emoji w-h-40"></div>
                     <div class="email w-h-40"></div>
                 </div>
-                <div class="send w-h-40"></div>
+                <div (click)="sendMessage(currentChannelData.id)" class="send w-h-40"></div>
             </div>
         </div>
     </div>

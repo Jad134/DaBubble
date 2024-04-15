@@ -3,11 +3,13 @@ import { channelDataclientService } from '../../services/channelsDataclient.serv
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edit-group-channel-dialog.component';
+import { FormsModule } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-group-chat',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './group-chat.component.html',
   styleUrl: './group-chat.component.scss',
 })
@@ -15,8 +17,21 @@ export class GroupChatComponent {
   @Input() currentId!: string;
   chatService = inject(channelDataclientService);
   currentChannelData: any;
+  message: any;
+  currentUserId:any;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private route: ActivatedRoute,) { 
+    this.getIdFromURL()
+  }
+
+
+  getIdFromURL() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id != null) {
+      this.currentUserId = id;
+    }
+  }
+
 
   /**
    * This function checks if the id is changed by clicked on another channel in sidenav
@@ -50,5 +65,17 @@ export class GroupChatComponent {
       channelId: this.currentChannelData.id,
     }
     this.dialog.open(EditGroupChannelDialogComponent, dialogConfig);
+  }
+
+
+  /**
+   * send the message with the needed information to the chatservice and clears the textarea
+   */
+  sendMessage(channelId:string){
+    console.log(this.message, channelId);
+    let timeStamp = Date.now().toString()
+
+    this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
+    this.message = '' 
   }
 }
