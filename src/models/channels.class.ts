@@ -1,9 +1,12 @@
+import { User } from "./user.class";
+
 export class channel {
   id: string;
   name: string;
   description: string;
   usersInChannel: any[] = []
   threads: {};
+  creator: string;
 
   constructor(obj?: any) {
     this.id = obj ? obj.id : '';
@@ -11,6 +14,7 @@ export class channel {
     this.description = obj ? obj.description : '';
     this.usersInChannel = obj ? obj.usersInChannel : '';
     this.threads = obj ? obj.threads : '';
+    this.creator = obj ? obj.creator : '';
   }
 
   public toJson() {
@@ -19,7 +23,8 @@ export class channel {
       name: this.name,
       description: this.description,
       usersInChannel: this.usersInChannel,
-      threads: this.threads
+      threads: this.threads,
+      creator: this.creator
     }
   }
 }

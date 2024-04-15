@@ -29,7 +29,7 @@
     <span class="pdlr-15">{{ description }}</span>
     <div class="line"></div>
     <h3 class="pdb-15 pdlr-15">Erstellt von</h3>
-    <div class="name pdlr-15">Name</div>
+    <div class="name pdlr-15">{{creator}}</div>
   </div>
   <!-- Channel Description Bearbeiten Ansicht -->
   <div *ngIf="isDescriptionEdit">
@@ -40,6 +40,6 @@
     <div class="edit-channelname pdb-15">#<input type="text" [value]="description" (input)="updateDescriptionValue($event)"></div>
   <div class="line"></div>
   <h3 class="pdb-15 pdlr-15">Erstellt von</h3>
-  <div class="name pdlr-15">Name</div>
+  <div class="name pdlr-15">{{creator}}</div>
 </div>
 </mat-card>

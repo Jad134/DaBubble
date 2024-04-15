@@ -40,6 +40,7 @@ export class channelDataclientService {
         id: channel.id,
         name: channel.name,
         description: channel.description,
+        creator: channel.creator,
         usersInChannel: simplifiedUsersInChannel,
       });
       let channelId = docRef.id

@@ -24,6 +24,7 @@ export class EditGroupChannelDialogComponent {
   channelsDataclientService = inject(channelDataclientService);
   name!: string;
   description!: string;
+  creator!: string;
   isChannelNameEdit: boolean = false;
   isDescriptionEdit: boolean = false;
   updatedDescriptionValue: string = "";
@@ -35,6 +36,7 @@ export class EditGroupChannelDialogComponent {
     console.log('Aktueller Channel ist: ', this.currentChannelData);
     this.name = this.currentChannelData.name;
     this.description = this.currentChannelData.description;
+    this.creator = this.currentChannelData.creator;
   }
 
   /**

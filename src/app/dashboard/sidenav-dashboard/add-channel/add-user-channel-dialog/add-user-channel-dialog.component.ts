@@ -145,6 +145,7 @@ export class AddUserChannelDialogComponent {
 
 
   addUsersToChannel() {
+    this.newChannel.creator = this.channelAdmin.name;
     if (this.selectedOption === 'allUsers') {
       this.selectedUser = [...this.users];
       this.newChannel.usersInChannel = this.selectedUser;
@@ -152,7 +153,7 @@ export class AddUserChannelDialogComponent {
       this.newChannel.usersInChannel = this.selectedUser;
     }
     // Hier kann die Service funktion eingefügt werden 
-    console.log(this.newChannel);
+    console.log('Neuer Channel: ',this.newChannel);
     this.channelDataclient.storeNewChannel(this.newChannel);
   }
 
