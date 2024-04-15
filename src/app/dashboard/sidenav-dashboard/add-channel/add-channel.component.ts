@@ -59,6 +59,7 @@ export class AddChannelComponent {
   currentUserId: any;
   firestore = inject(FirestoreService);
   channelDataclient = inject(channelDataclientService);
+  channelAdmin:any;
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {
     this.getIdFromURL()
@@ -87,6 +88,7 @@ export class AddChannelComponent {
     const channelAdmin = this.users.find(user => user.id === this.currentUserId);
     if (channelAdmin) {
       this.selectedUser.push(channelAdmin);
+      this.channelAdmin = channelAdmin
       console.log('Channel Admin added:', channelAdmin);
     } else {
       console.log('Channel Admin not found with ID:', this.currentUserId);
@@ -132,6 +134,9 @@ export class AddChannelComponent {
   openDialog() {
     const dialogRef = this.dialog.open(AddUserChannelDialogComponent, {
       data: {
+        channelAdmin: this.channelAdmin,
+        channelName: this.newChannel.name,
+        description: this.newChannel.description,
         users: this.users // Übergeben Sie die Benutzerdaten hier
       }
     });

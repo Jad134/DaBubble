@@ -16,6 +16,7 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { channelDataclientService } from '../../../../services/channelsDataclient.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-user-channel-dialog',
@@ -25,18 +26,21 @@ import { channelDataclientService } from '../../../../services/channelsDataclien
   styleUrl: './add-user-channel-dialog.component.scss'
 })
 export class AddUserChannelDialogComponent {
-  constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,   public originalDialogRef: MatDialogRef<AddUserChannelDialogComponent>) {
+  constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public originalDialogRef: MatDialogRef<AddUserChannelDialogComponent>, private route: ActivatedRoute,) {
     console.log('Übergebene Daten:', data);
     this.users = data.users;
+    this.newChannel.name = data.channelName;
+    this.newChannel.description = data.description;
+    this.channelAdmin = data.channelAdmin;
 
   }
   newChannel: channel = new channel();
   @ViewChild('userListDialog') userListDialog: any;
   @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
   dialogRef: MatDialogRef<any> | null = null;
-  
 
-
+  channelAdmin: any;
+  currentUserId: any;
   selectedOption: string = '';
   currentName: string = '';
   userList!: any[];
@@ -45,8 +49,25 @@ export class AddUserChannelDialogComponent {
   channelDataclient = inject(channelDataclientService);
 
 
+
+  ngAfterViewInit(): void {
+    this.addChannelAdmin()
+  }
+
+  
+  addChannelAdmin() {
+    const channelAdmin = this.channelAdmin;
+    if (channelAdmin) {
+      this.selectedUser.push(channelAdmin);
+      console.log('Channel Admin added:', channelAdmin);
+    } else {
+      console.log('Channel Admin not found with ID:', this.currentUserId);
+    }
+  }
+
+
   showUser() {
-   this.openDialog()
+    this.openDialog()
     if (this.currentName.trim() === '') {
       // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
       this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
@@ -77,11 +98,11 @@ export class AddUserChannelDialogComponent {
 
       this.dialogRef = this.dialog.open(this.userListDialog, dialogConfig);
 
-      
+
       this.dialogRef.afterOpened().subscribe(() => {
         this.userInput.nativeElement.focus();
       });
-      
+
       this.dialogRef.afterClosed().subscribe(() => {
         this.dialogRef = null;
       });
@@ -90,7 +111,7 @@ export class AddUserChannelDialogComponent {
 
 
   closeDialog(): void {
-   this.originalDialogRef.close()
+    this.originalDialogRef.close()
   }
 
 
