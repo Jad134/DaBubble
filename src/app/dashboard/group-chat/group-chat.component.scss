@@ -10,6 +10,11 @@ section{
     position: relative;
 }
 
+.chat{
+  overflow-y: scroll;
+  max-height: 500px;
+}
+
 .icon{
     color: black;
     &:hover{

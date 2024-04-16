@@ -25,15 +25,15 @@
             <div class="line"></div>
         </div>
 
-        <div class="chat-message">
-            <div class="message-avatar"><img src="assets/img/avatars/avatar-3.svg"></div>
-            <div>
-                <div class="name-time-div">
+        <div   *ngFor="let messageObj of chatService.chatDatas"class="chat-message">
+            <div *ngIf="messageObj?.message"  class="message-avatar"><img src="assets/img/avatars/avatar-3.svg"></div>
+            <div *ngIf="messageObj?.message" >
+                <div   class="name-time-div">
                     <span class="name">Noah Braun</span>
                     <span class="time">14:45 Uhr</span>
                 </div>
-                <div class="message">Welche Version von Angular ist gerade aktuell</div>
-                <div class="message-reaction">
+                <div  class="message">{{ messageObj.message}}</div>
+                <div   class="message-reaction">
                     <div class="reaction w-h-40"></div>
                     <div class="comment w-h-40"></div>
                 </div>

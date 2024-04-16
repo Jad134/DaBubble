@@ -4,10 +4,11 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { addDoc, collection, doc, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { QuerySnapshot, addDoc, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class channelDataclientService {
   channelDB = collection(this.firestore, 'Channels');
   channelIds = [];
   channels: channel[] = [];
+  chatDatas: any;
 
 
 
@@ -62,30 +64,36 @@ export class channelDataclientService {
   * This function create a subcollection which is called 'chat' for the chat function
   */
   async createChatCollection(collectionId: string) {
+    const timeStamp = Date.now();
     const parentDocRef = doc(this.db, 'Channels', collectionId);
-    await addDoc(collection(parentDocRef, 'chat'), {
-
-    })
+    const chatCollectionRef = collection(parentDocRef, 'chat');
+    
+    // Erstelle ein Dokument mit dem Timestamp als Dokument-ID
+    const chatDocRef = doc(chatCollectionRef, timeStamp.toString());
+    
+    // Setze die Daten für das Dokument
+    await setDoc(chatDocRef, {
+      // Hier können weitere Daten hinzugefügt werden, falls erforderlich
+    });
   }
-
 
   /**
    * This function sets the document with the timestamp as id. This doc has the information for the chats 
    */
-  async sendChat(channelId:string, timeStamp:string, message:string, user:string,){
+  async sendChat(channelId: string, timeStamp: string, message: string, user: string,) {
     const chatRef = doc(this.db, "Channels", channelId, 'chat', timeStamp);
-     
+
     try {
       await setDoc(chatRef, {
-          message: message,
-          user: user,
-          time: timeStamp,
-          emoji:{},
+        message: message,
+        user: user,
+        time: timeStamp,
+        emoji: {},
       });
       console.log("Chat-Dokument erfolgreich erstellt.");
-  } catch (error) {
+    } catch (error) {
       console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
-  }
+    }
   }
 
 
@@ -189,6 +197,25 @@ export class channelDataclientService {
           console.log('Der Kanal mit der ID', id, 'existiert nicht.');
           resolve(null);
         }
+      });
+    });
+  }
+
+
+  async getCurrentChats(id: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const q = query(collection(this.db, "Channels", id, 'chat'));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const chat: any[] = [];
+        querySnapshot.forEach((doc: any) => {
+          chat.push(doc.data());
+          this.chatDatas = chat;
+        });
+        console.log(this.chatDatas);
+        resolve(chat);
+      }, (error) => {
+        console.error('Fehler beim Laden der Daten:', error);
+        reject(error);
       });
     });
   }

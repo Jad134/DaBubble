@@ -17,10 +17,11 @@ export class GroupChatComponent {
   @Input() currentId!: string;
   chatService = inject(channelDataclientService);
   currentChannelData: any;
+  currentChat: any;
   message: any;
-  currentUserId:any;
+  currentUserId: any;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute,) { 
+  constructor(public dialog: MatDialog, private route: ActivatedRoute,) {
     this.getIdFromURL()
   }
 
@@ -53,6 +54,12 @@ export class GroupChatComponent {
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
     }
+    await this.loadCurrentChat()
+  }
+
+
+  async loadCurrentChat() {
+    await this.chatService.getCurrentChats(this.currentId);
   }
 
   /**
@@ -71,11 +78,11 @@ export class GroupChatComponent {
   /**
    * send the message with the needed information to the chatservice and clears the textarea
    */
-  sendMessage(channelId:string){
+  sendMessage(channelId: string) {
     console.log(this.message, channelId);
     let timeStamp = Date.now().toString()
 
     this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
-    this.message = '' 
+    this.message = ''
   }
 }
