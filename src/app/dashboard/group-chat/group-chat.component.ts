@@ -19,6 +19,7 @@ export class GroupChatComponent {
   currentChannelData: any;
   currentChat: any;
   message: any;
+  yourMessage:any;
   currentUserId: any;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute,) {
@@ -59,7 +60,7 @@ export class GroupChatComponent {
 
 
   async loadCurrentChat() {
-    await this.chatService.getCurrentChats(this.currentId);
+    await this.chatService.getCurrentChats(this.currentId, this.currentUserId);
   }
 
   /**
@@ -85,4 +86,7 @@ export class GroupChatComponent {
     this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
     this.message = ''
   }
+
+
+  
 }

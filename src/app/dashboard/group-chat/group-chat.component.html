@@ -25,14 +25,14 @@
             <div class="line"></div>
         </div>
 
-        <div   *ngFor="let messageObj of chatService.chatDatas"class="chat-message">
+        <div [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'"  *ngFor="let messageObj of chatService.chatDatas"class="chat-message">
             <div *ngIf="messageObj?.message"  class="message-avatar"><img src="assets/img/avatars/avatar-3.svg"></div>
             <div *ngIf="messageObj?.message" >
-                <div   class="name-time-div">
+                <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'"   >
                     <span class="name">Noah Braun</span>
                     <span class="time">14:45 Uhr</span>
                 </div>
-                <div  class="message">{{ messageObj.message}}</div>
+                <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'" >{{ messageObj.message}}</div>
                 <div   class="message-reaction">
                     <div class="reaction w-h-40"></div>
                     <div class="comment w-h-40"></div>
@@ -46,20 +46,20 @@
             <div class="line"></div>
         </div>
 
-        <div class="you-chat-message">
+        <!-- <div  *ngFor="let messageObj of chatService.ownChatDatas" class="you-chat-message">
             <div>
-                <div class="name-time-div">
-                    <span class="time">02:42 Uhr</span>
+                <div  *ngIf="messageObj?.message" class="name-time-div">
+                    <span  class="time">02:42 Uhr</span>
                     <span class="name">Fredika Brend</span>
                 </div>
-                <div class="you-message">die aktuellste!!</div>
-                <div class="message-reaction">
+                <div  *ngIf="messageObj?.message" class="you-message">{{ messageObj.message}}</div>
+                <div  *ngIf="messageObj?.message" class="message-reaction">
                     <div class="reaction w-h-40"></div>
                     <div class="comment w-h-40"></div>
                 </div>
             </div>
-            <div class="message-avatar"><img src="assets/img/avatars/avatar-1.svg"></div>
-        </div>
+            <div *ngIf="messageObj?.message" class="message-avatar"><img src="assets/img/avatars/avatar-1.svg"></div>
+        </div> -->
 
     </div>
     <div *ngIf="currentChannelData" class="answer-section">

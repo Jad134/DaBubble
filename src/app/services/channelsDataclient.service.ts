@@ -25,6 +25,7 @@ export class channelDataclientService {
   channelIds = [];
   channels: channel[] = [];
   chatDatas: any;
+  ownMessage = false;
 
 
 
@@ -202,14 +203,22 @@ export class channelDataclientService {
   }
 
 
-  async getCurrentChats(id: string): Promise<any[]> {
+  async getCurrentChats(id: string, currentUserId:string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const q = query(collection(this.db, "Channels", id, 'chat'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const chat: any[] = [];
         querySnapshot.forEach((doc: any) => {
-          chat.push(doc.data());
+          const message = doc.data();
+          chat.push(message);
           this.chatDatas = chat;
+          if (currentUserId !== message.user) {
+            this.ownMessage = false;
+            message.ownMessage = false;
+          } else if (currentUserId === message.user) {
+            this.ownMessage = true
+            message.ownMessage = true
+          }
         });
         console.log(this.chatDatas);
         resolve(chat);
