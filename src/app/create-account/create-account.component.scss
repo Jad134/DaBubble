@@ -245,3 +245,58 @@ mat-card-header {
   position: absolute;
   font-size: 14px;
 }
+
+@media (max-width: 1300px) {
+  .logo-container {
+    position: static;
+    margin-top: 30px;
+  }
+
+  .card-container {
+    padding-top: 30px;
+  }
+
+  .footer-links {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  section {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 650px) {
+  mat-card {
+    width: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  mat-card-content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    width: auto;
+  }
+
+  mat-card-header {
+    h1 {
+      font-size: 32px;
+    }
+
+    > span {
+      font-size: 17px;
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  mat-card-header {
+    h1 {
+      padding-top: 80px;
+    }
+  }
+  .back-arrow-box {
+    top: 25px;
+  }
+}
