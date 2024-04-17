@@ -131,19 +131,13 @@ export class channelDataclientService {
 
 
   async getAllChannels() {
-    const channelList: any[] = [];
     const querySnapshot = await getDocs(this.channelDB);
     querySnapshot.forEach((doc) => {
       const channelData = doc.data();
-      const channel: any = {
-        id: doc.id,
-        name: channelData['name'],
-        description: channelData['description'],
-        usersInChannel: channelData['usersInChannel']
-      };
-      channelList.push(channel);
+      const newChannel = new channel(channelData);
+      this.channels.push(newChannel);
     });
-    return channelList;
+ 
   }
 
 
@@ -174,21 +168,29 @@ export class channelDataclientService {
   * This function gets all chanels from the current user with the getUserChannelIds() ids.
   */
   async getChannels() {
+    
     for (const channelId of this.channelIds) {
       // Überprüfen Sie, ob der Kanal bereits in this.channels vorhanden ist
       if (!this.channels.find(channel => channel.id === channelId)) {
         const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
           if (channelDoc.exists()) {
-            const channelData = channelDoc.data();
-            const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
-            this.channels.push(newChannel); // Das neue channel-Objekt zum Array hinzufügen
+            const channelData = channelDoc.data() as channel;;
+            const existingChannelIndex = this.channels.findIndex(channel => channel.id === channelData['id']);
+            if (existingChannelIndex !== -1) {
+              // Wenn der Kanal bereits im Array vorhanden ist, aktualisiere seine Daten
+              this.channels[existingChannelIndex] = channelData;
+            } else {
+              const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
+              this.channels.push(newChannel); // Das neue channel-Objekt zum Array hinzufügen
+            }
+          
             console.log(this.channels);
           } else {
             console.log("Kanal mit ID", channelId, "nicht gefunden.");
           }
         });
       }
-    }
+    }  
   }
 
 
@@ -232,7 +234,6 @@ export class channelDataclientService {
             }
           }
         });
-
         console.log(this.chatDatas);
         resolve(chat);
       }, (error) => {
@@ -242,7 +243,7 @@ export class channelDataclientService {
     });
   }
 
-  
+
   /**
    * Update the channel name in DB
    */
