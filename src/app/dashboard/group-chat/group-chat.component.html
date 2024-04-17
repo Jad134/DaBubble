@@ -26,7 +26,7 @@
         </div>
 
         <div [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'"  *ngFor="let messageObj of chatService.chatDatas"class="chat-message">
-            <div *ngIf="messageObj?.message"  class="message-avatar"><img class="message-avatar" [src]="getUserAvatar(messageObj.user)"></div>
+            <div *ngIf="messageObj?.message"  class="message-avatar"><img class="message-avatar" [src]="getUserAvatar(messageObj.user.id)"></div>
             <div *ngIf="messageObj?.message" >
                 <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'"   >
                     <span class="name">{{ messageObj.user.name}}</span>
