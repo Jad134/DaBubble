@@ -68,10 +68,10 @@ export class channelDataclientService {
     const timeStamp = Date.now();
     const parentDocRef = doc(this.db, 'Channels', collectionId);
     const chatCollectionRef = collection(parentDocRef, 'chat');
-    
+
     // Erstelle ein Dokument mit dem Timestamp als Dokument-ID
     const chatDocRef = doc(chatCollectionRef, timeStamp.toString());
-    
+
     // Setze die Daten für das Dokument
     await setDoc(chatDocRef, {
       // Hier können weitere Daten hinzugefügt werden, falls erforderlich
@@ -81,19 +81,28 @@ export class channelDataclientService {
   /**
    * This function sets the document with the timestamp as id. This doc has the information for the chats 
    */
-  async sendChat(channelId: string, timeStamp: string, message: string, user: string,) {
+  async sendChat(channelId: string, timeStamp: string, message: string, userId: string,) {
     const chatRef = doc(this.db, "Channels", channelId, 'chat', timeStamp);
+    let userData = await this.firestoreService.getUserDataById(userId);
+    if (userData) {
+      let userName = userData['name'];
 
-    try {
-      await setDoc(chatRef, {
-        message: message,
-        user: user,
-        time: timeStamp,
-        emoji: {},
-      });
-      console.log("Chat-Dokument erfolgreich erstellt.");
-    } catch (error) {
-      console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
+      try {
+        await setDoc(chatRef, {
+          message: message,
+          user: {
+            id: userId,
+            name: userName
+          },
+          time: timeStamp,
+          emoji: {},
+        });
+        console.log("Chat-Dokument erfolgreich erstellt.");
+      } catch (error) {
+        console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
+      }
+    } else {
+      console.log('Benutzerdaten nicht gefunden');
     }
   }
 
@@ -203,7 +212,7 @@ export class channelDataclientService {
   }
 
 
-  async getCurrentChats(id: string, currentUserId:string): Promise<any[]> {
+  async getCurrentChats(id: string, currentUserId: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const q = query(collection(this.db, "Channels", id, 'chat'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -212,14 +221,18 @@ export class channelDataclientService {
           const message = doc.data();
           chat.push(message);
           this.chatDatas = chat;
-          if (currentUserId !== message.user) {
-            this.ownMessage = false;
-            message.ownMessage = false;
-          } else if (currentUserId === message.user) {
-            this.ownMessage = true
-            message.ownMessage = true
+          if (message.user && message.user.id) {
+            const userId = message.user.id;
+            if (currentUserId !== userId) {
+              this.ownMessage = false;
+              message.ownMessage = false;
+            } else if (currentUserId === userId) {
+              this.ownMessage = true
+              message.ownMessage = true
+            }
           }
         });
+
         console.log(this.chatDatas);
         resolve(chat);
       }, (error) => {

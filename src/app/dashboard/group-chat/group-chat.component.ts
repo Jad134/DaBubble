@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edit-group-channel-dialog.component';
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-group-chat',
@@ -16,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 export class GroupChatComponent {
   @Input() currentId!: string;
   chatService = inject(channelDataclientService);
+  fireStoreService = inject(FirestoreService)
   currentChannelData: any;
   currentChat: any;
   message: any;
@@ -88,5 +90,10 @@ export class GroupChatComponent {
   }
 
 
-  
+  getUserAvatar(userId: string): string {
+    const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
+    return user ? user.avatar : 'assets/img/Logo.svg'; // Gib die Avatar-URL des Benutzers zurück, wenn er gefunden wurde
+}
+
+
 }

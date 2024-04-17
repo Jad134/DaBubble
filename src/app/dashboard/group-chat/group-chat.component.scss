@@ -155,12 +155,16 @@ button {
   display: flex;
   flex-direction: row;
   padding-left: 12px;
+  gap: 20px;
 
 }
 
 .message-avatar {
   img {
-    width: 80%;
+
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
   }
 }
 
@@ -196,7 +200,8 @@ button {
 .you-chat-message {
   display: flex;
   flex-direction: row-reverse;
-  gap: 8px;
+  gap: 20px;
+  padding-right: 12px;
 }
 
 .you-message {
@@ -384,3 +389,4 @@ form {
 .d-none {
   display: none;
 }
+
