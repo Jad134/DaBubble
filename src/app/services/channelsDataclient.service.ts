@@ -242,6 +242,7 @@ export class channelDataclientService {
     });
   }
 
+  
   /**
    * Update the channel name in DB
    */
@@ -250,6 +251,8 @@ export class channelDataclientService {
     await updateDoc(channelRef, {
       name: name,
     });
+    this.channels = []
+    await this.getChannels()
   }
 
   /**
@@ -260,6 +263,8 @@ export class channelDataclientService {
     await updateDoc(channelRef, {
       description: description,
     });
+    this.channels = []
+    await this.getChannels()
   }
 
 
