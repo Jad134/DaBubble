@@ -37,9 +37,13 @@
       <h3>Beschreibung</h3>
       <div class="edit-btn" (click)="saveDescription()">Speichern</div>
     </div>
-    <div class="edit-channelname pdb-15">#<input type="text" [value]="description" (input)="updateDescriptionValue($event)"></div>
-  <div class="line"></div>
-  <h3 class="pdb-15 pdlr-15">Erstellt von</h3>
-  <div class="name pdlr-15">{{creator}}</div>
-</div>
+    <div class="edit-channelname pdb-15">#<input type="text" [value]="description"
+        (input)="updateDescriptionValue($event)"></div>
+    <div class="line"></div>
+    <h3 class="pdb-15 pdlr-15">Erstellt von</h3>
+    <div class="name pdlr-15">{{creator}}</div>
+  </div>
+  <div class="leave-btn-container">
+    <button class="leave-channel-btn">Channel Verlassen</button>
+  </div>
 </mat-card>
