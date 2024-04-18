@@ -189,8 +189,8 @@ mat-card-header {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    right: 0;
+    bottom: 0;
     img{
         position: absolute;
         bottom: 30px;
@@ -269,6 +269,13 @@ input[type="file"] {
 
     .avatar-imgs{
         flex-wrap: wrap;
+    }
+
+    .overlay{
+        img{
+            width: 70%;
+            right: 40px;
+        }
     }
   }
 
