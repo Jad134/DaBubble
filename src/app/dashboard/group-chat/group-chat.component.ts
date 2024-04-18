@@ -73,6 +73,7 @@ export class GroupChatComponent {
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
       channelId: this.currentChannelData.id,
+      userId: this.currentUserId
     }
     this.dialog.open(EditGroupChannelDialogComponent, dialogConfig);
   }

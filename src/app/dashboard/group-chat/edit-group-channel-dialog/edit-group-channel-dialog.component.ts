@@ -16,7 +16,7 @@ export class EditGroupChannelDialogComponent {
   constructor(
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   channelId!: string;
   currentChannelData!: any;
@@ -29,9 +29,11 @@ export class EditGroupChannelDialogComponent {
   isDescriptionEdit: boolean = false;
   updatedDescriptionValue: string = "";
   updatedNameValue: string = "";
+  currentUserId!:string;
 
   async ngOnInit() {
     this.channelId = this.data.channelId;
+    this.currentUserId = this.data.userId
     await this.loadCurrentDatas();
     console.log('Aktueller Channel ist: ', this.currentChannelData);
     this.name = this.currentChannelData.name;
@@ -97,7 +99,7 @@ export class EditGroupChannelDialogComponent {
    * update the description variable with the input value
    * @param event 
    */
-  updateDescriptionValue(event: any){
+  updateDescriptionValue(event: any) {
     this.updatedDescriptionValue = event.target.value;
   }
 
@@ -105,7 +107,12 @@ export class EditGroupChannelDialogComponent {
    * update the name variable with the input value
    * @param event 
    */
-  updateNameValue(event: any){
+  updateNameValue(event: any) {
     this.updatedNameValue = event.target.value;
+  }
+
+
+  leaveChannel() {
+    this.channelsDataclientService.leaveChannel( this.currentUserId, this.channelId)
   }
 }

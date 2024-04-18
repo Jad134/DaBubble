@@ -126,5 +126,9 @@ h3 {
     font-weight: 700;
     font-size: 18px;
     font-family: $nunito;
-    border: none
+    border: none;
+
+    &:hover{
+        background-color: lighten($purple1, 10%);
+    }
 }

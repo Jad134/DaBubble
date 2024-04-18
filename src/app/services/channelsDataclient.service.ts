@@ -169,6 +169,29 @@ export class channelDataclientService {
   }
 
 
+  /**
+   * This function starts, when clicked on leave channel button
+   */
+  leaveChannel(userId:any, channelId:any){
+    this.deleteChannelIdAtUserDb(channelId, userId)
+
+    //Funktion für user in channel auch hier noch einfügen
+    
+  }
+
+
+  /**
+   * This function filtered the id from the channels array and push the new array to the update function in firestore service 
+   */
+  deleteChannelIdAtUserDb(channelId:any, userId:any){ 
+    let filteredChannel =  this.channelIds.filter((id: any) => id !== channelId);
+    console.log(filteredChannel);
+    this.channelIds = filteredChannel;
+    this.firestoreService.updateUserChannelsIfDeleteOne( userId, this.channelIds)
+  }
+
+
+
   /***
   * This function gets all chanels from the current user with the getUserChannelIds() ids.
   */

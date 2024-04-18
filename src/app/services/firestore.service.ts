@@ -33,10 +33,10 @@ export class FirestoreService {
   db = getFirestore(this.app);
   users = new User();
   allUsers = new AllUser();
-  
+
   user = this.auth.currentUser;
   userIds: any;
-  
+
   channelNames: string[] = [];
 
 
@@ -152,7 +152,7 @@ export class FirestoreService {
    * Update the user data in DB
    * @param user User Object 
    */
-  async updateUserNameAndMail(user: User){
+  async updateUserNameAndMail(user: User) {
     const userRef = doc(this.db, "Users", user.id);
     await updateDoc(userRef, {
       name: user.name,
@@ -195,28 +195,14 @@ export class FirestoreService {
   }
 
 
- 
+  /**
+   * This function update the channelsarray at the users db, when user leave a channel
+   * */
+  async updateUserChannelsIfDeleteOne(userId: string, channelId:any) {
+    const userRef = doc(this.db, "Users", userId)
+    await updateDoc(userRef, {
+      channels: channelId
+    });
+  }
 
-
-
- 
-
-  //Namen werdne eigentlich nicht gebraucht, ehr die ganzen channels
-  // async getChannelNames() {
-  //   for (const channelId of this.channelIds) {
-  //     const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
-  //       if (channelDoc.exists()) {
-  //         const channelData = channelDoc.data();
-  //         console.log("Name des Kanals:", channelData['name']);
-  //         this.channelNames.push(channelData['name'])
-  //         console.log(this.channelNames);
-
-  //         return channelData['name']
-  //         // Führen Sie hier weitere Operationen mit dem Kanalnamen durch
-  //       } else {
-  //         console.log("Kanal mit ID", channelId, "nicht gefunden.");
-  //       }
-  //     });
-  //   }
-  // }
 }
