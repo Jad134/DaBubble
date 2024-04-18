@@ -20,48 +20,33 @@
     </div>
 
     <div class="chat">
-        <div class="date-div">
-            <div class="line"></div> <span class="date">18.03.2024</span>
-            <div class="line"></div>
-        </div>
-
-        <div [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'"  *ngFor="let messageObj of chatService.chatDatas"class="chat-message">
-            <div *ngIf="messageObj?.message"  class="message-avatar"><img class="message-avatar" [src]="getUserAvatar(messageObj.user.id)"></div>
-            <div *ngIf="messageObj?.message" >
-                <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'"   >
-                    <span class="name">{{ messageObj.user.name}}</span>
-                    <span class="time">14:45 Uhr</span>
+        <ng-container *ngFor="let messageObj of chatService.chatDatas; let i = index">
+            <!-- Überprüfe, ob der vorherige Eintrag existiert und das Datum anders ist -->
+            <ng-container *ngIf="i === 0 || (chatService.chatDatas[i - 1].time | date:'dd.MM.yyyy') !== (messageObj.time | date:'dd.MM.yyyy')">
+                <div class="date-div">
+                    <div class="line"></div>
+                    <span class="date">{{ messageObj.time | date:'dd.MM.yyyy' }}</span>
+                    <div class="line"></div>
                 </div>
-                <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'" >{{ messageObj.message}}</div>
-                <div   class="message-reaction">
-                    <div class="reaction w-h-40"></div>
-                    <div class="comment w-h-40"></div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="date-div">
-            <div class="line"></div> <span class="date">19.03.2024</span>
-            <div class="line"></div>
-        </div>
-
-        <!-- <div  *ngFor="let messageObj of chatService.ownChatDatas" class="you-chat-message">
-            <div>
-                <div  *ngIf="messageObj?.message" class="name-time-div">
-                    <span  class="time">02:42 Uhr</span>
-                    <span class="name">Fredika Brend</span>
-                </div>
-                <div  *ngIf="messageObj?.message" class="you-message">{{ messageObj.message}}</div>
-                <div  *ngIf="messageObj?.message" class="message-reaction">
-                    <div class="reaction w-h-40"></div>
-                    <div class="comment w-h-40"></div>
+            </ng-container>
+    
+            <div [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
+                <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar" [src]="getUserAvatar(messageObj.user.id)"></div>
+                <div *ngIf="messageObj?.message">
+                    <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
+                        <span class="name">{{ messageObj.user.name }}</span>
+                        <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
+                    </div>
+                    <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>
+                    <div class="message-reaction">
+                        <div class="reaction w-h-40"></div>
+                        <div class="comment w-h-40"></div>
+                    </div>
                 </div>
             </div>
-            <div *ngIf="messageObj?.message" class="message-avatar"><img src="assets/img/avatars/avatar-1.svg"></div>
-        </div> -->
-
+        </ng-container>
     </div>
+    
     <div *ngIf="currentChannelData" class="answer-section">
         <div class="answer-field">
             <textarea  [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40" placeholder="Antworten..."></textarea>

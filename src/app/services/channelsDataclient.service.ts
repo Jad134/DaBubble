@@ -74,7 +74,7 @@ export class channelDataclientService {
 
     // Setze die Daten für das Dokument
     await setDoc(chatDocRef, {
-      // Hier können weitere Daten hinzugefügt werden, falls erforderlich
+      time: timeStamp,
     });
   }
 
@@ -86,17 +86,8 @@ export class channelDataclientService {
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
-
       try {
-        await setDoc(chatRef, {
-          message: message,
-          user: {
-            id: userId,
-            name: userName
-          },
-          time: timeStamp,
-          emoji: {},
-        });
+        this.setMessageDocument(chatRef, message, userId, userName, timeStamp)
         console.log("Chat-Dokument erfolgreich erstellt.");
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
@@ -104,6 +95,22 @@ export class channelDataclientService {
     } else {
       console.log('Benutzerdaten nicht gefunden');
     }
+  }
+
+
+  /**
+   * Sets a new message document in the specified chat reference.
+   */
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string) {
+    await setDoc(chatRef, {
+      message: message,
+      user: {
+        id: userId,
+        name: userName
+      },
+      time: timeStamp,
+      emoji: {},
+    });
   }
 
 
@@ -137,7 +144,7 @@ export class channelDataclientService {
       const newChannel = new channel(channelData);
       this.channels.push(newChannel);
     });
- 
+
   }
 
 
@@ -152,14 +159,12 @@ export class channelDataclientService {
       if (UserData) {
         console.log("Current data: ", UserData['channels']);
         const channels = UserData['channels']
-
         this.channelIds = channels
         console.log(this.channelIds);
         // this.getChannelNames()
         this.getChannels()
         return channels
       }
-
     });
   }
 
@@ -168,29 +173,35 @@ export class channelDataclientService {
   * This function gets all chanels from the current user with the getUserChannelIds() ids.
   */
   async getChannels() {
-    
     for (const channelId of this.channelIds) {
-      // Überprüfen Sie, ob der Kanal bereits in this.channels vorhanden ist
       if (!this.channels.find(channel => channel.id === channelId)) {
         const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
           if (channelDoc.exists()) {
             const channelData = channelDoc.data() as channel;;
-            const existingChannelIndex = this.channels.findIndex(channel => channel.id === channelData['id']);
-            if (existingChannelIndex !== -1) {
-              // Wenn der Kanal bereits im Array vorhanden ist, aktualisiere seine Daten
-              this.channels[existingChannelIndex] = channelData;
-            } else {
-              const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
-              this.channels.push(newChannel); // Das neue channel-Objekt zum Array hinzufügen
-            }
-          
+            this.controlExistingChannels(channelData)
             console.log(this.channels);
           } else {
             console.log("Kanal mit ID", channelId, "nicht gefunden.");
           }
         });
       }
-    }  
+    }
+  }
+
+
+  /**
+   * This feature uses a filtering feature to prevent multiple channels from being created at the same time with the same ID. 
+   * This means that a channel can be edited without duplicate channels
+   */
+  controlExistingChannels(channelData: any) {
+    const existingChannelIndex = this.channels.findIndex(channel => channel.id === channelData['id']);
+    if (existingChannelIndex !== -1) {
+      // Wenn der Kanal bereits im Array vorhanden ist, aktualisiere seine Daten
+      this.channels[existingChannelIndex] = channelData;
+    } else {
+      const newChannel = new channel(channelData); // Neues channel-Objekt erstellen
+      this.channels.push(newChannel); // Das neue channel-Objekt zum Array hinzufügen
+    }
   }
 
 
@@ -214,33 +225,51 @@ export class channelDataclientService {
   }
 
 
+  /**
+   * This function download the datas from the subcollection with liveUpdate for the chat
+   */
   async getCurrentChats(id: string, currentUserId: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const q = query(collection(this.db, "Channels", id, 'chat'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const chat: any[] = [];
-        querySnapshot.forEach((doc: any) => {
-          const message = doc.data();
-          chat.push(message);
-          this.chatDatas = chat;
-          if (message.user && message.user.id) {
-            const userId = message.user.id;
-            if (currentUserId !== userId) {
-              this.ownMessage = false;
-              message.ownMessage = false;
-            } else if (currentUserId === userId) {
-              this.ownMessage = true
-              message.ownMessage = true
-            }
-          }
-        });
-        console.log(this.chatDatas);
+        this.setCurrentChatDatas(querySnapshot, chat, currentUserId)
         resolve(chat);
       }, (error) => {
         console.error('Fehler beim Laden der Daten:', error);
         reject(error);
       });
     });
+  }
+
+
+  /**
+   * This function set the from snapshot to the variables
+   */
+  setCurrentChatDatas(querySnapshot: any, chat: any, currentUserId: any) {
+    querySnapshot.forEach((doc: any) => {
+      const message = doc.data();
+      chat.push(message);
+      this.chatDatas = chat;
+      this.controllIfOwnMessageSend(message, currentUserId)
+    });
+  }
+
+
+  /**
+   * This feature controls whether the message displayed in the chat is sent by the logged in user or by another user. (to present your own messages in the correct style)
+   */
+  controllIfOwnMessageSend(message: any, currentUserId: any) {
+    if (message.user && message.user.id) {
+      const userId = message.user.id;
+      if (currentUserId !== userId) {
+        this.ownMessage = false;
+        message.ownMessage = false;
+      } else if (currentUserId === userId) {
+        this.ownMessage = true
+        message.ownMessage = true
+      }
+    }
   }
 
 
