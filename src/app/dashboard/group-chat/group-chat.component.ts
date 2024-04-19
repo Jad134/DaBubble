@@ -6,6 +6,7 @@ import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edi
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from '../../services/firestore.service';
+import { ShowMemberDialogComponent } from './show-member-dialog/show-member-dialog.component';
 
 @Component({
   selector: 'app-group-chat',
@@ -97,5 +98,12 @@ export class GroupChatComponent {
 }
 
 
+openShowMemberDialog(){
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.data = {
+    channelData: this.currentChannelData
+  }
+  this.dialog.open(ShowMemberDialogComponent, dialogConfig);
+}
 
 }

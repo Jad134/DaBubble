@@ -8,13 +8,16 @@
         </div>
 
         <div class="chat-header-right">
-            <div class="header-avatar">
-
-                <img *ngFor="let users of currentChannelData.usersInChannel" [src]="users.avatar" class="avatar-img">
-
+            <div (click)="openShowMemberDialog()" class="header-avatar">
+                <div class="avatar-container">
+                    <img *ngFor="let users of currentChannelData.usersInChannel.slice(0,3)" [src]="users.avatar"
+                    class="avatar-img">
+                </div>
+                <span *ngIf="currentChannelData && currentChannelData.usersInChannel"
+                    class="chat-members-num">{{currentChannelData.usersInChannel.length}}</span>
             </div>
-            <span *ngIf="currentChannelData && currentChannelData.usersInChannel" class="chat-members-num">{{currentChannelData.usersInChannel.length}}</span>
-            <div class="add-person"><img src="assets/img/person_add.png"></div>
+
+            <div class="add-person"><img src="assets/img/person_add.svg"></div>
         </div>
 
     </div>
@@ -22,16 +25,18 @@
     <div class="chat">
         <ng-container *ngFor="let messageObj of chatService.chatDatas; let i = index">
             <!-- Überprüfe, ob der vorherige Eintrag existiert und das Datum anders ist -->
-            <ng-container *ngIf="i === 0 || (chatService.chatDatas[i - 1].time | date:'dd.MM.yyyy') !== (messageObj.time | date:'dd.MM.yyyy')">
+            <ng-container
+                *ngIf="i === 0 || (chatService.chatDatas[i - 1].time | date:'dd.MM.yyyy') !== (messageObj.time | date:'dd.MM.yyyy')">
                 <div class="date-div">
                     <div class="line"></div>
                     <span class="date">{{ messageObj.time | date:'dd.MM.yyyy' }}</span>
                     <div class="line"></div>
                 </div>
             </ng-container>
-    
+
             <div [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
-                <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar" [src]="getUserAvatar(messageObj.user.id)"></div>
+                <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
+                        [src]="getUserAvatar(messageObj.user.id)"></div>
                 <div *ngIf="messageObj?.message">
                     <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
                         <span class="name">{{ messageObj.user.name }}</span>
@@ -46,10 +51,11 @@
             </div>
         </ng-container>
     </div>
-    
+
     <div *ngIf="currentChannelData" class="answer-section">
         <div class="answer-field">
-            <textarea  [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40" placeholder="Antworten..."></textarea>
+            <textarea [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
+                placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">
                     <div class="add w-h-40">
