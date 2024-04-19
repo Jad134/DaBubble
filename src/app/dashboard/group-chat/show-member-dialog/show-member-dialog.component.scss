@@ -47,6 +47,26 @@ mat-card {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    max-height: 245px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        border-radius: 8px;
+      }
+      
+      &::-webkit-scrollbar-track {
+        background: $bg-color;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background: $purple2;
+        border-radius: 8px;
+      }
+      
+      &::-webkit-scrollbar-thumb:hover {
+        background: $purple3;
+      }
 }
 
 .user {
@@ -82,12 +102,29 @@ mat-card {
 .add-person-container{
     display: flex;
     align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: ease-in-out 125ms;
+
+    &:hover .add-person-btn{
+        background-color: $bg-color;
+        color: $purple1;
+    }
+
+    &:hover{
+        background-color: $bg-color;
+        color: $purple1;
+    }
 }
 
-.add-person-icon{
- fill: none !important;
-}
-
-.mat-icon-button .add-person-icon {
-    fill: none !important;
+.add-person-btn{
+    background-color: $bg-color;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    transition: ease-in-out 125ms;
 }
