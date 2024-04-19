@@ -2,6 +2,9 @@ import { Component, Input, SimpleChanges, inject } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-direct-chat',
@@ -15,6 +18,8 @@ export class DirectChatComponent {
   fireStoreService = inject(FirestoreService)
   downloadService = inject(StorageService);
   currentUserData: any;
+
+  constructor(public dialog: MatDialog,){}
 
 
   /**
@@ -73,4 +78,22 @@ export class DirectChatComponent {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
   }
+
+
+    /**
+   * open the user detail dialog
+   */
+    openUserDetail(id: string) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.position = {
+        top: '100px',
+        right: '20px'
+      };
+      dialogConfig.panelClass = 'transparent-dialog';
+      dialogConfig.data = {
+        userId: id,
+      }
+      this.dialog.open(UserDetailDialogComponent, dialogConfig);
+    }
+
 }

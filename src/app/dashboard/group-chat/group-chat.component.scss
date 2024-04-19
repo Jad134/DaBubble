@@ -191,7 +191,7 @@ button {
 
 .message-avatar {
   img {
-
+    cursor: pointer;
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -212,6 +212,7 @@ button {
 .name {
   font-weight: 600;
   font-size: medium;
+  cursor: pointer;
 }
 
 .name-time-div {
