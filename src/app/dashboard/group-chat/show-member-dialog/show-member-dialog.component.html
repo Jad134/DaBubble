@@ -1,3 +1,23 @@
 <mat-card>
-<p>show-member-dialog works!</p>
+    <section class="section">
+        <div class="header">
+            <h3>Mitglieder</h3>
+            <button class="close-btn" mat-icon-button matTooltip="Basic" >
+                <mat-icon>close</mat-icon>
+              </button>
+        </div>
+        <div *ngIf="users" class="user-container">
+            <div class="user" *ngFor="let user of users" >
+                <img class="avatar-img" [src]="user.avatar" alt="">
+                <div class="statuslight"></div>
+                <div class="user-name">{{user.name}}</div>
+            </div>
+        </div>
+        <div class="add-person-container">   
+            <button class="" mat-icon-button matTooltip="Basic" >
+                <mat-icon class="add-person-icon">person_add_outlined</mat-icon>
+              </button>
+            <span>Mitglieder hinzufügen</span>
+        </div>
+    </section>
 </mat-card>
