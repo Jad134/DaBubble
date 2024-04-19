@@ -6,6 +6,7 @@ import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edi
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from '../../services/firestore.service';
+import { ShowMemberDialogComponent } from './show-member-dialog/show-member-dialog.component';
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
 
 @Component({
@@ -97,21 +98,29 @@ export class GroupChatComponent {
     return user ? user.avatar : 'assets/img/Logo.svg'; // Gib die Avatar-URL des Benutzers zurück, wenn er gefunden wurde
 }
 
-  /**
+
+openShowMemberDialog(){
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.data = {
+    channelData: this.currentChannelData
+  }
+  this.dialog.open(ShowMemberDialogComponent, dialogConfig);
+}
+
+/**
    * open the user detail dialog
    */
-  openUserDetail(id: string) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.position = {
-      top: '100px',
-      right: '20px'
-    };
-    dialogConfig.panelClass = 'transparent-dialog';
-    dialogConfig.data = {
-      userId: id,
-    }
-    this.dialog.open(UserDetailDialogComponent, dialogConfig);
+openUserDetail(id: string) {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.position = {
+    top: '100px',
+    right: '20px'
+  };
+  dialogConfig.panelClass = 'transparent-dialog';
+  dialogConfig.data = {
+    userId: id,
   }
-
+  this.dialog.open(UserDetailDialogComponent, dialogConfig);
+}
 
 }
