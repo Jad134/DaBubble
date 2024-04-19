@@ -172,7 +172,8 @@ export class channelDataclientService {
   /**
    * This function starts, when clicked on leave channel button
    */
-  leaveChannel(userId: any, channelId: any) {
+  async leaveChannel(userId: any, channelId: any) {
+    await this.deleteLeavedUserInCannel(channelId, userId)
     this.deleteChannelIdAtUserDb(channelId, userId)
 
     //Funktion für user in channel auch hier noch einfügen
@@ -183,15 +184,34 @@ export class channelDataclientService {
   /**
    * This function filtered the id from the channels array and push the new array to the update function in firestore service 
    */
-  deleteChannelIdAtUserDb(channelId: any, userId: any) {
+  async deleteChannelIdAtUserDb(channelId: any, userId: any) {
     let filteredChannel = this.channelIds.filter((id: any) => id !== channelId);
     console.log(filteredChannel);
     this.channelIds = filteredChannel;
     this.channels = [...filteredChannel];
-    this.firestoreService.updateUserChannelsIfDeleteOne(userId, filteredChannel);
     this.channels = []
+    await this.firestoreService.updateUserChannelsIfDeleteOne(userId, filteredChannel);
   }
 
+
+/**
+ * This function updates the Users in channel and delete the leaved user from the Channeldb 
+ */
+  async deleteLeavedUserInCannel(channelId: any, userId: any) {
+    const channelRef = doc(this.db, "Channels", channelId);
+    const unsub = onSnapshot(channelRef, (channelDoc) => {
+      if (channelDoc.exists()) {
+        const channelData = channelDoc.data() as channel;
+        let usersInChannel = channelData.usersInChannel;
+        usersInChannel = usersInChannel.filter((user: any) => user.id !== userId);
+  
+        updateDoc(channelRef, { usersInChannel: usersInChannel });
+        this.channels = []
+      } else {
+        console.log("Kanal mit ID", channelId, "nicht gefunden.");
+      }
+    });
+  }
 
 
   /***
