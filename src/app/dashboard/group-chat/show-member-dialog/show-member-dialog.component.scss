@@ -74,6 +74,14 @@ mat-card {
     gap: 15px;
     align-items: center;
     position: relative;
+    cursor: pointer;
+
+    &:hover{
+        background-color: $bg-color;
+        border-radius: 30px;
+        width: fit-content;
+        padding-right: 17px;
+    }
 }
 
 .user-name {

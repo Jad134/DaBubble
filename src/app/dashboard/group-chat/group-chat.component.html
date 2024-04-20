@@ -8,7 +8,7 @@
         </div>
 
         <div class="chat-header-right">
-            <div (click)="openShowMemberDialog()" class="header-avatar">
+            <div (click)="openShowMemberDialog($event)" class="header-avatar">
                 <div class="avatar-container">
                     <img *ngFor="let users of currentChannelData.usersInChannel.slice(0,3)" [src]="users.avatar"
                     class="avatar-img">

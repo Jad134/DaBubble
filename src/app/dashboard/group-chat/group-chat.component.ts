@@ -1,4 +1,4 @@
-import { Component, Input, Inject, inject, SimpleChanges } from '@angular/core';
+import { Component, Input, Inject, inject, SimpleChanges, ElementRef } from '@angular/core';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -23,10 +23,11 @@ export class GroupChatComponent {
   currentChannelData: any;
   currentChat: any;
   message: any;
-  yourMessage:any;
+  yourMessage: any;
   currentUserId: any;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute,) {
+  
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef) {
     this.getIdFromURL()
   }
 
@@ -96,31 +97,34 @@ export class GroupChatComponent {
   getUserAvatar(userId: string): string {
     const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
     return user ? user.avatar : 'assets/img/Logo.svg'; // Gib die Avatar-URL des Benutzers zurück, wenn er gefunden wurde
-}
-
-
-openShowMemberDialog(){
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.data = {
-    channelData: this.currentChannelData
   }
-  this.dialog.open(ShowMemberDialogComponent, dialogConfig);
-}
 
-/**
-   * open the user detail dialog
-   */
-openUserDetail(id: string) {
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.position = {
-    top: '100px',
-    right: '20px'
-  };
-  dialogConfig.panelClass = 'transparent-dialog';
-  dialogConfig.data = {
-    userId: id,
+
+  openShowMemberDialog(event: MouseEvent): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      channelData: this.currentChannelData
+    }
+    const offsetLeft = 400;
+    const offsetY = 20;
+    dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+    this.dialog.open(ShowMemberDialogComponent, dialogConfig);
   }
-  this.dialog.open(UserDetailDialogComponent, dialogConfig);
-}
+
+  /**
+     * open the user detail dialog
+     */
+  openUserDetail(id: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = {
+      top: '100px',
+      right: '20px'
+    };
+    dialogConfig.panelClass = 'transparent-dialog';
+    dialogConfig.data = {
+      userId: id,
+    }
+    this.dialog.open(UserDetailDialogComponent, dialogConfig);
+  }
 
 }

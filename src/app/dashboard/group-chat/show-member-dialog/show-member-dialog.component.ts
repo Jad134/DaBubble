@@ -21,7 +21,5 @@ export class ShowMemberDialogComponent {
   async ngOnInit() {
     this.channelData = this.data.channelData
     this.users = this.channelData.usersInChannel
-  }
-
-
+  } 
 }
