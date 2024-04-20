@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatCard } from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, } from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './show-member-dialog.component.scss'
 })
 export class ShowMemberDialogComponent {
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<ShowMemberDialogComponent>) { }
 
   channelData: any;
   users: any;
@@ -22,4 +22,9 @@ export class ShowMemberDialogComponent {
     this.channelData = this.data.channelData
     this.users = this.channelData.usersInChannel
   } 
+
+
+  closeDialog(){
+    this.dialogRef.close()
+  }
 }

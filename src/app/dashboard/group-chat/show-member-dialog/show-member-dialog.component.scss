@@ -36,7 +36,11 @@ mat-card {
     align-items: center;
     padding: 0 !important;
     transition: ease-in-out 125ms;
+    background-color: transparent !important; 
 
+    &:active {
+        background-color: transparent !important;
+    }
     &:hover {
         background-color: $bg-color;
         color: $purple1;

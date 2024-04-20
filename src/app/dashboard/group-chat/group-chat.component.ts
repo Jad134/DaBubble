@@ -1,7 +1,7 @@
 import { Component, Input, Inject, inject, SimpleChanges, ElementRef } from '@angular/core';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogClose,} from '@angular/material/dialog';
 import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edit-group-channel-dialog.component';
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
@@ -9,10 +9,11 @@ import { FirestoreService } from '../../services/firestore.service';
 import { ShowMemberDialogComponent } from './show-member-dialog/show-member-dialog.component';
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
 
+
 @Component({
   selector: 'app-group-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatDialogClose, ],
   templateUrl: './group-chat.component.html',
   styleUrl: './group-chat.component.scss',
 })
@@ -27,7 +28,7 @@ export class GroupChatComponent {
   currentUserId: any;
 
   
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef, ) {
     this.getIdFromURL()
   }
 
@@ -95,9 +96,13 @@ export class GroupChatComponent {
 
 
   getUserAvatar(userId: string): string {
-    const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
-    return user ? user.avatar : 'assets/img/Logo.svg'; // Gib die Avatar-URL des Benutzers zurück, wenn er gefunden wurde
-  }
+    if (this.currentChannelData && this.currentChannelData.usersInChannel) {
+        const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
+        return user ? user.avatar : 'assets/img/Logo.svg';
+    } else {
+        return 'assets/img/Logo.svg'; // Fallback, wenn currentChannelData oder usersInChannel nicht definiert ist
+    }
+}
 
 
   openShowMemberDialog(event: MouseEvent): void {
