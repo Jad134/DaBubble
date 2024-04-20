@@ -10,6 +10,7 @@ import {
   EventEmitter,
   ViewChildren,
   QueryList,
+  OnDestroy,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -26,6 +27,8 @@ import { StorageService } from '../../services/storage.service';
 import { User } from '../../../models/user.class';
 import { ActivatedRoute } from '@angular/router';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
+import { Subscription } from 'rxjs';
+import { SharedServiceService } from '../../services/shared-service.service';
 
 @Component({
   selector: 'app-sidenav-dashboard',
@@ -41,7 +44,8 @@ import { channelDataclientService } from '../../services/channelsDataclient.serv
     ]),
   ],
 })
-export class SidenavDashboardComponent {
+export class SidenavDashboardComponent implements OnDestroy {
+  private subscription: Subscription| undefined;
   firestoreService = inject(FirestoreService);
   downloadService = inject(StorageService);
   channelService = inject(channelDataclientService);
@@ -61,10 +65,23 @@ export class SidenavDashboardComponent {
   @Output() clickedChannelIdEvent = new EventEmitter<string>();
   @Output() clickedUserIdEvent = new EventEmitter<string>();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private sharedService: SharedServiceService) {
+    this.subscription = this.sharedService.selectedUserId$.subscribe(userId => {
+      if (userId) {
+        this.openDirectChat(userId);
+      }
+    });
+  }
 
   sidenavIsHide: boolean = false;
   imageUrl: string = '../../../assets/img/close-menu.svg';
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+  
 
   /**
    *this function toggle the variable sidenavIsHide to true, if sidenav closed

@@ -5,6 +5,8 @@ import { FirestoreService } from '../../services/firestore.service';
 import { StorageService } from '../../services/storage.service';
 import { User } from '../../../models/user.class';
 import { CommonModule } from '@angular/common';
+import { SharedServiceService } from '../../services/shared-service.service';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-user-detail-dialog',
@@ -14,7 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-detail-dialog.component.scss'
 })
 export class UserDetailDialogComponent {
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data:any) {}
+  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data:any, private sharedService: SharedServiceService) {}
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
 
@@ -47,12 +49,20 @@ export class UserDetailDialogComponent {
       console.error('Das Bild-Element wurde nicht richtig initialisiert.');
     }
   }
-
+  
+  /**
+   * closed the dialog
+   */
   close(){
     this.dialog.closeAll();
   }
 
+  /**
+   * open the direct chat with the choosen userId
+   */
   sendMessage(){
-    console.log("Nachricht Button wurde gedrückt.")
+    console.log("Nachricht Button wurde gedrückt.");
+    this.sharedService.setSelectedUserId(this.userId);
+    this.close();
   }
 }
