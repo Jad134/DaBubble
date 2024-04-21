@@ -18,8 +18,10 @@ export class UserDetailDialogComponent {
   firestoreService = inject(FirestoreService)
 
   userId = this.data.user.id;
+  userIsOnline: boolean = false;
   actualUser: any = new User;
-  usersInChannel: User[] = [new User]
+  usersInChannel: User[] = [new User];
+
   @ViewChild('profilePicture1') profilePicture1!: ElementRef;
 
   async ngOnInit() {
@@ -30,6 +32,19 @@ export class UserDetailDialogComponent {
         this.actualUser = user;
       }
     });
+    this.getUserOnlineStatus();
+  }
+
+  /**
+   * get user Status isOnline from firestore DB
+   */
+  async getUserOnlineStatus(){
+    try{
+      const user = new User(await this.firestoreService.getUserDataById(this.userId));
+      this.userIsOnline = user.isOnline;
+    } catch (error){
+      console.error("Fehler beim Laden des Benutzers: ", error);
+    }    
   }
   
   /**

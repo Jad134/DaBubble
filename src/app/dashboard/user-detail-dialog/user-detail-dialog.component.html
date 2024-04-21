@@ -14,10 +14,10 @@
       <div class="userName">{{ this.actualUser.name }}</div>
     </div>
     <div class="isOnline">
-      <div *ngIf="actualUser.isOnline">
+      <div *ngIf="userIsOnline">
         <img src="../../../../assets/img/Online.svg" />Online
       </div>
-      <div *ngIf="!actualUser.isOnline">
+      <div *ngIf="!userIsOnline">
         <img src="../../../../assets/img/Offline.svg" />Abwesend
       </div>
     </div>
