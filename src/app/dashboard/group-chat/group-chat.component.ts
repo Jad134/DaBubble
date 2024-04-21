@@ -119,7 +119,7 @@ export class GroupChatComponent {
   /**
      * open the user detail dialog
      */
-  openUserDetail(id: string) {
+  openUserDetail(user: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {
       top: '100px',
@@ -127,7 +127,8 @@ export class GroupChatComponent {
     };
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
-      userId: id,
+      user: user,
+      userInChannel: this.currentChannelData,
     }
     this.dialog.open(UserDetailDialogComponent, dialogConfig);
   }

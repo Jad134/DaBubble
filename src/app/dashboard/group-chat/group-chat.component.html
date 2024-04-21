@@ -36,10 +36,10 @@
 
             <div [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
                 <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
-                        [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user.id)"></div>
+                        [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user)"></div>
                 <div *ngIf="messageObj?.message">
                     <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
-                        <span class="name" (click)="openUserDetail(messageObj.user.id)">{{ messageObj.user.name }}</span>
+                        <span class="name" (click)="openUserDetail(messageObj.user)">{{ messageObj.user.name }}</span>
                         <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
                     </div>
                     <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>

@@ -20,34 +20,29 @@ export class UserDetailDialogComponent {
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
 
-  userId = this.data.id;
+  userId = this.data.user.id;
   actualUser: any = new User;
-  @ViewChild('profilePicture') profilePicture!: ElementRef;
-
-
+  usersInChannel: User[] = [new User]
+  @ViewChild('profilePicture1') profilePicture1!: ElementRef;
 
   async ngOnInit() {
-    this.userId = this.data.userId;
-    await this.firestoreService.getUserDataById(this.userId).then((data) => {
-      this.actualUser = new User(data);
-    }).catch((error) => {
-      console.error('Fehler beim abrufen der Benutzerdaten: ', error);
+    this.userId = this.data.user.id;
+    this.usersInChannel = this.data.userInChannel.usersInChannel;
+    console.log("Aktuller User- User Dialog: ", this.actualUser, this.userId);
+    console.log(this.usersInChannel)
+    this.usersInChannel.forEach(user => {
+      if(user.id === this.userId){
+        this.actualUser = user;
+      }else{
+        console.info("User nicht gefunden");
+      } 
     });
-    this.controlIfOwnPictureUsed(this.userId);
-  }
-
-  /**
-   * checks if user profile is a personal uploaded picture and download it from Firestore
-   * @param userID 
-   */
-  async controlIfOwnPictureUsed(userID: any) {
-    if (this.actualUser.avatar === 'ownPictureDA') {
-      await this.downloadService.downloadAvatar(userID);
-    } else if (this.profilePicture && this.profilePicture.nativeElement) {
-      this.profilePicture.nativeElement.src = this.actualUser.avatar;
-    } else {
-      console.error('Das Bild-Element wurde nicht richtig initialisiert.');
-    }
+    // this.userId = this.data.userId;
+    // await this.firestoreService.getUserDataById(this.userId).then((data) => {
+    //   this.actualUser = new User(data);
+    // }).catch((error) => {
+    //   console.error('Fehler beim abrufen der Benutzerdaten: ', error);
+    // });
   }
   
   /**
