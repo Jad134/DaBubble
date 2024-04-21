@@ -4,7 +4,6 @@ import { MatCard } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogConfig, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
 import { LogInService } from '../../../services/log-in.service';
 import {  Router } from '@angular/router';
-import { Dialog } from '@angular/cdk/dialog';
 import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-dialog.component';
 
 @Component({
@@ -40,7 +39,7 @@ export class UserMenuDialogComponent {
     };
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
-      userId: this.data.userId,
+      user: this.data.user,
     }
     this.dialog.open(UserProfileDialogComponent, dialogConfig);
   }

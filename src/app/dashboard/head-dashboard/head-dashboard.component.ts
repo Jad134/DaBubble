@@ -2,7 +2,6 @@ import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router, } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { FirestoreService } from '../../services/firestore.service';
-import { log } from 'console';
 import { User } from '../../../models/user.class';
 import {MatDialogConfig, MatDialogModule} from '@angular/material/dialog';
 import {
@@ -45,7 +44,6 @@ export class HeadDashboardComponent {
     if (id != null) {
       this.userId = id;
     }
-    console.log('die id ist:', this.userId);
   }
 
 
@@ -54,7 +52,6 @@ export class HeadDashboardComponent {
        .getUserDataById(this.userId)
       .then((data) => {
         this.actualUser = new User(data);
-        console.log(this.actualUser.avatar);
         if (this.actualUser) {
           this.name = this.actualUser.name;
         }
@@ -78,6 +75,8 @@ export class HeadDashboardComponent {
   }
 
   openDialog(){
+    let user = this.actualUser;
+    user.avatar = this.downloadService.downloadedProfileImg;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {
       top: '100px',
@@ -85,7 +84,7 @@ export class HeadDashboardComponent {
     };
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
-      userId: this.userId,
+      user: user,
     }
     this.dialog.open(UserMenuDialogComponent, dialogConfig);
   }

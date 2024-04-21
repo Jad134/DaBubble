@@ -6,12 +6,12 @@
   <div class="profilePicture">
     <img
       #profilePicture
-      [src]="this.downloadService.downloadedProfileImg"
+      [src]="actualUser.avatar"
       alt=""
     />
   </div>
   <div class="nameSection">
-    <div class="userName">{{ this.actualUser.name }}</div>
+    <div class="userName">{{actualUser.name }}</div>
     <div class="bearbeiten" (click)="openEdit()">Bearbeiten</div>
   </div>
   <div class="isOnline">
@@ -25,5 +25,5 @@
   <div class="eMail-head">
     <img src="../../../../assets/img/mail.svg" /> E-Mail-Adresse
   </div>
-  <div class="eMail">{{ this.actualUser.eMail }}</div>
+  <div class="eMail">{{actualUser.eMail }}</div>
 </mat-card>
