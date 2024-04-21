@@ -64,6 +64,7 @@
     font-weight: 400;
     width: 255px;;
     height: 65px;
+    width: 100%;
 
     &:focus-visible{
       outline: none;
@@ -143,4 +144,22 @@
 
 .d-none{
   display: none;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: $bg-color;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: $purple2;
+  border-radius: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: $purple3;
 }
