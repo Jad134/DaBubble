@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from '../../services/firestore.service';
 import { ShowMemberDialogComponent } from './show-member-dialog/show-member-dialog.component';
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
+import { User } from '../../../models/user.class';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class GroupChatComponent {
   message: any;
   yourMessage: any;
   currentUserId: any;
+  @Input() users: User[] = [];
 
   
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef, ) {
@@ -108,7 +110,8 @@ export class GroupChatComponent {
   openShowMemberDialog(event: MouseEvent): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      channelData: this.currentChannelData
+      channelData: this.currentChannelData,
+      allUsers: this.users
     }
     const offsetLeft = 400;
     const offsetY = 20;
