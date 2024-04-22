@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../services/firestore.service';
+import { StorageService } from '../../../services/storage.service';
+import { User } from '../../../../models/user.class';
 
 @Component({
   selector: 'app-show-member-dialog',
@@ -33,12 +35,14 @@ export class ShowMemberDialogComponent {
   @ViewChild('userInput') userInput!: ElementRef<HTMLInputElement>;
   dialogReference: MatDialogRef<any> | null = null;
   fireStoreService = inject(FirestoreService)
+  downloadService = inject(StorageService)
 
 
   async ngOnInit() {
     this.channelData = this.data.channelData
     this.usersInChannel = this.channelData.usersInChannel
     console.log(this.users);
+    this.loadProfilePictures(this.users)
 
   }
 
@@ -119,4 +123,25 @@ export class ShowMemberDialogComponent {
   preventDialogClose(event: MouseEvent): void {
     event.stopPropagation(); // Verhindert, dass das Klickereignis den Dialog schließt
   }
+
+
+  async loadProfilePictures(users: User[]) {
+    for (const user of users) {
+      if (user.avatar === 'ownPictureDA') {
+        const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
+        try {
+          const downloadedImageUrl = await this.downloadService.downloadImage(
+            profilePictureURL
+          );
+          // Weisen Sie die heruntergeladenen Bild-URL dem Benutzerobjekt zu
+          user.avatar = downloadedImageUrl;
+        } catch (error) {
+          console.error('Error downloading user profile picture:', error);
+          // Setzen Sie den Zustand auf falsch, wenn ein Bild nicht geladen werden konnte
+        }
+      }
+    }
+  }
+
+  
 }
