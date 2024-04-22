@@ -6,12 +6,12 @@
       <input type="text" />
       <div class="container_current_user">
         <h2>{{this.name}}</h2>
-        <div>
-          <img #profilePicture class="profile-img" [src]="this.downloadService.downloadedProfileImg" alt="">
+        <div class="profile">
+          <img #profilePicture class="profile-img" [src]="this.downloadService.downloadedProfileImg" alt="" (click)="openDialog()">
         </div>
         <div class="statuslight" src="" alt=""></div>
         <button>
-          <img src="assets/img/keyboard_arrow_down.png" alt="" (click)="openDialog()"/>
+          <img src="assets/img/keyboard_arrow_down.png" (click)="openDialog()"/>
         </button>
       </div>
     </div>
