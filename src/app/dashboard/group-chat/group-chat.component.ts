@@ -111,7 +111,12 @@ export class GroupChatComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       channelData: this.currentChannelData,
-      allUsers: this.users
+      allUsers: this.users,
+      mouseEventData: {
+        clientX: event.clientX,
+        clientY: event.clientY
+      }
+
     }
     const offsetLeft = 400;
     const offsetY = 20;

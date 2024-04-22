@@ -178,7 +178,7 @@ mat-card {
 
 
 
-//******************************************************************************** Bearbeitung für die add user*************************************//
+//******************************************************************************** Bearbeitung für die add user*************************   *****//
 ::ng-deep .mdc-dialog__surface {
     overflow-y: visible !important;
     /* oder overflow-y: hidden; je nach Bedarf */
@@ -209,8 +209,8 @@ mat-card {
     padding: 12px 0 16px 24px;
     z-index: 2;
     position: absolute;
-    left: -326px;
-    top: -81px;
+    // left: -326px;
+  //  top: -81px;
 
     &::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);

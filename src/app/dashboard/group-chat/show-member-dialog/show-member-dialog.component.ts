@@ -1,8 +1,8 @@
 import { Component, ElementRef, Inject, ViewChild, inject } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef, } from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../services/firestore.service';
@@ -15,16 +15,16 @@ import { FirestoreService } from '../../../services/firestore.service';
   styleUrl: './show-member-dialog.component.scss'
 })
 export class ShowMemberDialogComponent {
-  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<ShowMemberDialogComponent>) { 
+  constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<ShowMemberDialogComponent>) {
     this.users = data.allUsers
-    
+
   }
 
   channelData: any;
   usersInChannel: any;
   showMemberSection = true;
   addMemberSection = false;
-  currentName:any;
+  currentName: any;
   selectedOption: string = '';
   userList!: any[];
   users: any[] = [];
@@ -39,16 +39,16 @@ export class ShowMemberDialogComponent {
     this.channelData = this.data.channelData
     this.usersInChannel = this.channelData.usersInChannel
     console.log(this.users);
-    
-  } 
+
+  }
 
 
-  closeDialog(){
+  closeDialog() {
     this.dialogRef.close()
   }
 
 
-  openAddMemberSection(){
+  openAddMemberSection() {
     this.showMemberSection = false;
     this.addMemberSection = true;
   }
@@ -56,7 +56,7 @@ export class ShowMemberDialogComponent {
 
   showUser() {
     this.openDialog()
-    if(this.currentName){
+    if (this.currentName) {
       if (this.currentName.trim() === '') {
         // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
         this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
@@ -71,7 +71,7 @@ export class ShowMemberDialogComponent {
         }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
       }
     }
-   
+
   }
 
   chooseUser(userId: string) {
@@ -90,10 +90,12 @@ export class ShowMemberDialogComponent {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.hasBackdrop = true;
       dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
-      // dialogConfig.position = {
-      //   top: '218px', // Definieren Sie die gewünschte Top-Position
-      //   left: '416px' // Definieren Sie die gewünschte Left-Position
-      // };
+      if (this.data && this.data.mouseEventData) {
+        const mouseEventData = this.data.mouseEventData;
+        const offsetLeft = 370;
+        const offsetY = 155;
+        dialogConfig.position = { top: `${mouseEventData.clientY + offsetY}px`, left: `${mouseEventData.clientX - offsetLeft}px` };
+      }
       dialogConfig.autoFocus = false; // Dialog erhält keinen Fokus automatisch
       dialogConfig.closeOnNavigation = true; // Dialog bleibt ge
 
