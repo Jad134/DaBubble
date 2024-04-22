@@ -46,7 +46,10 @@ export class HeadDashboardComponent {
     }
   }
 
-
+  /**
+   * this function load all user informations by user-id
+   * @param userID 
+   */
   async downloadProfileDatas(userID: any) {
    await this.firestoreService
        .getUserDataById(this.userId)
@@ -63,7 +66,10 @@ export class HeadDashboardComponent {
   }
 
 
-
+  /**
+   * this function checks if the user use an uploaded or standard avatar picture
+   * @param userID 
+   */
   async controlIfOwnPictureUsed(userID:any){
     if (this.actualUser.avatar === 'ownPictureDA'){
     await  this.downloadService.downloadAvatar(userID);
@@ -74,6 +80,9 @@ export class HeadDashboardComponent {
     }
   }
 
+  /**
+   * this function opens the user menu dialog
+   */
   openDialog(){
     let user = this.actualUser;
     user.avatar = this.downloadService.downloadedProfileImg;
