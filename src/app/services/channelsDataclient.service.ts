@@ -9,6 +9,7 @@ import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
 import { Observable } from 'rxjs';
+import { ThreadService } from './thread.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class channelDataclientService {
 
   firestoreService = inject(FirestoreService);
   firestore: Firestore = inject(Firestore);
+  threadService = inject(ThreadService)
   app = initializeApp(this.firestoreService.firebaseConfig);
   auth = getAuth(this.app);
   db = getFirestore(this.app);
@@ -89,6 +91,7 @@ export class channelDataclientService {
       try {
         this.setMessageDocument(chatRef, message, userId, userName, timeStamp)
         console.log("Chat-Dokument erfolgreich erstellt.");
+        this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName);
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
       }
