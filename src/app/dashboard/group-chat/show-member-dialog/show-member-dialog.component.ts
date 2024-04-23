@@ -134,7 +134,9 @@ export class ShowMemberDialogComponent {
   }
 
 
-
+/**
+ * This function opens the userList dialog to add an User to the Channel
+ */
   openUserDialog() {
     if (!this.dialogReference) {
       const dialogConfig = new MatDialogConfig();
@@ -146,7 +148,7 @@ export class ShowMemberDialogComponent {
       dialogConfig.autoFocus = false; // Dialog erhält keinen Fokus automatisch
       dialogConfig.closeOnNavigation = true; // Dialog bleibt ge
       this.dialogReference = this.dialog.open(this.userListDialog, dialogConfig);
-      
+
       this.dialogFocusSettings()
     }
   }
@@ -227,7 +229,6 @@ export class ShowMemberDialogComponent {
     for (const user of this.selectedUser) {
       await this.fireStoreService.updateUsersChannels(user.id, channelId)
     }
-
     this.closeDialog()
   }
 
