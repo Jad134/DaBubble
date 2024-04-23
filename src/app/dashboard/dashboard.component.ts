@@ -43,9 +43,6 @@ export class DashboardComponent {
     this.firestoreService.getAllUsers().then(users => {
       // Handle users data
       this.users = users;
-      console.log(this.users);
-
-
     }).catch(error => {
       console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
     });
@@ -82,7 +79,6 @@ export class DashboardComponent {
   handleCurrentGroupId(id: string) {
     this.currentGroupChat = id;
     console.log(this.currentGroupChat);
-
   }
 
 

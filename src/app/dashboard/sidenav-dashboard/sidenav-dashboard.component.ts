@@ -124,7 +124,6 @@ export class SidenavDashboardComponent implements OnDestroy {
 
         // Handle users data
         this.users = users;
-        console.log(this.users);
       })
       .catch((error) => {
         console.error('Fehler beim Abrufffen der Benutzerdaten:', error);

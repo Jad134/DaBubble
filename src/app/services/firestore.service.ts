@@ -67,7 +67,6 @@ export class FirestoreService {
       const user = new User(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
       this.userIds = doc.id
       users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
-      console.log(user);
     });
 
     return users; // Geben Sie das Array der Benutzer zurück
@@ -98,7 +97,7 @@ export class FirestoreService {
       if (docSnap.exists()) {
         return docSnap.data();
       } else {
-        console.log('Kein Dokument mit dieser ID gefunden');
+        console.info('Kein Dokument mit dieser ID gefunden');
         return null;
       }
     } catch (error) {
@@ -115,7 +114,6 @@ export class FirestoreService {
     await updateDoc(userRef, {
       avatar: avatarRef
     });
-    console.log(id, avatarRef)
   }
 
 
@@ -182,7 +180,7 @@ export class FirestoreService {
           channels: existingChannels
         });
       } else {
-        console.log('Keine Benutzerdaten mit dieser ID gefunden');
+        console.info('Keine Benutzerdaten mit dieser ID gefunden');
       }
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Kanäle:', error);
