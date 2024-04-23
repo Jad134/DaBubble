@@ -9,12 +9,13 @@ import { FirestoreService } from '../../services/firestore.service';
 import { ShowMemberDialogComponent } from './show-member-dialog/show-member-dialog.component';
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
 import { User } from '../../../models/user.class';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-group-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogClose,],
+  imports: [CommonModule, FormsModule, MatDialogClose, MatIconModule],
   templateUrl: './group-chat.component.html',
   styleUrl: './group-chat.component.scss',
 })
@@ -28,6 +29,7 @@ export class GroupChatComponent {
   yourMessage: any;
   currentUserId: any;
   @Input() users: User[] = [];
+  showButton: boolean[] = Array(this.chatService.chatDatas.length).fill(false);
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
@@ -145,6 +147,12 @@ export class GroupChatComponent {
       userInChannel: this.currentChannelData,
     }
     this.dialog.open(UserDetailDialogComponent, dialogConfig);
+  }
+
+
+  openThread(chatId: any) {
+    console.log(chatId);
+
   }
 
 }

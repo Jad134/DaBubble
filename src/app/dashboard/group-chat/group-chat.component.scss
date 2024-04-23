@@ -189,6 +189,7 @@ button {
 }
 
 .chat-message {
+  position: relative;
   display: flex;
   flex-direction: row;
   padding-left: 12px;
@@ -247,6 +248,7 @@ transition: ease-in-out 125ms;
 }
 
 .you-chat-message {
+  position: relative;
   display: flex;
   flex-direction: row-reverse;
   gap: 20px;
@@ -452,4 +454,45 @@ textarea::-webkit-scrollbar-thumb {
 
 textarea::-webkit-scrollbar-thumb:hover {
   background: $purple3;
+}
+
+.quick-reactions-container{
+  height: 30px;
+    display: flex;
+    border: 1px solid;
+    border-radius: 20px 20px 0px 20px;
+    position: absolute;
+    right: 0;
+    width: fit-content;
+    background-color: white;
+    padding: 5px;
+   
+}
+
+.own-quick-reactions-container{
+  position: absolute;
+  left: 0;
+  height: 30px;
+  display: flex;
+  border: 1px solid;
+  border-radius: 20px 20px 0px 20px;
+  width: fit-content;
+  background-color: white;
+  padding: 5px;
+}
+
+.thread-icon{
+  cursor: pointer;
+
+  &:hover{
+    color: $purple1;
+  }
+}
+
+.add-reaction-icon{
+  cursor: pointer;
+
+  &:hover{
+    color: $purple1;
+  }
 }

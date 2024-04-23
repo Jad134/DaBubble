@@ -24,7 +24,7 @@ export class channelDataclientService {
   channelDB = collection(this.firestore, 'Channels');
   channelIds = [];
   channels: channel[] = [];
-  chatDatas: any;
+  chatDatas: any[] = []; 
   ownMessage = false;
 
 
