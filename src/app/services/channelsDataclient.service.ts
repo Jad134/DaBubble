@@ -4,7 +4,7 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { QuerySnapshot, addDoc, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
+import { QuerySnapshot, addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
@@ -194,9 +194,9 @@ export class channelDataclientService {
   }
 
 
-/**
- * This function updates the Users in channel and delete the leaved user from the Channeldb 
- */
+  /**
+   * This function updates the Users in channel and delete the leaved user from the Channeldb 
+   */
   async deleteLeavedUserInCannel(channelId: any, userId: any) {
     const channelRef = doc(this.db, "Channels", channelId);
     const unsub = onSnapshot(channelRef, (channelDoc) => {
@@ -204,7 +204,7 @@ export class channelDataclientService {
         const channelData = channelDoc.data() as channel;
         let usersInChannel = channelData.usersInChannel;
         usersInChannel = usersInChannel.filter((user: any) => user.id !== userId);
-  
+
         updateDoc(channelRef, { usersInChannel: usersInChannel });
         this.channels = []
       } else {
@@ -342,6 +342,21 @@ export class channelDataclientService {
     await this.getChannels()
   }
 
+
+  async addUserToChannel(id: any, users: any[]) {
+    const channelRef = doc(this.db, "Channels", id);
+  
+    for (const user of users) {
+      await updateDoc(channelRef, {
+        usersInChannel: arrayUnion({
+          name: user.name,
+          id: user.id,
+          eMail: user.eMail,
+          avatar: user.avatar
+        })
+      });
+    }
+  }
 
 
 

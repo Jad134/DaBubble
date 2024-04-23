@@ -35,7 +35,7 @@
             <input [(ngModel)]="currentName" (click)="showUser()" (ngModelChange)="showUser()" name="currentName"
             (keydown)="showUser()" type="text"
             class="input_add inputAddUser" #userInput />
-            <div>added Users</div>
+           
             <ng-template #userListDialog>
                 <div *ngIf=" userList && userList.length > 0" class="container_show_user">
                     <div (click)="chooseUser(user.id)" *ngFor="let user of userList" class="box_user">
@@ -50,8 +50,25 @@
                 </div>
             </ng-template>
         </div>
-        <div>
-            <button>Hinzufügen</button>
+
+        <div class="show-choosed-user">
+            <div *ngFor="let user of selectedUser" class="choosed-user-box">
+                <button>
+                    <img class="current-user-picture" [src]="user.avatar" alt="" />
+                    <div class="statuslight-choosed-user" [ngStyle]="{
+              'background-color': user.isOnline ? 'green' : 'red'
+            }" alt=""></div>
+                </button>
+                <p>{{ user.name }}</p>
+                <button (click)="removeSelectedUser(user.id)" mat-mini-fab color="primary" class="back-button">
+                    <mat-icon  class="back-icon">close</mat-icon>
+                </button>
+            </div>
+
         </div>
-    </section>
+
+        <div class="add-member-button">
+            <button (click)="addUserToChannel(channelId)"  [disabled]="selectedUser.length === 0 ">Hinzufügen</button>
+        </div>
+    </section>  
 </mat-card>

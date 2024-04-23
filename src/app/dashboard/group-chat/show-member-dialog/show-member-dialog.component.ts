@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../services/firestore.service';
 import { StorageService } from '../../../services/storage.service';
 import { User } from '../../../../models/user.class';
+import { channelDataclientService } from '../../../services/channelsDataclient.service';
 
 @Component({
   selector: 'app-show-member-dialog',
@@ -24,6 +25,7 @@ export class ShowMemberDialogComponent {
 
   channelData: any;
   usersInChannel: any;
+  channelId: any;
   showMemberSection = true;
   addMemberSection = false;
   currentName: any;
@@ -36,14 +38,28 @@ export class ShowMemberDialogComponent {
   dialogReference: MatDialogRef<any> | null = null;
   fireStoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
+  channelService = inject(channelDataclientService)
 
 
   async ngOnInit() {
     this.channelData = this.data.channelData
     this.usersInChannel = this.channelData.usersInChannel
-    console.log(this.users);
-    this.loadProfilePictures(this.users)
+    this.channelId = this.channelData.id
+    console.log();
+    await this.loadProfilePictures(this.users)
+    this.filterUsersInChannel();
 
+  }
+
+
+  filterUsersInChannel() {
+    if (this.data.channelData && this.data.channelData.usersInChannel) {
+      const usersInChannelIds = this.usersInChannel.map((user: any) => user.id);
+
+
+      this.users = this.users.filter(user => !usersInChannelIds.includes(user.id));
+      console.log(this.users);
+    }
   }
 
 
@@ -59,24 +75,23 @@ export class ShowMemberDialogComponent {
 
 
   showUser() {
-    this.openDialog()
-    if (this.currentName) {
-      if (this.currentName.trim() === '') {
-        // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
-        this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
-      } else {
-        // Wenn ein Suchbegriff vorhanden ist, nach dem Suchbegriff filtern und dann nur die Benutzer anzeigen, die nicht ausgewählt wurden
-        this.userList = this.users.filter((user) => {
-          const userClean = user.name.replace(/\s/g, '');
-          const userCleanSmall = userClean.toLowerCase();
-          if (userCleanSmall.includes(this.currentName)) {
-            return user;
-          }
-        }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
-      }
-    }
+    this.openDialog();
 
+    if (!this.currentName || this.currentName.trim() === '') {
+      // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
+      this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+    } else {
+      // Wenn ein Suchbegriff vorhanden ist, nach dem Suchbegriff filtern und dann nur die Benutzer anzeigen, die nicht ausgewählt wurden
+      this.userList = this.users.filter((user) => {
+        const userClean = user.name.replace(/\s/g, '');
+        const userCleanSmall = userClean.toLowerCase();
+        if (userCleanSmall.includes(this.currentName)) {
+          return user;
+        }
+      }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+    }
   }
+
 
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);
@@ -88,6 +103,7 @@ export class ShowMemberDialogComponent {
     }
     this.showUser()
   }
+
 
   openDialog() {
     if (!this.dialogReference) {
@@ -125,6 +141,9 @@ export class ShowMemberDialogComponent {
   }
 
 
+  /**
+   * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
+   */
   async loadProfilePictures(users: User[]) {
     for (const user of users) {
       if (user.avatar === 'ownPictureDA') {
@@ -143,5 +162,24 @@ export class ShowMemberDialogComponent {
     }
   }
 
-  
+
+  /**
+  * This function removes the selected user for the Channel 
+  */
+  removeSelectedUser(userId: any) {
+    this.selectedUser = this.selectedUser.filter(user => user.id !== userId);
+    console.log('Selected users after removal:', this.selectedUser);
+
+  }
+
+
+ async addUserToChannel(channelId: any) {
+   await this.channelService.addUserToChannel(channelId, this.selectedUser);
+   for(const user of this.selectedUser){
+    await this.fireStoreService.updateUsersChannels(user.id, channelId)
+   }
+   
+   this.closeDialog()
+  }
+
 }
