@@ -8,7 +8,8 @@
       </div>
       <div class="close w-h-40" (click)="Dnone()"></div>
     </div>
-    <div class="thread-content">hier steht der Chatverlauf</div>
+    <div class="thread-content">{{threadService.currentChatId}}</div>
+    <div>{{threadService.currentGroupId}}</div>
     <div class="answer-section">
       <div class="answer-field">
         <textarea
