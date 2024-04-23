@@ -10,6 +10,7 @@ import { ShowMemberDialogComponent } from './show-member-dialog/show-member-dial
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
 import { User } from '../../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
+import { ThreadService } from '../../services/thread.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class GroupChatComponent {
   @Input() currentId!: string;
   chatService = inject(channelDataclientService);
-  fireStoreService = inject(FirestoreService)
+  fireStoreService = inject(FirestoreService);
+  threadService = inject(ThreadService);
   currentChannelData: any;
   currentChat: any;
   message: any;
@@ -152,7 +154,9 @@ export class GroupChatComponent {
 
   openThread(chatId: any) {
     console.log(chatId);
-
+    this.threadService.currentChatId = chatId;
+    this.threadService.currentGroupId = this.currentId
+    this.threadService.getCurrentThread()
   }
 
 }
