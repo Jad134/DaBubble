@@ -52,11 +52,12 @@ export class ShowMemberDialogComponent {
   }
 
 
+  /**
+   * This function filters out users who are already in the channel
+   */
   filterUsersInChannel() {
     if (this.data.channelData && this.data.channelData.usersInChannel) {
       const usersInChannelIds = this.usersInChannel.map((user: any) => user.id);
-
-
       this.users = this.users.filter(user => !usersInChannelIds.includes(user.id));
       console.log(this.users);
     }
@@ -74,25 +75,53 @@ export class ShowMemberDialogComponent {
   }
 
 
+  /**
+   * This function is always activated when typing to filter the user search
+   */
   showUser() {
-    this.openDialog();
+    this.openUserDialog();
 
-    if (!this.currentName || this.currentName.trim() === '') {
-      // Wenn kein Suchbegriff vorhanden ist, alle Benutzer anzeigen, die nicht ausgewählt wurden
-      this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+    if (this.isInputEmpty()) {
+      this.showAllUsers()
     } else {
-      // Wenn ein Suchbegriff vorhanden ist, nach dem Suchbegriff filtern und dann nur die Benutzer anzeigen, die nicht ausgewählt wurden
-      this.userList = this.users.filter((user) => {
-        const userClean = user.name.replace(/\s/g, '');
-        const userCleanSmall = userClean.toLowerCase();
-        if (userCleanSmall.includes(this.currentName)) {
-          return user;
-        }
-      }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+      this.filterByName()
     }
   }
 
 
+  /**
+   * @returns requirements for filterfunction
+   */
+  isInputEmpty() {
+    return !this.currentName || this.currentName.trim() === ''
+  }
+
+
+  /**
+   * @returns  all users except those already selected
+   */
+  showAllUsers() {
+    return this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+  }
+
+
+  /**
+   * @returns the filtered name
+   */
+  filterByName() {
+    return this.userList = this.users.filter((user) => {
+      const userClean = user.name.replace(/\s/g, '');
+      const userCleanSmall = userClean.toLowerCase();
+      if (userCleanSmall.includes(this.currentName)) {
+        return user;
+      }
+    }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
+  }
+
+
+  /**
+ * Adds a user to the selected users list based on the provided user ID
+ */
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);
     if (userToAdd.length > 0) {
@@ -105,23 +134,40 @@ export class ShowMemberDialogComponent {
   }
 
 
-  openDialog() {
+
+  openUserDialog() {
     if (!this.dialogReference) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.hasBackdrop = true;
       dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
       if (this.data && this.data.mouseEventData) {
-        const mouseEventData = this.data.mouseEventData;
-        const offsetLeft = 370;
-        const offsetY = 155;
-        dialogConfig.position = { top: `${mouseEventData.clientY + offsetY}px`, left: `${mouseEventData.clientX - offsetLeft}px` };
+        this.setUserDialogPosition(dialogConfig)
       }
       dialogConfig.autoFocus = false; // Dialog erhält keinen Fokus automatisch
       dialogConfig.closeOnNavigation = true; // Dialog bleibt ge
-
       this.dialogReference = this.dialog.open(this.userListDialog, dialogConfig);
+      
+      this.dialogFocusSettings()
+    }
+  }
 
 
+  /**
+   * @returns the position for the user Dialog under the input field
+   */
+  setUserDialogPosition(dialogConfig: MatDialogConfig<any>) {
+    const mouseEventData = this.data.mouseEventData;
+    const offsetLeft = 370;
+    const offsetY = 155;
+    return dialogConfig.position = { top: `${mouseEventData.clientY + offsetY}px`, left: `${mouseEventData.clientX - offsetLeft}px` };
+  }
+
+
+ /** 
+  * Sets up focus behavior for the dialog when opened and closed.
+  */
+  dialogFocusSettings() {
+    if (this.dialogReference) {
       this.dialogReference.afterOpened().subscribe(() => {
         this.userInput.nativeElement.focus();
       });
@@ -173,13 +219,16 @@ export class ShowMemberDialogComponent {
   }
 
 
- async addUserToChannel(channelId: any) {
-   await this.channelService.addUserToChannel(channelId, this.selectedUser);
-   for(const user of this.selectedUser){
-    await this.fireStoreService.updateUsersChannels(user.id, channelId)
-   }
-   
-   this.closeDialog()
+  /**
+   * This function launches the necessary functions to add a user to a channel
+   */
+  async addUserToChannel(channelId: any) {
+    await this.channelService.addUserToChannel(channelId, this.selectedUser);
+    for (const user of this.selectedUser) {
+      await this.fireStoreService.updateUsersChannels(user.id, channelId)
+    }
+
+    this.closeDialog()
   }
 
 }
