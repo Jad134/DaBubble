@@ -193,7 +193,18 @@ button {
   flex-direction: row;
   padding-left: 12px;
   gap: 20px;
+  cursor: pointer;
+  transition: ease-in-out 125ms;
+  padding-top: 8px;
 
+  &:hover{
+    background-color: $bg-color;
+  }
+
+  &:hover .message{
+background-color: white;
+transition: ease-in-out 125ms;
+  }
 }
 
 .message-avatar {
@@ -240,6 +251,13 @@ button {
   flex-direction: row-reverse;
   gap: 20px;
   padding-right: 12px;
+  cursor: pointer;
+  transition: ease-in-out 125ms;
+  padding-top: 8px;
+
+  &:hover{
+    background-color: $bg-color;
+  }
 }
 
 .you-message {

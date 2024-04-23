@@ -1,7 +1,7 @@
 import { Component, Input, Inject, inject, SimpleChanges, ElementRef } from '@angular/core';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig, MatDialogClose,} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogClose, } from '@angular/material/dialog';
 import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edit-group-channel-dialog.component';
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +14,7 @@ import { User } from '../../../models/user.class';
 @Component({
   selector: 'app-group-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogClose, ],
+  imports: [CommonModule, FormsModule, MatDialogClose,],
   templateUrl: './group-chat.component.html',
   styleUrl: './group-chat.component.scss',
 })
@@ -29,8 +29,8 @@ export class GroupChatComponent {
   currentUserId: any;
   @Input() users: User[] = [];
 
-  
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef, ) {
+
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
     this.getIdFromURL()
   }
 
@@ -99,15 +99,15 @@ export class GroupChatComponent {
 
   getUserAvatar(userId: string): string {
     if (this.currentChannelData && this.currentChannelData.usersInChannel) {
-        const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
-        return user ? user.avatar : 'assets/img/Logo.svg';
+      const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
+      return user ? user.avatar : 'assets/img/Logo.svg';
     } else {
-        return 'assets/img/Logo.svg'; // Fallback, wenn currentChannelData oder usersInChannel nicht definiert ist
+      return 'assets/img/Logo.svg'; // Fallback, wenn currentChannelData oder usersInChannel nicht definiert ist
     }
-}
+  }
 
 
-  openShowMemberDialog(event: MouseEvent): void {
+  openShowMemberDialog(event: MouseEvent, showMember: boolean, addMember: boolean): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       channelData: this.currentChannelData,
@@ -115,13 +115,19 @@ export class GroupChatComponent {
       mouseEventData: {
         clientX: event.clientX,
         clientY: event.clientY
-      }
-
+      },
+      showMemberSection: showMember, // Hier wird der Zustand für showMemberSection gesetzt
+      addMemberSection: addMember // Hier wird der Zustand für addMemberSection ge
     }
     const offsetLeft = 400;
     const offsetY = 20;
     dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
     this.dialog.open(ShowMemberDialogComponent, dialogConfig);
+  }
+
+
+  openAddUserDialog(event: MouseEvent): void {
+    this.openShowMemberDialog(event, false, true)
   }
 
   /**

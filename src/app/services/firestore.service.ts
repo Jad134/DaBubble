@@ -141,12 +141,14 @@ export class FirestoreService {
   }
 
 
+  
   async updateUserToOffline(id: string,) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
       isOnline: false
     });
   }
+
 
   /**
    * Update the user data in DB
@@ -167,19 +169,12 @@ export class FirestoreService {
   async updateUsersChannels(id: string, channelId: string) {
     try {
       const existingUserData = await this.getUserDataById(id);
-
       if (existingUserData) {
-        let existingChannels: string[] = existingUserData['channels'] || []; // Wenn keine Kanäle vorhanden sind, initialisieren Sie ein leeres Array
-
-        // Stellen Sie sicher, dass existingChannels ein Array ist
+        let existingChannels: string[] = existingUserData['channels'] || []; 
         if (!Array.isArray(existingChannels)) {
-          existingChannels = [existingChannels]; // Konvertieren Sie es in ein Array
+          existingChannels = [existingChannels]; 
         }
-
-        // Fügen Sie den neuen Kanal zur Liste der vorhandenen Kanäle hinzu
         existingChannels.push(channelId);
-
-        // Entfernen Sie doppelte Kanäle, falls erforderlich
         existingChannels = existingChannels.filter((id, index, self) => self.indexOf(id) === index);
 
         const userRef = doc(this.db, "Users", id);

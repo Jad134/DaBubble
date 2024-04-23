@@ -45,10 +45,19 @@ export class ShowMemberDialogComponent {
     this.channelData = this.data.channelData
     this.usersInChannel = this.channelData.usersInChannel
     this.channelId = this.channelData.id
-    console.log();
+    this.showRightSection()
     await this.loadProfilePictures(this.users)
     this.filterUsersInChannel();
 
+  }
+
+
+  /**
+   * This function sets the variable for the ngif to show the right sections
+   */
+  showRightSection(){
+    this.showMemberSection = this.data.showMemberSection;
+    this.addMemberSection = this.data.addMemberSection;
   }
 
 
@@ -217,7 +226,6 @@ export class ShowMemberDialogComponent {
   removeSelectedUser(userId: any) {
     this.selectedUser = this.selectedUser.filter(user => user.id !== userId);
     console.log('Selected users after removal:', this.selectedUser);
-
   }
 
 
