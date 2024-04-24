@@ -152,11 +152,12 @@ export class GroupChatComponent {
   }
 
 
-  openThread(chatId: any) {
-    console.log(chatId);
-    this.threadService.currentChatId = chatId;
+  openThread(messageId: any) {
+    console.log(messageId);
+    this.threadService.currentChatId = messageId;
     this.threadService.currentGroupId = this.currentId
-    this.threadService.getCurrentThread()
+    this.threadService.getCurrentThreadCollection(this.currentId, messageId, this.currentUserId)
+    this.threadService.setCurrentChannelData(this.currentChannelData)
   }
 
 }

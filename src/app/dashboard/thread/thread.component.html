@@ -8,11 +8,46 @@
       </div>
       <div class="close w-h-40" (click)="Dnone()"></div>
     </div>
-    <div class="thread-content">{{threadService.currentChatId}}</div>
-    <div>{{threadService.currentGroupId}}</div>
+
+    <div class="chat">
+      <ng-container *ngFor="let messageObj of threadService.chatDatas; let i = index">
+          <!-- Überprüfe, ob der vorherige Eintrag existiert und das Datum anders ist -->
+          <ng-container
+              *ngIf="i === 0 || (threadService.chatDatas[i - 1].time | date:'dd.MM.yyyy') !== (messageObj.time | date:'dd.MM.yyyy')">
+              <div class="date-div">
+                  <div class="line"></div>
+                  <span class="date">{{ messageObj.time | date:'dd.MM.yyyy' }}</span>
+                  <div class="line"></div>
+              </div>
+          </ng-container>
+
+          <div   (mouseover)="showButton[i] = true" (mouseleave)="showButton[i] = false"  [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
+              <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
+                      [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user)"></div>
+              <div *ngIf="messageObj?.message">
+                  <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
+                      <span class="name" (click)="openUserDetail(messageObj.user)">{{ messageObj.user.name }}</span>
+                      <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
+                  </div>
+                  <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>
+                  <div class="message-reaction">
+                      <div class="reaction w-h-40"></div>
+                      <!-- <div class="comment w-h-40"></div> -->
+                  </div>
+              </div>
+              <div *ngIf="showButton[i]" [ngClass]="messageObj.ownMessage ? 'own-quick-reactions-container' : 'quick-reactions-container'"  >
+                  <span>pfeil</span>
+                  <span>hand</span>
+                  <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
+              </div>
+          </div>
+      </ng-container>
+  </div>
+
     <div class="answer-section">
       <div class="answer-field">
         <textarea
+        [(ngModel)]="message"
           name="answer"
           id="answer"
           cols="1"
@@ -26,7 +61,7 @@
             <div class="emoji w-h-40"></div>
             <div class="email w-h-40"></div>
           </div>
-          <div class="send w-h-40"></div>
+          <div (click)="sendMessageToThread(message)" class="send w-h-40"></div>
         </div>
       </div>
     </div>
