@@ -34,10 +34,14 @@ export class ThreadComponent {
   constructor(private route: ActivatedRoute) {
     this.checkScreenSize();
     this.getIdFromURL();
+    this.subscribeToCurrentChannelData();
+  }
+
+
+  private subscribeToCurrentChannelData(): void {
     this.threadService.currentChannelData$.subscribe(data => {
       if (data) {
         this.currentChannelData = data;
-        // Rufe getUserAvatar hier auf oder aktualisiere das HTML, um getUserAvatar automatisch aufzurufen, wenn currentChannelData verfügbar ist
       }
     });
   }

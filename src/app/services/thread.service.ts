@@ -149,7 +149,4 @@ export class ThreadService {
   setCurrentChannelData(currentChannelData: any) {
     this.currentChannelDataSubject.next(currentChannelData);
   }
-
-
- 
 }
