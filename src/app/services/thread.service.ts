@@ -5,6 +5,7 @@ import { Firestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
 import { getAuth } from 'firebase/auth';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ThreadService {
   firestoreService = inject(FirestoreService);
   firestore: Firestore = inject(Firestore);
+  downloadService = inject(StorageService);
   app = initializeApp(this.firestoreService.firebaseConfig);
   auth = getAuth(this.app);
   db = getFirestore(this.app);
@@ -116,7 +118,8 @@ export class ThreadService {
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
-      let avatar = userData['avatar']
+      await this.loadProfilePictures(userData); // Benutzeravatar aktualisieren
+      let avatar = userData['avatar'];
       try {
         this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)
         console.log("Chat-Dokument erfolgreich erstellt.");
@@ -125,6 +128,23 @@ export class ThreadService {
       }
     } else {
       console.log('Benutzerdaten nicht gefunden');
+    }
+  }
+
+
+  /**
+   * This function download the avatar link if an user use a own avatar and sets the avatar to the user object 
+   */
+  async loadProfilePictures(user: any) {
+    if (user.avatar === 'ownPictureDA') {
+      const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
+      try {
+        const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
+        // Weisen Sie die heruntergeladenen Bild-URL direkt dem Benutzerobjekt zu
+        user.avatar = downloadedImageUrl;
+      } catch (error) {
+        console.error('Error downloading user profile picture:', error);
+      }
     }
   }
 
