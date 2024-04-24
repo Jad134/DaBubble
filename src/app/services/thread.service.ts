@@ -118,7 +118,6 @@ export class ThreadService {
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
-      await this.loadProfilePictures(userData); // Benutzeravatar aktualisieren
       let avatar = userData['avatar'];
       try {
         this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)

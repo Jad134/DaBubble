@@ -1,7 +1,7 @@
 <section>
     <div *ngIf="currentUserData" class="chat-header">
         <div class="dm-image-container">
-            <img [src]="currentUserData.avatar" class="avatar-img">
+            <img *ngIf="currentUserData.avatar !== 'ownPictureDA'" [src]="currentUserData.avatar" class="avatar-img">
             <div class="statuslight"></div>
             
         </div>

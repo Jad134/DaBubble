@@ -60,7 +60,7 @@ export class DirectChatComponent {
       if (this.currentUserData.avatar === 'ownPictureDA') {
         const profilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentUserData.id}/ownPictureDA`;
         try {
-          this.setProfilePictureToUser(profilePictureURL)
+          await this.setProfilePictureToUser(profilePictureURL)
         } catch (error) {
           console.error('Error downloading user profile picture:', error);
         }
