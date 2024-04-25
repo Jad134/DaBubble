@@ -178,6 +178,8 @@ export class ThreadService {
       emoji: {},
     });
   }
+
+
   setCurrentChannelData(currentChannelData: any) {
     this.currentChannelDataSubject.next(currentChannelData);
   }
@@ -204,8 +206,8 @@ export class ThreadService {
   /**
    * This function updatet the edit message in the thread too
    */
- async updateEditMessage(messageId:any, message:any){
-    const docRef = doc(this.db, "Channels", this.currentGroupId, 'chat', messageId, 'thread', messageId);
+ async updateEditMessage(channelId:any ,messageId:any, message:any){
+    const docRef = doc(this.db, "Channels", channelId, 'chat', messageId, 'thread', messageId);
     await updateDoc(docRef, {
       message: message,
     });

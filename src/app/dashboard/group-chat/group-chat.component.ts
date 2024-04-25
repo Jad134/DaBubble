@@ -35,10 +35,10 @@ export class GroupChatComponent {
   @ViewChild('editMessageDialog') editMessageDialog: any;
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
-  messageForEdit:any;
+  messageForEdit: any;
 
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef, ) {
     this.getIdFromURL()
   }
 
@@ -193,7 +193,7 @@ export class GroupChatComponent {
    * @param event mouseclick
    * @returns position of the mouseclick
    */
-  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>) {
+  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>, ) {
     const offsetLeft = 0;
     const offsetY = 0;
     return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
@@ -213,11 +213,11 @@ export class GroupChatComponent {
 
 
   async editMessage(messageId: any, messageIndex: number) {
-
     let message = await this.chatService.getMessageForEdit(this.currentId, messageId)
     console.log(message);
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
+    this.dialogReference?.close()
   }
 
 
@@ -226,9 +226,9 @@ export class GroupChatComponent {
   }
 
 
- async saveEdit(messageId:any, message:any){
-   await this.chatService.editMessage(this.currentId, messageId, message)
-   this.editedMessageIndex = null;
+  async saveEdit(messageId: any, message: any) {
+    await this.chatService.editMessage(this.currentId, messageId, message)
+    this.editedMessageIndex = null;
   }
 
 }

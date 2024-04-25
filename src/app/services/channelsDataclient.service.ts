@@ -416,6 +416,6 @@ export class channelDataclientService {
     await updateDoc(docRef, {
       message: message,
     });
-    this.threadService.updateEditMessage(messageId, message)
+   await this.threadService.updateEditMessage(channelId,messageId, message)
   }
 }
