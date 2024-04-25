@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { FirestoreService } from './firestore.service';
-import { addDoc, collection, doc, onSnapshot, query, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
 import { Firestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
 import { getAuth } from 'firebase/auth';
@@ -22,6 +22,8 @@ export class ThreadService {
   currentGroupId: any;
   chatDatas: any[] = [];
   ownMessage = false;
+  chatLength:number | undefined;
+  closeTab = false;
 
   private currentChannelDataSubject = new BehaviorSubject<any>(null);
   currentChannelData$ = this.currentChannelDataSubject.asObservable();
@@ -120,7 +122,8 @@ export class ThreadService {
       let userName = userData['name'];
       let avatar = userData['avatar'];
       try {
-        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)
+       await this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)
+       await this.updateAnswerCount(this.currentGroupId, this.currentChatId)
         console.log("Chat-Dokument erfolgreich erstellt.");
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
@@ -128,6 +131,18 @@ export class ThreadService {
     } else {
       console.log('Benutzerdaten nicht gefunden');
     }
+  }
+
+
+   /**
+   * This function update the answer count in the chat db. The getCurrentLength... function get the length of the current Thread and return it to this variable .
+   */
+  async updateAnswerCount(channelId:any, messageId:any){
+    let answersCount =  await this.getCurrentThreadCollectionLength(channelId, messageId)
+    const channelRef = doc(this.db, "Channels", channelId, 'chat', messageId);
+    await updateDoc(channelRef, {
+      answer: answersCount
+    });
   }
 
 
@@ -163,9 +178,25 @@ export class ThreadService {
       emoji: {},
     });
   }
-
-
   setCurrentChannelData(currentChannelData: any) {
     this.currentChannelDataSubject.next(currentChannelData);
+  }
+
+
+  /**
+   * This function returns the chat, when open the thread
+   */
+  async getCurrentThreadCollectionLength(channelId:any, messageId: any): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const q = query(collection(this.db, "Channels", channelId, 'chat', messageId, 'thread'));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const chatLength = querySnapshot.size; // Anzahl der Dokumente im Thread
+        this.chatLength = chatLength
+        resolve(chatLength);
+      }, (error) => {
+        console.error('Fehler beim Laden der Daten:', error);
+        reject(error);
+      });
+    });
   }
 }

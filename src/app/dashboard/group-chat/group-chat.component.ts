@@ -152,8 +152,9 @@ export class GroupChatComponent {
   }
 
 
-  openThread(messageId: any) {
+  openThread(messageId: any) { 
     console.log(messageId);
+    this.threadService.closeTab = false;
     this.threadService.currentChatId = messageId;
     this.threadService.currentGroupId = this.currentId
     this.threadService.getCurrentThreadCollection(this.currentId, messageId, this.currentUserId)

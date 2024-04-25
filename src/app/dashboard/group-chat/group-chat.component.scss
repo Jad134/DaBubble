@@ -282,11 +282,15 @@ transition: ease-in-out 125ms;
 }
 
 .message-reaction {
-  margin-top: 15px;
-  width: 75px;
+  align-items: center;
   display: flex;
-  justify-content: space-around;
-  margin-left: 40px;
+  justify-content: start;
+}
+
+.message-reaction-own-message{
+  align-items: center;
+  display: flex;
+  justify-content: end;
 }
 
 form {
@@ -491,8 +495,19 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 .add-reaction-icon{
   cursor: pointer;
+  font-size: 18px;
 
   &:hover{
     color: $purple1;
+  }
+}
+
+.answers{
+  font-weight: 400;
+  color: $purple3;
+  font-size: 14px;
+
+  &:hover{
+    font-weight: bolder;
   }
 }

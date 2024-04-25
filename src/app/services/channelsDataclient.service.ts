@@ -28,6 +28,7 @@ export class channelDataclientService {
   channels: channel[] = [];
   chatDatas: any[] = []; 
   ownMessage = false;
+  chatLength!: number;
 
 
 
@@ -88,10 +89,12 @@ export class channelDataclientService {
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
+      let answers = 0;
       try {
-        this.setMessageDocument(chatRef, message, userId, userName, timeStamp)
+        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers)
         console.log("Chat-Dokument erfolgreich erstellt.");
         this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName);
+        this.updateAnswerCount(channelId, timeStamp)
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
       }
@@ -102,9 +105,21 @@ export class channelDataclientService {
 
 
   /**
+   * This function update the answer count. The thread service function get the length of the current Thread and return it to this variable .
+   */
+  async updateAnswerCount(channelId:any, messageId:any){
+    let answersCount =  await this.threadService.getCurrentThreadCollectionLength(channelId, messageId)
+    const channelRef = doc(this.db, "Channels", channelId, 'chat', messageId);
+    await updateDoc(channelRef, {
+      answer: answersCount
+    });
+  }
+
+
+  /**
    * Sets a new message document in the specified chat reference.
    */
-  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string) {
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers:number) {
     await setDoc(chatRef, {
       message: message,
       user: {
@@ -113,6 +128,7 @@ export class channelDataclientService {
       },
       time: timeStamp,
       emoji: {},
+      answers: answers
     });
   }
 
@@ -282,6 +298,7 @@ export class channelDataclientService {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const chat: any[] = [];
         this.setCurrentChatDatas(querySnapshot, chat, currentUserId)
+
         resolve(chat);
       }, (error) => {
         console.error('Fehler beim Laden der Daten:', error);
@@ -361,7 +378,22 @@ export class channelDataclientService {
     }
   }
 
-
+  /**
+   * This function returns the chat, when open the thread
+   */
+  async getCurrentThreadCollectionLength( messageId:any): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const q = query(collection(this.db, "Channels", this.threadService.currentGroupId, 'chat', messageId, 'thread'));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const chatLength = querySnapshot.size; // Anzahl der Dokumente im Thread
+        this.chatLength = chatLength
+        resolve(chatLength);
+      }, (error) => {
+        console.error('Fehler beim Laden der Daten:', error);
+        reject(error);
+      });
+    });
+  }
 
 
 }

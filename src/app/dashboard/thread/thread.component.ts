@@ -66,7 +66,7 @@ export class ThreadComponent {
 
 
   Dnone() {
-    this.closeTab = true;
+    this.threadService.closeTab = true;
   }
 
 
