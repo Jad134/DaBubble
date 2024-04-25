@@ -45,10 +45,9 @@
                         <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
                     </div>
                     <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>
-                    <div class="message-reaction">
-                        <div (click)="openThread(messageObj.time)"  [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'" class="answers">{{messageObj.answer -1}} Antworten</div>
+                    <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'" >
+                        <div (click)="openThread(messageObj.time)" class="answers">{{messageObj.answer -1}} Antworten</div>
                         <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
-                        <!-- <div class="comment w-h-40"></div> -->
                         
                     </div>
                 </div>
@@ -58,6 +57,10 @@
                     <span>hand</span>
                     <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
                     <mat-icon (click)="openThread(messageObj.time)" class="thread-icon">comment</mat-icon>
+                    <mat-icon class="edit-message-icon" (click)="openEditMessageDialog($event, i)" *ngIf="messageObj.ownMessage">more_vert</mat-icon>
+                    <ng-template #editMessageDialog>
+                        <div class="edit-message-container">Naricht bearbeiten</div>
+                    </ng-template>
                 </div>
             </div>
         </ng-container>

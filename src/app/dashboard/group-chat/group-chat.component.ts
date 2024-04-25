@@ -1,7 +1,7 @@
-import { Component, Input, Inject, inject, SimpleChanges, ElementRef } from '@angular/core';
+import { Component, Input, Inject, inject, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogConfig, MatDialogClose, } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogClose, MatDialogRef, } from '@angular/material/dialog';
 import { EditGroupChannelDialogComponent } from './edit-group-channel-dialog/edit-group-channel-dialog.component';
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
@@ -32,7 +32,8 @@ export class GroupChatComponent {
   currentUserId: any;
   @Input() users: User[] = [];
   showButton: boolean[] = Array(this.chatService.chatDatas.length).fill(false);
-
+  @ViewChild('editMessageDialog') editMessageDialog: any;
+  dialogReference: MatDialogRef<any> | null = null;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
     this.getIdFromURL()
@@ -152,7 +153,7 @@ export class GroupChatComponent {
   }
 
 
-  openThread(messageId: any) { 
+  openThread(messageId: any) {
     console.log(messageId);
     this.threadService.closeTab = false;
     this.threadService.currentChatId = messageId;
@@ -160,5 +161,52 @@ export class GroupChatComponent {
     this.threadService.getCurrentThreadCollection(this.currentId, messageId, this.currentUserId)
     this.threadService.setCurrentChannelData(this.currentChannelData)
   }
+
+
+/**
+ * This function open the dialog for the button to edit a Message
+ * @param event mouseclick
+ * @param i index
+ */
+  openEditMessageDialog(event: MouseEvent, i: number) {
+    this.dontLeaveHover(i)
+    if (!this.dialogReference) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.hasBackdrop = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      this.setEditMessageDialogPosition(event, dialogConfig)
+      this.dialogReference = this.dialog.open(this.editMessageDialog, dialogConfig);
+
+      this.dialogReference.afterClosed().subscribe(() => {
+        this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
+        this.showButton[i] = false;
+      });
+    }
+  }
+
+
+  /**
+   * This function returns the position of the mouseclick
+   * @param event mouseclick
+   * @returns position of the mouseclick
+   */
+  setEditMessageDialogPosition( event :MouseEvent, dialogConfig:MatDialogConfig<any>){
+    const offsetLeft = 0;
+    const offsetY = 0;
+   return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+  }
+
+
+  /**
+   * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
+   * design when dialog edit message is open the hover effect doesnt go away
+   * @param i index of message 
+   */
+  dontLeaveHover(i: number) {
+    setTimeout(() => {
+      this.showButton[i] = true;
+    }, 3);
+  }
+
 
 }

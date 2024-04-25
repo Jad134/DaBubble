@@ -511,3 +511,21 @@ textarea::-webkit-scrollbar-thumb:hover {
     font-weight: bolder;
   }
 }
+
+.edit-message-icon{
+  position: relative;
+}
+
+.edit-message-container{
+  width: 300px;
+  height: 73px;
+  padding: 10px 20px 10px 20px;
+  gap: 15px;
+  border-radius: 0px 30px 30px 30px;
+ box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
+ background-color: white;
+}
+
+::ng-deep .mdc-dialog__surface {
+  overflow-y: visible !important;
+}
