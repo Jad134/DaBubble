@@ -59,7 +59,9 @@
                     <mat-icon (click)="openThread(messageObj.time)" class="thread-icon">comment</mat-icon>
                     <mat-icon class="edit-message-icon" (click)="openEditMessageDialog($event, i)" *ngIf="messageObj.ownMessage">more_vert</mat-icon>
                     <ng-template #editMessageDialog>
-                        <div class="edit-message-container">Naricht bearbeiten</div>
+                        <div class="edit-message-container">
+                           <div class="edit-message-button">Naricht bearbeiten </div> 
+                        </div>
                     </ng-template>
                 </div>
             </div>

@@ -75,7 +75,7 @@ button {
   align-items: center;
   box-shadow: 0 2px 0px rgba(0, 0, 0, 0.1);
   height: 96px;
-  
+
 
   div {
     display: flex;
@@ -144,10 +144,10 @@ button {
   cursor: pointer;
   transition: ease-in-out 125ms;
 
-  &:hover{
+  &:hover {
     background-color: $bg-color;
   }
-    
+
 }
 
 .add-person {
@@ -198,13 +198,13 @@ button {
   transition: ease-in-out 125ms;
   padding-top: 8px;
 
-  &:hover{
+  &:hover {
     background-color: $bg-color;
   }
 
-  &:hover .message{
-background-color: white;
-transition: ease-in-out 125ms;
+  &:hover .message {
+    background-color: white;
+    transition: ease-in-out 125ms;
   }
 }
 
@@ -257,7 +257,7 @@ transition: ease-in-out 125ms;
   transition: ease-in-out 125ms;
   padding-top: 8px;
 
-  &:hover{
+  &:hover {
     background-color: $bg-color;
   }
 }
@@ -287,7 +287,7 @@ transition: ease-in-out 125ms;
   justify-content: start;
 }
 
-.message-reaction-own-message{
+.message-reaction-own-message {
   align-items: center;
   display: flex;
   justify-content: end;
@@ -460,20 +460,20 @@ textarea::-webkit-scrollbar-thumb:hover {
   background: $purple3;
 }
 
-.quick-reactions-container{
+.quick-reactions-container {
   height: 30px;
-    display: flex;
-    border: 1px solid;
-    border-radius: 20px 20px 0px 20px;
-    position: absolute;
-    right: 0;
-    width: fit-content;
-    background-color: white;
-    padding: 5px;
-   
+  display: flex;
+  border: 1px solid;
+  border-radius: 20px 20px 0px 20px;
+  position: absolute;
+  right: 0;
+  width: fit-content;
+  background-color: white;
+  padding: 5px;
+
 }
 
-.own-quick-reactions-container{
+.own-quick-reactions-container {
   position: absolute;
   left: 0;
   height: 30px;
@@ -485,45 +485,68 @@ textarea::-webkit-scrollbar-thumb:hover {
   padding: 5px;
 }
 
-.thread-icon{
+.thread-icon {
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     color: $purple1;
   }
 }
 
-.add-reaction-icon{
+.add-reaction-icon {
   cursor: pointer;
   font-size: 18px;
 
-  &:hover{
+  &:hover {
     color: $purple1;
   }
 }
 
-.answers{
+.answers {
   font-weight: 400;
   color: $purple3;
   font-size: 14px;
 
-  &:hover{
+  &:hover {
     font-weight: bolder;
   }
 }
 
-.edit-message-icon{
+.edit-message-icon {
   position: relative;
 }
 
-.edit-message-container{
+.edit-message-container {
   width: 300px;
   height: 73px;
   padding: 10px 20px 10px 20px;
   gap: 15px;
   border-radius: 0px 30px 30px 30px;
- box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
- background-color: white;
+  box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-message-button {
+  font-weight: 600;
+  font-size: 24px;
+  font-family: $nunito;
+  border-radius: 100px;
+  transition: ease-in 80ms;
+  cursor: pointer;
+  width: 270px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: $bg-color;
+    color: $purple3;
+    font-weight: 700;
+  }
 }
 
 ::ng-deep .mdc-dialog__surface {
