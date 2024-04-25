@@ -33,24 +33,28 @@
                     <div class="line"></div>
                 </div>
             </ng-container>
-                <!----------------------Edit Textarea------------------>
-            <div class="textarea-edit-container" *ngIf="editedMessageIndex === i" >
-                <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id=""
-                    cols="30" rows="10"></textarea>
-                <div class="edit-message-send-container">
-                    <mat-icon>sentiment_satisfied </mat-icon>
-                    <div class="edit-message-final-buttons">
-                        <div (click)="cancelEdit()" class="cancel-edit"> Abbrechen</div>
-                        <div (click)="saveEdit(messageObj.time, messageForEdit)" class="send-edit"> Speichern</div>
+            <!----------------------Edit Textarea------------------>
+            <div class="textarea-edit-container" *ngIf="editedMessageIndex === i">
+                <div class="center-edit-objects">
+                    <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id="" cols="30"
+                        rows="10"></textarea>
+                    <div class="edit-message-send-container">
+                        <mat-icon>sentiment_satisfied </mat-icon>
+                        <div class="edit-message-final-buttons">
+                            <div (click)="cancelEdit()" class="cancel-edit"> Abbrechen</div>
+                            <div (click)="saveEdit(messageObj.time, messageForEdit)" class="send-edit"> Speichern</div>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
 
-            <div *ngIf=" editedMessageIndex !== i" (mouseover)="showButton[i] = true" (mouseleave)="showButton[i] = false"
+            <div *ngIf=" editedMessageIndex !== i" (mouseover)="showButton[i] = true"
+                (mouseleave)="showButton[i] = false"
                 [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
 
-               
+
                 <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
                         [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user)">
                 </div>
@@ -77,9 +81,9 @@
                         *ngIf="messageObj.ownMessage">more_vert</mat-icon>
                     <ng-template #editMessageDialog>
                         <div class="edit-message-container">
-                            <div  (click)="editMessage(messageObj.time, i)"
-                                class="edit-message-button">Naricht bearbeiten </div>
-                            
+                            <div (click)="editMessage(messageObj.time, i)" class="edit-message-button">Naricht
+                                bearbeiten </div>
+
                         </div>
                     </ng-template>
                 </div>
