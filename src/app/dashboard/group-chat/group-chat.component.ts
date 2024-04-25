@@ -34,6 +34,9 @@ export class GroupChatComponent {
   showButton: boolean[] = Array(this.chatService.chatDatas.length).fill(false);
   @ViewChild('editMessageDialog') editMessageDialog: any;
   dialogReference: MatDialogRef<any> | null = null;
+  editedMessageIndex: number | null = null;
+  messageForEdit:any;
+
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
     this.getIdFromURL()
@@ -163,11 +166,11 @@ export class GroupChatComponent {
   }
 
 
-/**
- * This function open the dialog for the button to edit a Message
- * @param event mouseclick
- * @param i index
- */
+  /**
+   * This function open the dialog for the button to edit a Message
+   * @param event mouseclick
+   * @param i index
+   */
   openEditMessageDialog(event: MouseEvent, i: number) {
     this.dontLeaveHover(i)
     if (!this.dialogReference) {
@@ -190,10 +193,10 @@ export class GroupChatComponent {
    * @param event mouseclick
    * @returns position of the mouseclick
    */
-  setEditMessageDialogPosition( event :MouseEvent, dialogConfig:MatDialogConfig<any>){
+  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>) {
     const offsetLeft = 0;
     const offsetY = 0;
-   return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+    return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
 
 
@@ -208,5 +211,24 @@ export class GroupChatComponent {
     }, 3);
   }
 
+
+  async editMessage(messageId: any, messageIndex: number) {
+
+    let message = await this.chatService.getMessageForEdit(this.currentId, messageId)
+    console.log(message);
+    this.editedMessageIndex = messageIndex;
+    this.messageForEdit = message;
+  }
+
+
+  cancelEdit() {
+    this.editedMessageIndex = null;
+  }
+
+
+ async saveEdit(messageId:any, message:any){
+   await this.chatService.editMessage(this.currentId, messageId, message)
+   this.editedMessageIndex = null;
+  }
 
 }

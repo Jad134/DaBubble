@@ -4,7 +4,7 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { QuerySnapshot, addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
+import { QuerySnapshot, addDoc, arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
 import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
@@ -26,7 +26,7 @@ export class channelDataclientService {
   channelDB = collection(this.firestore, 'Channels');
   channelIds = [];
   channels: channel[] = [];
-  chatDatas: any[] = []; 
+  chatDatas: any[] = [];
   ownMessage = false;
   chatLength!: number;
 
@@ -107,8 +107,8 @@ export class channelDataclientService {
   /**
    * This function update the answer count. The thread service function get the length of the current Thread and return it to this variable .
    */
-  async updateAnswerCount(channelId:any, messageId:any){
-    let answersCount =  await this.threadService.getCurrentThreadCollectionLength(channelId, messageId)
+  async updateAnswerCount(channelId: any, messageId: any) {
+    let answersCount = await this.threadService.getCurrentThreadCollectionLength(channelId, messageId)
     const channelRef = doc(this.db, "Channels", channelId, 'chat', messageId);
     await updateDoc(channelRef, {
       answer: answersCount
@@ -119,7 +119,7 @@ export class channelDataclientService {
   /**
    * Sets a new message document in the specified chat reference.
    */
-  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers:number) {
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number) {
     await setDoc(chatRef, {
       message: message,
       user: {
@@ -365,7 +365,7 @@ export class channelDataclientService {
 
   async addUserToChannel(id: any, users: any[]) {
     const channelRef = doc(this.db, "Channels", id);
-  
+
     for (const user of users) {
       await updateDoc(channelRef, {
         usersInChannel: arrayUnion({
@@ -381,7 +381,7 @@ export class channelDataclientService {
   /**
    * This function returns the chat, when open the thread
    */
-  async getCurrentThreadCollectionLength( messageId:any): Promise<number> {
+  async getCurrentThreadCollectionLength(messageId: any): Promise<number> {
     return new Promise((resolve, reject) => {
       const q = query(collection(this.db, "Channels", this.threadService.currentGroupId, 'chat', messageId, 'thread'));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -396,4 +396,25 @@ export class channelDataclientService {
   }
 
 
+  async getMessageForEdit(channelId: any, messageId: any) {
+    const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      let message = docSnap.data()['message']
+      return message
+
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+
+ async editMessage(channelId:any, messageId:any, message:any){
+    const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
+    await updateDoc(docRef, {
+      message: message,
+    });
+  }
 }
