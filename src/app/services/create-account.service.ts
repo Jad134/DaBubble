@@ -36,7 +36,8 @@ export class CreateAccountService {
       const user = userCredential.user;
       let userid = user.uid
       
-      this.setDocForDataBase(userid, userDatas)
+      this.setDocForDataBase(userid, userDatas);
+      this.setDirectMessageDatas(userid, userDatas)
       this.ngZone.run(() => {
         this.router.navigate(['/select-avatar/' + userid]);
       });
@@ -59,7 +60,18 @@ async setDocForDataBase(userid:string, userDatas:any){
     avatar: userDatas.avatar,
     id: userid,
     isOnline: false,
-    channels: {},
+    channels: [],
+  });
+}
+
+
+async setDirectMessageDatas(userid:string, userDatas:any){
+  await setDoc(doc(this.db, "Direct-Message", userid), {
+    name: userDatas.name,
+    email: userDatas.eMail,
+    avatar: userDatas.avatar,
+    id: userid,
+    isOnline: false,
   });
 }
 
