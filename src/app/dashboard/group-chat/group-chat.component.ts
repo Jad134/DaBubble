@@ -11,6 +11,7 @@ import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dia
 import { User } from '../../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreadService } from '../../services/thread.service';
+import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 
 
 @Component({
@@ -230,5 +231,35 @@ export class GroupChatComponent {
     await this.chatService.editMessage(this.currentId, messageId, message)
     this.editedMessageIndex = null;
   }
+
+      /**
+     * open the emojiDialog and insert the returned emoji in the textarea field
+     */
+      openEmojiDialog() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.position = {
+          bottom: '250px',
+          left: '400px'
+        };
+      
+        this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
+          if (selectedEmoji) {
+            const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+      
+            const textBeforeCursor = textarea.value.substring(0, startPos);
+            const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+            textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+      
+            const newCursorPosition = startPos + selectedEmoji.length;
+            textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+      
+            textarea.dispatchEvent(new Event('input'));
+      
+            textarea.focus();
+          }
+        });
+      }
 
 }
