@@ -19,15 +19,15 @@ export class DirectChatService {
 
   constructor() { }
 
-  async sendChat(currentUserId:any,){
-    const docRef = doc(this.db, 'Direct-Message', currentUserId);
+  async sendChat(currentUserId:any, chatPartnerId:any){
+    const docRef = doc(this.db, 'Direct-Message', currentUserId, 'chats', chatPartnerId);
 
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
           console.log("Dokument existiert bereits.");
       } else {
-         
+        console.log("Dokument existiert nicht.");
       }
   } catch (error) {
       console.error("Fehler beim Überprüfen des Dokuments:", error);

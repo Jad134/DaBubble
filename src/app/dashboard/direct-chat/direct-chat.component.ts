@@ -45,7 +45,7 @@ export class DirectChatComponent {
    * This function checks changes for updating the chat component
    */
   async ngOnChanges(changes: SimpleChanges) {
-    if (changes['currentId']) {
+    if (changes['currentChatPartnerId']) {
       await this.loadCurrentDatas();
       await this.loadProfilePictures();
     }
@@ -146,7 +146,7 @@ export class DirectChatComponent {
   }
 
 sendChat(){
-  this.directChatService.sendChat(this.currentUserId)
+  this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId)
 }
 
 }
