@@ -57,6 +57,7 @@ export class LogInService {
       const userId = user.uid;
       const userDoc = await getDoc(doc(this.db, "Users", userId));
       const userData = this.setUserData(user, userId);
+      this.setDirectMessageDatas(user, userId)
 
       this.checkUserStatus(userDoc, userId, userData);
     } catch (error) {
@@ -127,6 +128,17 @@ export class LogInService {
       // Sign-out successful.
     }).catch((error) => {
       // An error happened.
+    });
+  }
+
+
+  async setDirectMessageDatas(user:any, userid:any){
+    await setDoc(doc(this.db, "Direct-Message", userid), {
+      name:  user.displayName,
+      email: user.email,
+      avatar: '',
+      id: userid,
+      isOnline: false,
     });
   }
 }

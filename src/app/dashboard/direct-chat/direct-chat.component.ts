@@ -6,6 +6,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
+import { DirectChatService } from '../../services/direct-chat.service';
+import { doc, getFirestore } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+
 
 @Component({
   selector: 'app-direct-chat',
@@ -15,12 +19,27 @@ import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component'
   styleUrl: './direct-chat.component.scss'
 })
 export class DirectChatComponent {
-  @Input() currentId!: string;
+  @Input() currentChatPartnerId!: string;
   fireStoreService = inject(FirestoreService)
   downloadService = inject(StorageService);
   currentUserData: any;
+  directChatService = inject(DirectChatService);
+  currentUserId: any;
 
-  constructor(public dialog: MatDialog,){}
+
+
+  constructor(public dialog: MatDialog, private route: ActivatedRoute) {
+    this.getIdFromURL()
+  }
+
+
+  getIdFromURL() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id != null) {
+      this.currentUserId = id;
+    }
+  }
+
 
   /**
    * This function checks changes for updating the chat component
@@ -34,11 +53,11 @@ export class DirectChatComponent {
 
 
   /**
-   * This function download get the datas from the user for the Private chat
+   * This function download get the datas from the other user for the Private chat
    */
   async loadCurrentDatas() {
     try {
-      const data = await this.fireStoreService.getUserDataById(this.currentId);
+      const data = await this.fireStoreService.getUserDataById(this.currentChatPartnerId);
       this.currentUserData = data;
 
       console.log(this.currentUserData);
@@ -74,55 +93,60 @@ export class DirectChatComponent {
   /**
    * This function push the right url for own profile pictures to the user 
    */
- async setProfilePictureToUser(profilePictureURL: string) {
+  async setProfilePictureToUser(profilePictureURL: string) {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
   }
 
 
-    /**
-   * open the user detail dialog
+  /**
+ * open the user detail dialog
+ */
+  openUserDetail(id: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = {
+      top: '100px',
+      right: '20px'
+    };
+    dialogConfig.panelClass = 'transparent-dialog';
+    dialogConfig.data = {
+      userId: id,
+    }
+    this.dialog.open(UserDetailDialogComponent, dialogConfig);
+  }
+
+  /**
+   * open the emojiDialog and insert the returned emoji in the textarea field
    */
-    openUserDetail(id: string) {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.position = {
-        top: '100px',
-        right: '20px'
-      };
-      dialogConfig.panelClass = 'transparent-dialog';
-      dialogConfig.data = {
-        userId: id,
+  openEmojiDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = {
+      bottom: '250px',
+      left: '400px'
+    };
+
+    this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
+      if (selectedEmoji) {
+        const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+        const startPos = textarea.selectionStart;
+        const endPos = textarea.selectionEnd;
+
+        const textBeforeCursor = textarea.value.substring(0, startPos);
+        const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+        textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+        const newCursorPosition = startPos + selectedEmoji.length;
+        textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+        textarea.dispatchEvent(new Event('input'));
+
+        textarea.focus();
       }
-      this.dialog.open(UserDetailDialogComponent, dialogConfig);
-    }
-    
-    /**
-     * open the emojiDialog and insert the returned emoji in the textarea field
-     */
-    openEmojiDialog() {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.position = {
-        bottom: '250px',
-        left: '400px'
-      };
-    
-      this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
-        if (selectedEmoji) {
-          const textarea = document.getElementById('answer') as HTMLTextAreaElement;
-          const startPos = textarea.selectionStart;
-          const endPos = textarea.selectionEnd;
-    
-          const textBeforeCursor = textarea.value.substring(0, startPos);
-          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-    
-          const newCursorPosition = startPos + selectedEmoji.length;
-          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-    
-          textarea.dispatchEvent(new Event('input'));
-    
-          textarea.focus();
-        }
-      });
-    }
+    });
+  }
+
+sendChat(){
+  this.directChatService.sendChat(this.currentUserId)
+}
+
 }
