@@ -6,6 +6,8 @@ import { ThreadService } from '../../services/thread.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 
 @Component({
   selector: 'app-thread',
@@ -31,7 +33,7 @@ export class ThreadComponent {
   }
 
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private dialog: MatDialog) {
     this.checkScreenSize();
     this.getIdFromURL();
     this.subscribeToCurrentChannelData();
@@ -93,4 +95,35 @@ export class ThreadComponent {
       return 'assets/img/Logo.svg'; // Fallback, wenn currentChannelData oder usersInChannel nicht definiert ist
     }
   }
+
+     /**
+     * open the emojiDialog and insert the returned emoji in the textarea field
+     */
+        openEmojiDialog() {
+          const dialogConfig = new MatDialogConfig();
+          dialogConfig.position = {
+            bottom: '250px',
+            left: '400px'
+          };
+          dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
+        
+          this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
+            if (selectedEmoji) {
+              const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+              const startPos = textarea.selectionStart;
+              const endPos = textarea.selectionEnd;
+        
+              const textBeforeCursor = textarea.value.substring(0, startPos);
+              const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+              textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+        
+              const newCursorPosition = startPos + selectedEmoji.length;
+              textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+        
+              textarea.dispatchEvent(new Event('input'));
+        
+              textarea.focus();
+            }
+          });
+        }
 }
