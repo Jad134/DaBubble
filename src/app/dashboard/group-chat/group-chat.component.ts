@@ -241,6 +241,7 @@ export class GroupChatComponent {
           bottom: '250px',
           left: '400px'
         };
+        dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
       
         this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
           if (selectedEmoji) {
