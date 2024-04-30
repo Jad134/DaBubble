@@ -92,6 +92,7 @@ export class DirectChatService {
       const q = query(collection(this.db, "Direct-Message", currentUserId, chatPartnerId));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const chat: any[] = [];
+        this.chatDatas = chat;
         this.setCurrentChatDatas(querySnapshot, chat, currentUserId)
 
         resolve(chat);
