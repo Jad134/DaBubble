@@ -22,37 +22,72 @@ export class DirectChatService {
 
   constructor() { }
 
-  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any) {
-  await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);
-
+  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any) {
+    await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);
+    await this.saveMessageAtCurrentUserDB(currentUserId, chatPartnerId, timeStamp, message)
+    await this.saveMessateAtChatPartnerDB(currentUserId, chatPartnerId, timeStamp, message)
 }
 
 
-async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, timeStamp: any){
-  const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
-  const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
-  const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
-  try {
+  async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, timeStamp: any) {
+    const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
+    try {
       // Überprüfen, ob die Subkollektion für den Chat-Partner bereits existiert
       const collectionRef = await getDocs(chatPartnerSubcollectionRef);
       if (!collectionRef.empty) {
-          console.log("Subkollektion existiert bereits.");
+        console.log("Subkollektion existiert bereits.");
       } else {
-          // Subkollektion für den Chat-Partner erstellen
-          await setDoc(chatDocRef, {});
-          console.log("Subkollektion wurde hinzugefügt.");
+        // Subkollektion für den Chat-Partner erstellen
+        await setDoc(chatDocRef, {});
+        console.log("Subkollektion wurde hinzugefügt.");
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Fehler beim Überprüfen der Subkollektion:", error);
+    }
   }
-}
+
+
+  async saveMessageAtCurrentUserDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any) {
+    const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
+    await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp);
+  }
+
+
+  async saveMessateAtChatPartnerDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any) {
+    const userDocRef = doc(this.db, 'Direct-Message', chatPartnerId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, currentUserId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
+    await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp);
+  }
+
+
+  async setMessageDocument(currentUserId: any, chatDocRef: any, message: any, timeStamp: any) {
+    let userData = await this.firestoreService.getUserDataById(currentUserId);
+    if (userData) {
+      let userName = userData['name'];
+
+      await setDoc(chatDocRef, {
+        message: message,
+        user: {
+          id: currentUserId,
+          name: userName
+        },
+        time: timeStamp,
+        emoji: {},
+      });
+    }
+  }
 
 
 
   /**
    * This function download the datas from the subcollection with liveUpdate for the chat
    */
-  async getCurrentChats( currentUserId: string, chatPartnerId:any): Promise<any[]> {
+  async getCurrentChats(currentUserId: string, chatPartnerId: any): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const q = query(collection(this.db, "Direct-Message", currentUserId, chatPartnerId));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -78,7 +113,7 @@ async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, time
       this.chatDatas = chat;
       this.controllIfOwnMessageSend(message, currentUserId)
       console.log(this.chatDatas);
-      
+
     });
   }
 
@@ -100,7 +135,7 @@ async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, time
   }
 
 
-  async editMessage(currentUserId:any, chatPartnerId:any, message:any, messageId:any){
+  async editMessage(currentUserId: any, chatPartnerId: any, message: any, messageId: any) {
     const docRef = doc(this.db, "Direct-Message", currentUserId, chatPartnerId, messageId);
     await updateDoc(docRef, {
       message: message,
@@ -108,7 +143,7 @@ async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, time
   }
 
 
-  async getMessageForEdit(currentUserId: any, currentChatPartnerId:any ,messageId: any) {
+  async getMessageForEdit(currentUserId: any, currentChatPartnerId: any, messageId: any) {
     const docRef = doc(this.db, "Direct-Message", currentUserId, currentChatPartnerId, messageId);
     const docSnap = await getDoc(docRef);
 

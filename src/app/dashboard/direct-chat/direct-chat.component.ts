@@ -159,9 +159,10 @@ export class DirectChatComponent {
     });
   }
 
-sendChat(){
+async sendChat(){
   let timeStamp = Date.now()
-  this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp)
+ await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message);
+ this.message = '';
 }
 
 
