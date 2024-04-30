@@ -6,7 +6,7 @@ import {  initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { doc, setDoc, } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, } from "firebase/firestore";
 import { FirestoreService } from './firestore.service';
 
 @Injectable({
@@ -74,5 +74,4 @@ async setDirectMessageDatas(userid:string, userDatas:any){
     isOnline: false,
   });
 }
-
 }

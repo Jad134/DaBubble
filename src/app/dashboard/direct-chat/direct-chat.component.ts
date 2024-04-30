@@ -7,8 +7,6 @@ import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dia
 import { ActivatedRoute } from '@angular/router';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 import { DirectChatService } from '../../services/direct-chat.service';
-import { doc, getFirestore } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
 
 
 @Component({
@@ -147,7 +145,8 @@ export class DirectChatComponent {
   }
 
 sendChat(){
-  this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId)
+  let timeStamp = Date.now()
+  this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp)
 }
 
 }

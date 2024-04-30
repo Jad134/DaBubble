@@ -17,20 +17,33 @@ export class DirectChatService {
   db = getFirestore(this.app);
   channelDB = collection(this.firestore, 'Channels');
 
+
   constructor() { }
 
-  async sendChat(currentUserId:any, chatPartnerId:any){
-    const docRef = doc(this.db, 'Direct-Message', currentUserId, 'chats', chatPartnerId);
+  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any) {
+  await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);
+  
+}
 
-    try {
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-          console.log("Dokument existiert bereits.");
+
+async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, timeStamp: any){
+  const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
+  const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
+  const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
+  try {
+      // Überprüfen, ob die Subkollektion für den Chat-Partner bereits existiert
+      const collectionRef = await getDocs(chatPartnerSubcollectionRef);
+      if (!collectionRef.empty) {
+          console.log("Subkollektion existiert bereits.");
       } else {
-        console.log("Dokument existiert nicht.");
+          // Subkollektion für den Chat-Partner erstellen
+          await setDoc(chatDocRef, {});
+          console.log("Subkollektion wurde hinzugefügt.");
       }
   } catch (error) {
-      console.error("Fehler beim Überprüfen des Dokuments:", error);
+      console.error("Fehler beim Überprüfen der Subkollektion:", error);
   }
-  }
+}
+
+
 }

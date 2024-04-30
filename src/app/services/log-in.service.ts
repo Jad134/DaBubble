@@ -6,7 +6,7 @@ import { getAuth, signInWithEmailAndPassword, signInWithPopup, signOut } from '@
 import { GoogleAuthProvider } from '@angular/fire/auth'
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { FirestoreService } from './firestore.service';
 
 
@@ -38,7 +38,7 @@ export class LogInService {
       const user = result.user;
       let userid = user.uid;
       this.routeToDashboard(userid);
-     
+
     } catch (error) {
       window.alert('error, anmelden geht nicht');
       this.logInInvalid = true;
@@ -57,9 +57,10 @@ export class LogInService {
       const userId = user.uid;
       const userDoc = await getDoc(doc(this.db, "Users", userId));
       const userData = this.setUserData(user, userId);
-      this.setDirectMessageDatas(user, userId)
+      
 
-      this.checkUserStatus(userDoc, userId, userData);
+
+      this.checkUserStatus(userDoc, userId, userData, user);
     } catch (error) {
       console.error('Fehler beim Anmelden mit Google:', error);
     }
@@ -72,11 +73,12 @@ export class LogInService {
    * @param userId 
    * @param userData 
    */
-  checkUserStatus(userDoc: any, userId: any, userData: any) {
+  checkUserStatus(userDoc: any, userId: any, userData: any, user:any) {
     if (userDoc.exists()) {
       this.routeToDashboard(userId)
     } else {
       this.routeToAvatarPage(userId, userData)
+      this.setDirectMessageDatas(user, userId);
     }
   }
 
@@ -86,7 +88,7 @@ export class LogInService {
    * @param user Datas from the user with firebase authentication
    * @returns JSON
    */
-  setUserData(user: any, userId:any) {
+  setUserData(user: any, userId: any) {
     return {
       name: user.displayName,
       email: user.email,
@@ -122,7 +124,7 @@ export class LogInService {
   }
 
 
-  async logOut(){
+  async logOut() {
     const auth = getAuth();
     signOut(auth).then(() => {
       // Sign-out successful.
@@ -132,12 +134,12 @@ export class LogInService {
   }
 
 
-  async setDirectMessageDatas(user:any, userid:any){
-    await setDoc(doc(this.db, "Direct-Message", userid), {
-      name:  user.displayName,
+  async setDirectMessageDatas(user: any, userId: any) {
+    await setDoc(doc(this.db, "Direct-Message", userId), {
+      name: user.displayName,
       email: user.email,
       avatar: '',
-      id: userid,
+      id: userId,
       isOnline: false,
     });
   }
