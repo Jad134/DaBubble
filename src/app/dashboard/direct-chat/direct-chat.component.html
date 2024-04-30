@@ -9,51 +9,75 @@
     </div>
 
     <div class="chat">
-        <div class="date-div">
-            <div class="line"></div> <span class="date">18.03.2024</span>
-            <div class="line"></div>
-        </div>
+        <ng-container *ngFor="let messageObj of directChatService.chatDatas; let i = index">
+            <!-- Überprüfe, ob der vorherige Eintrag existiert und das Datum anders ist -->
+            <ng-container
+                *ngIf="i === 0 || (directChatService.chatDatas[i - 1].time | date:'dd.MM.yyyy') !== (messageObj.time | date:'dd.MM.yyyy')">
+                <div class="date-div">
+                    <div class="line"></div>
+                    <span class="date">{{ messageObj.time | date:'dd.MM.yyyy' }}</span>
+                    <div class="line"></div>
+                </div>
+            </ng-container>
+            <!----------------------Edit Textarea------------------>
+            <div class="textarea-edit-container" *ngIf="editedMessageIndex === i">
+                <div class="center-edit-objects">
+                    <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id="" cols="30"
+                        rows="10"></textarea>
+                    <div class="edit-message-send-container">
+                        <mat-icon>sentiment_satisfied </mat-icon>
+                        <div class="edit-message-final-buttons">
+                            <div (click)="cancelEdit()" class="cancel-edit"> Abbrechen</div>
+                            <div (click)="saveEdit(messageObj.time, messageForEdit)" class="send-edit"> Speichern</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="chat-message">
-            <div class="message-avatar"><img src="assets/img/avatars/avatar-3.svg"></div>
-            <div>
-                <div class="name-time-div">
-                    <span class="name">Noah Braun</span>
-                    <span class="time">14:45 Uhr</span>
-                </div>
-                <div class="message">Welche Version von Angular ist gerade aktuell</div>
-                <div class="message-reaction">
-                    <div class="reaction w-h-40"></div>
-                    <div class="comment w-h-40"></div>
-                </div>
             </div>
 
-        </div>
 
-        <div class="date-div">
-            <div class="line"></div> <span class="date">19.03.2024</span>
-            <div class="line"></div>
-        </div>
+            <div *ngIf=" editedMessageIndex !== i" (mouseover)="showButton[i] = true"
+                (mouseleave)="showButton[i] = false"
+                [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
 
-        <div class="you-chat-message">
-            <div>
-                <div class="name-time-div">
-                    <span class="time">02:42 Uhr</span>
-                    <span class="name">Fredika Brend</span>
+
+                <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
+                        [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user)">
                 </div>
-                <div class="you-message">die aktuellste!!</div>
-                <div class="message-reaction">
-                    <div class="reaction w-h-40"></div>
-                    <div class="comment w-h-40"></div>
+                <div *ngIf="messageObj?.message">
+                    <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
+                        <span class="name" (click)="openUserDetail(messageObj.user)">{{ messageObj.user.name }}</span>
+                        <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
+                    </div>
+                    <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>
+                    <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'">
+                        <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
+
+                    </div>
+                </div>
+                <div *ngIf="showButton[i]"
+                    [ngClass]="messageObj.ownMessage ? 'own-quick-reactions-container' : 'quick-reactions-container'">
+                    <span>pfeil</span>
+                    <span>hand</span>
+                    <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
+                    <mat-icon class="edit-message-icon" (click)="openEditMessageDialog($event, i)"
+                        *ngIf="messageObj.ownMessage">more_vert</mat-icon>
+                    <ng-template #editMessageDialog>
+                        <div class="edit-message-container">
+                            <div (click)="editMessage(messageObj.time, i)" class="edit-message-button">Naricht
+                                bearbeiten </div>
+
+                        </div>
+                    </ng-template>
                 </div>
             </div>
-            <div class="message-avatar"><img src="assets/img/avatars/avatar-1.svg"></div>
-        </div>
-
+        </ng-container>
     </div>
+
     <div class="answer-section">
         <div class="answer-field">
-            <textarea name="answer" id="answer" cols="1" rows="40" placeholder="Antworten..."></textarea>
+            <textarea [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
+                placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">
                     <div class="add w-h-40">

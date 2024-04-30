@@ -2,17 +2,19 @@ import { Component, ElementRef, Input, SimpleChanges, ViewChild, inject } from '
 import { FirestoreService } from '../../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { UserDetailDialogComponent } from '../user-detail-dialog/user-detail-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 import { DirectChatService } from '../../services/direct-chat.service';
+import { FormsModule } from '@angular/forms'
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-direct-chat',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './direct-chat.component.html',
   styleUrl: './direct-chat.component.scss'
 })
@@ -23,6 +25,13 @@ export class DirectChatComponent {
   currentUserData: any;
   directChatService = inject(DirectChatService);
   currentUserId: any;
+  editedMessageIndex: number | null = null;
+  messageForEdit: any;
+  showButton: boolean[] = Array(this.directChatService.chatDatas.length).fill(false);
+  dialogReference: MatDialogRef<any> | null = null;
+  @ViewChild('editMessageDialog') editMessageDialog: any;
+  message:any;
+  
 
 
 
@@ -63,6 +72,12 @@ export class DirectChatComponent {
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
     }
+    await this.loadCurrentChat()
+  }
+
+
+  async loadCurrentChat() {
+    await this.directChatService.getCurrentChats(this.currentUserId, this.currentChatPartnerId);
   }
 
 
@@ -147,6 +162,76 @@ export class DirectChatComponent {
 sendChat(){
   let timeStamp = Date.now()
   this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp)
+}
+
+
+cancelEdit() {
+  this.editedMessageIndex = null;
+}
+
+
+async saveEdit(messageId: any, message: any) {
+  await this.directChatService.editMessage(this.currentUserId, this.currentChatPartnerId, message, messageId)
+  this.editedMessageIndex = null;
+}
+
+
+getUserAvatar(userId: string){
+}
+
+
+ /**
+   * This function open the dialog for the button to edit a Message
+   * @param event mouseclick
+   * @param i index
+   */
+ openEditMessageDialog(event: MouseEvent, i: number) {
+  this.dontLeaveHover(i)
+  if (!this.dialogReference) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+    this.setEditMessageDialogPosition(event, dialogConfig)
+    this.dialogReference = this.dialog.open(this.editMessageDialog, dialogConfig);
+
+    this.dialogReference.afterClosed().subscribe(() => {
+      this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
+      this.showButton[i] = false;
+    });
+  }
+}
+
+
+/**
+ * This function returns the position of the mouseclick
+ * @param event mouseclick
+ * @returns position of the mouseclick
+ */
+setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>, ) {
+  const offsetLeft = 0;
+  const offsetY = 0;
+  return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+}
+
+
+/**
+ * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
+ * design when dialog edit message is open the hover effect doesnt go away
+ * @param i index of message 
+ */
+dontLeaveHover(i: number) {
+  setTimeout(() => {
+    this.showButton[i] = true;
+  }, 3);
+}
+
+
+async editMessage(messageId: any, messageIndex: number) {
+  let message = await this.directChatService.getMessageForEdit(this.currentUserId, this.currentChatPartnerId, messageId)
+  console.log(message);
+  this.editedMessageIndex = messageIndex;
+  this.messageForEdit = message;
+  this.dialogReference?.close()
 }
 
 }
