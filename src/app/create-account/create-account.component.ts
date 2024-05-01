@@ -23,6 +23,9 @@ export class CreateAccountComponent {
   dataprotectionFailed = false;
   isAgreed!: boolean;
 
+  /**
+   * Create a user and save in db
+   */
   createAccount() {
     if (
       this.checkNameInputNotEmpty() &&
@@ -34,15 +37,21 @@ export class CreateAccountComponent {
         this.newUser.eMail,
         this.newUser.password,
         this.newUser
-      ); // Testweise die funktion zum erstellen der user und übergabe der daten implementiert
+      ); 
     }
   }
 
+  /**
+   * validate name is not empty
+   */
   checkNameInputNotEmpty() {
     this.nameFailed = this.newUser.name.length <= 4;
     return !this.nameFailed;
   }
 
+  /**
+   * validate email is not empty
+   */
   checkIfCorrectMailFormat() {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     this.mailFailed = !(
@@ -51,11 +60,17 @@ export class CreateAccountComponent {
     return !this.mailFailed;
   }
 
+  /**
+   * validate password is not empty and longer than 7 characters
+   */
   checkCorrectPasswordFormat() {
     this.pswFailed = this.newUser.password.length < 8;
     return !this.pswFailed;
   }
 
+  /**
+   * validate dataprotection button is set
+   */
   checkDataprotectionIsSet() {
     this.dataprotectionFailed = !this.isAgreed;
     return !this.dataprotectionFailed;
