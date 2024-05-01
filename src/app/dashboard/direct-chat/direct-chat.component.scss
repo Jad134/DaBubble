@@ -1,14 +1,15 @@
 @import "./../../../styles.scss";
 
-section{
-    min-width: 100%;
-    height: 85vh;
-    background-color: white;
-    border-radius: 45px;
-    width: 100%;
-    margin-top: 20px;
-    position: relative;
-}
+// section{
+//     min-width: 100%;
+//     height: calc(100% - 40px);
+//     background-color: white;
+//     border-radius: 45px;
+//     width: 100%;
+//     margin-top: 20px;
+//     margin-bottom: 20px;
+//     position: relative;
+// }
 
 //header
 
@@ -76,11 +77,12 @@ section{
 
 section {
   min-width: 100%;
-  height: 85vh;
+  height: calc(100% - 40px);
   background-color: white;
   border-radius: 45px;
   width: 100%;
   margin-top: 20px;
+  margin-bottom: 20px;
   position: relative;
 }
 

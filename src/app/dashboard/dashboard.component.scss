@@ -4,14 +4,11 @@ section {
   background-color: $bg-color;
   display: flex;
   justify-content: space-between;
+  height: calc(100% - 101px);
 }
 
-.test{
-  width: 200px;
-  position: absolute;
-  top: 200px;
-  right: 200px;
-  z-index: 4000;
+app-head-dashboard{
+  height: 101px;
 }
 
 .dashboard{
@@ -22,4 +19,14 @@ section {
 .chat-components{
   width: 100%;
   margin-right: 20px
+}
+
+@media (max-width: 1200px){
+  app-head-dashboard{
+    height: 180px;
+  }
+
+  section {
+    height: calc(100% - 180px);
+  }
 }
