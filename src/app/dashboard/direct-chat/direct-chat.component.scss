@@ -1,18 +1,5 @@
 @import "./../../../styles.scss";
 
-// section{
-//     min-width: 100%;
-//     height: calc(100% - 40px);
-//     background-color: white;
-//     border-radius: 45px;
-//     width: 100%;
-//     margin-top: 20px;
-//     margin-bottom: 20px;
-//     position: relative;
-// }
-
-//header
-
 .chat-header{
     display: flex;
     flex-direction: row;
@@ -397,7 +384,6 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 90%;
   position: absolute;
   left: 23px;
   right: 23px;
