@@ -136,18 +136,29 @@ export class DirectChatService {
   }
 
 
+  /**
+   * This function saves the edited message
+   */
   async editMessage(currentUserId: any, chatPartnerId: any, message: any, messageId: any) {
-    const docRef = doc(this.db, "Direct-Message", currentUserId, chatPartnerId, messageId);
-    await updateDoc(docRef, {
+    const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
+    await updateDoc(chatDocRef, {
       message: message,
     });
   }
 
 
+  /**
+   * This function retrieves the current message to edit it
+   */
   async getMessageForEdit(currentUserId: any, currentChatPartnerId: any, messageId: any) {
-    const docRef = doc(this.db, "Direct-Message", currentUserId, currentChatPartnerId, messageId);
-    const docSnap = await getDoc(docRef);
-
+    const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, currentChatPartnerId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
+    const docSnap = await getDoc(chatDocRef);
+    
+    console.log(docSnap.data());
     if (docSnap.exists()) {
       let message = docSnap.data()['message']
       return message

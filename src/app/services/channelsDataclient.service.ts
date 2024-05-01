@@ -396,6 +396,9 @@ export class channelDataclientService {
   }
 
 
+  /**
+   * This function retrieves the current message to edit it
+   */
   async getMessageForEdit(channelId: any, messageId: any) {
     const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
     const docSnap = await getDoc(docRef);
@@ -411,6 +414,9 @@ export class channelDataclientService {
   }
 
 
+  /**
+   * This function saves the edited message
+   */
  async editMessage(channelId:any, messageId:any, message:any){
     const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
     await updateDoc(docRef, {
