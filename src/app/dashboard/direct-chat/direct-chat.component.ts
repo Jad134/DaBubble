@@ -9,6 +9,7 @@ import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component'
 import { DirectChatService } from '../../services/direct-chat.service';
 import { FormsModule } from '@angular/forms'
 import { MatIconModule } from '@angular/material/icon';
+import { User } from '../../../models/user.class';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class DirectChatComponent {
   @Input() currentChatPartnerId!: string;
   fireStoreService = inject(FirestoreService)
   downloadService = inject(StorageService);
-  currentUserData: any;
+  currentChatPartnerData: any;
+  currentUserData:any;
   directChatService = inject(DirectChatService);
   currentUserId: any;
   editedMessageIndex: number | null = null;
@@ -40,11 +42,28 @@ export class DirectChatComponent {
   }
 
 
-  getIdFromURL() {
+  /**
+   * This function download get the datas from the current user
+   */
+  async loadCurrentUserDatas() {
+    try {
+      const data = await this.fireStoreService.getUserDataById(this.currentUserId);
+      this.currentUserData = data;
+
+      console.log(this.currentUserData);
+
+    } catch (error) {
+      console.error('Fehler beim Laden der Daten:', error);
+    }
+  }
+
+
+ async getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
       this.currentUserId = id;
     }
+    this.loadCurrentUserDatas()
   }
 
 
@@ -65,9 +84,9 @@ export class DirectChatComponent {
   async loadCurrentDatas() {
     try {
       const data = await this.fireStoreService.getUserDataById(this.currentChatPartnerId);
-      this.currentUserData = data;
+      this.currentChatPartnerData = data;
 
-      console.log(this.currentUserData);
+      console.log(this.currentChatPartnerData);
 
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
@@ -86,29 +105,46 @@ export class DirectChatComponent {
    */
   async loadProfilePictures() {
     try {
-      if (!this.currentUserData || typeof this.currentUserData !== 'object') {
-        throw new Error('currentUserData is not an object');
-      }
-      if (this.currentUserData.avatar === 'ownPictureDA') {
-        const profilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentUserData.id}/ownPictureDA`;
-        try {
-          await this.setProfilePictureToUser(profilePictureURL)
-        } catch (error) {
-          console.error('Error downloading user profile picture:', error);
+        if (this.currentChatPartnerData && typeof this.currentChatPartnerData === 'object' && this.currentChatPartnerData.avatar === 'ownPictureDA') {
+            const chatPartnerProfilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentChatPartnerData.id}/ownPictureDA`;
+            try {
+                await this.setProfilePictureToChatPartner(chatPartnerProfilePictureURL);
+            } catch (error) {
+                console.error('Error downloading chat partner profile picture:', error);
+            }
         }
-      }
+
+        if (this.currentUserData && typeof this.currentUserData === 'object' && this.currentUserData.avatar === 'ownPictureDA') {
+            const currentUserProfilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentUserData.id}/ownPictureDA`;
+            try {
+                await this.setProfilePictureToCurrentUser(currentUserProfilePictureURL);
+            } catch (error) {
+                console.error('Error downloading current user profile picture:', error);
+            }
+        }
     } catch (error) {
-      console.error('Error loading profile pictures:', error);
+        console.error('Error loading profile pictures:', error);
     }
-  }
+}
 
 
   /**
    * This function push the right url for own profile pictures to the user 
    */
-  async setProfilePictureToUser(profilePictureURL: string) {
+  async setProfilePictureToChatPartner(profilePictureURL: string) {
+    const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
+    this.currentChatPartnerData.avatar = downloadedImageUrl;
+  }
+
+
+  /**
+   * This function push the right url for own profile pictures to the  current user 
+   */
+  async setProfilePictureToCurrentUser(profilePictureURL: string) {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
+    console.log(this.currentChatPartnerData ,'und', this.currentUserData);
+    
   }
 
 

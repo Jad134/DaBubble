@@ -1,11 +1,11 @@
 <section>
-    <div *ngIf="currentUserData" class="chat-header">
+    <div *ngIf="currentChatPartnerData" class="chat-header">
         <div class="dm-image-container">
-            <img *ngIf="currentUserData.avatar !== 'ownPictureDA'" [src]="currentUserData.avatar" class="avatar-img">
+            <img *ngIf="currentChatPartnerData.avatar !== 'ownPictureDA'" [src]="currentChatPartnerData.avatar" class="avatar-img">
             <div class="statuslight"></div>
             
         </div>
-        <p>{{currentUserData.name}}</p>
+        <p>{{currentChatPartnerData.name}}</p>
     </div>
 
     <div class="chat">
@@ -42,7 +42,7 @@
 
 
                 <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
-                        [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user)">
+                    [src]="messageObj.ownMessage ? currentUserData.avatar : currentChatPartnerData.avatar"   (click)="openUserDetail(messageObj.user)">
                 </div>
                 <div *ngIf="messageObj?.message">
                     <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
