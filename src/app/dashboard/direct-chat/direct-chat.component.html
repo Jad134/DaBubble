@@ -57,8 +57,8 @@
                 </div>
                 <div *ngIf="showButton[i]"
                     [ngClass]="messageObj.ownMessage ? 'own-quick-reactions-container' : 'quick-reactions-container'">
-                    <span>pfeil</span>
-                    <span>hand</span>
+                    <mat-icon class="quick-reaction">👍</mat-icon>
+                    <mat-icon class="quick-reaction">👎</mat-icon>
                     <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
                     <mat-icon class="edit-message-icon" (click)="openEditMessageDialog($event, i)"
                         *ngIf="messageObj.ownMessage">more_vert</mat-icon>
@@ -83,7 +83,7 @@
                     <div class="add w-h-40">
                     </div>
                     <div class="vector"></div>
-                    <div class="emoji w-h-40" (click)="openEmojiDialog()"></div>
+                    <div class="emoji w-h-40" (click)="openEmojiDialog($event)"></div>
                     <div class="email w-h-40"></div>
                 </div>
                 <div (click)="sendChat()" class="send w-h-40"></div>

@@ -235,12 +235,10 @@ export class GroupChatComponent {
       /**
      * open the emojiDialog and insert the returned emoji in the textarea field
      */
-      openEmojiDialog() {
+      openEmojiDialog(event: MouseEvent) {
+        const offsetY = 300;
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.position = {
-          bottom: '250px',
-          left: '400px'
-        };
+        dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
         dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
       
         this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
