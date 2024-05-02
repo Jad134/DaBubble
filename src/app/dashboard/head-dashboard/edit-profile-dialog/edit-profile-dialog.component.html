@@ -7,7 +7,7 @@
     <img
       #profilePicture
       [src]="actualUser.avatar"
-      alt=""
+      (click)="changeAvatar()"
     />
   </div>
   <div class="input-section">
