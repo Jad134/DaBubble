@@ -70,9 +70,9 @@
                         <div  class="last-answer" *ngIf="messageObj?.lastMessage && !messageObj.ownMessage">Letzt Antwort {{ formatLastMessageTime(messageObj.lastMessage) }} </div>
                         <mat-icon *ngIf="messageObj.ownMessage" (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
                     </div>
-                    <div class="show-reactions-container">
-                        <div class="show-reactions">👍 2</div>
-                        <div class="show-reactions">👎 4</div>
+                    <div *ngIf="messageObj.emoji.length > 0" class="show-reactions-container">
+                        <div [style.display]="emoji.count > 0 ? 'flex' : 'none'"  *ngFor="let emoji of messageObj.emoji" (click)="addCurrentReaction(messageObj.time, emoji.emoji)"  class="show-reactions">{{emoji.emoji}} {{emoji.count}}</div>
+                    
                     </div>
                     
                 </div>

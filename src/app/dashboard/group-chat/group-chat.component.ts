@@ -278,6 +278,10 @@ export class GroupChatComponent {
     }
   }
 
+  addCurrentReaction(messageId:any, selectedEmoji:any){
+    this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
+  }
+
 
   formatLastMessageTime(lastMessage: any): string {
     const currentTime = new Date();
