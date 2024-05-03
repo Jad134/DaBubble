@@ -1,6 +1,6 @@
 @import "./../../../styles.scss";
 
-section{
+section {
   height: 100%;
   display: flex;
 }
@@ -15,12 +15,12 @@ section{
   font-weight: 400;
   margin: 20px;
 
-  h2{
+  h2 {
     font-size: 24px;
     font-weight: 700;
   }
 
-  p{
+  p {
     font-size: 14px;
     color: $purple2;
   }
@@ -36,15 +36,15 @@ section{
   box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.08);
 }
 
-.head-text{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.head-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.thread-content{
-    height: calc(920px - 104px - 187px);
-    padding: 20px 0 20px 0;
+.thread-content {
+  height: calc(920px - 104px - 187px);
+  padding: 20px 0 20px 0;
 }
 
 .answer-section {
@@ -65,11 +65,12 @@ section{
     border: none;
     font-size: 18px;
     font-weight: 400;
-    width: 255px;;
+    width: 255px;
+    ;
     height: 65px;
     width: 100%;
 
-    &:focus-visible{
+    &:focus-visible {
       outline: none;
     }
   }
@@ -126,13 +127,13 @@ section{
 }
 
 .close {
-    cursor: pointer;
-    background: url("../../../assets/img/close.svg") no-repeat;
-  
-    &:hover {
-      background: url("../../../assets/img/close-hover.svg") no-repeat;
-    }
+  cursor: pointer;
+  background: url("../../../assets/img/close.svg") no-repeat;
+
+  &:hover {
+    background: url("../../../assets/img/close-hover.svg") no-repeat;
   }
+}
 
 .vector {
   background: url("../../../assets/img/vector 4.svg") no-repeat;
@@ -145,7 +146,7 @@ section{
   height: 40px;
 }
 
-.d-none{
+.d-none {
   display: none;
 }
 
@@ -243,7 +244,7 @@ button {
   align-items: center;
   box-shadow: 0 2px 0px rgba(0, 0, 0, 0.1);
   height: 96px;
-  
+
 
   div {
     display: flex;
@@ -312,10 +313,10 @@ button {
   cursor: pointer;
   transition: ease-in-out 125ms;
 
-  &:hover{
+  &:hover {
     background-color: $bg-color;
   }
-    
+
 }
 
 .add-person {
@@ -366,13 +367,13 @@ button {
   transition: ease-in-out 125ms;
   padding-top: 8px;
 
-  &:hover{
+  &:hover {
     background-color: $bg-color;
   }
 
-  &:hover .message{
-background-color: white;
-transition: ease-in-out 125ms;
+  &:hover .message {
+    background-color: white;
+    transition: ease-in-out 125ms;
   }
 }
 
@@ -394,6 +395,7 @@ transition: ease-in-out 125ms;
 
 .time {
   color: #686868;
+  font-size: 14px;
 }
 
 .name {
@@ -425,7 +427,7 @@ transition: ease-in-out 125ms;
   transition: ease-in-out 125ms;
   padding-top: 8px;
 
-  &:hover{
+  &:hover {
     background-color: $bg-color;
   }
 }
@@ -449,12 +451,21 @@ transition: ease-in-out 125ms;
   bottom: 25px;
 }
 
+.own-message-reaction {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 40px;
+  flex-direction: row-reverse;
+  gap: 8px;
+}
+
 .message-reaction {
   margin-top: 15px;
-  width: 75px;
   display: flex;
-  justify-content: space-around;
-  margin-left: 40px;
+  justify-content: flex-start;
+  gap: 8px;
+
 }
 
 form {
@@ -624,43 +635,91 @@ textarea::-webkit-scrollbar-thumb:hover {
   background: $purple3;
 }
 
-.quick-reactions-container{
+.quick-reactions-container {
   height: 30px;
-    display: flex;
-    border: 1px solid;
-    border-radius: 20px 20px 0px 20px;
-    position: absolute;
-    right: 0;
-    width: fit-content;
-    background-color: white;
-    padding: 5px;
-   
+  display: flex;
+  border-radius: 20px 20px 0px 20px;
+  position: absolute;
+  right: 0;
+  width: fit-content;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid $light-purple;
+
 }
 
-.own-quick-reactions-container{
+.own-quick-reactions-container {
   position: absolute;
   left: 0;
   height: 30px;
   display: flex;
-  border: 1px solid;
+  border: 1px solid $light-purple;
   border-radius: 20px 20px 0px 20px;
   width: fit-content;
   background-color: white;
   padding: 5px;
+  gap: 8px;
 }
 
-.thread-icon{
+.quick-reaction {
+  cursor: pointer;
+  font-size: 18px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  border-radius: 50%;
+
+  &:hover {
+    color: $purple1;
+    background-color: $bg-color;
+
+  }
+}
+
+.thread-icon {
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     color: $purple1;
   }
 }
 
-.add-reaction-icon{
-  cursor: pointer;
+.edit-message-icon {
+  position: relative;
 
-  &:hover{
+  &:hover {
     color: $purple1;
   }
+}
+
+.add-reaction-icon {
+  cursor: pointer;
+  font-size: 24px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    color: $purple1;
+  }
+}
+
+.show-reactions-container {
+  display: flex;
+  gap: 8px;
+}
+
+.show-reactions {
+  width: 48px;
+  height: 25px;
+  border-radius: 20px;
+  border: 1px solid $light-purple;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background-color: white;
 }

@@ -99,31 +99,47 @@ export class ThreadComponent {
      /**
      * open the emojiDialog and insert the returned emoji in the textarea field
      */
-        openEmojiDialog() {
-          const dialogConfig = new MatDialogConfig();
-          dialogConfig.position = {
-            bottom: '250px',
-            left: '400px'
-          };
-          dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
-        
-          this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
-            if (selectedEmoji) {
-              const textarea = document.getElementById('answer') as HTMLTextAreaElement;
-              const startPos = textarea.selectionStart;
-              const endPos = textarea.selectionEnd;
-        
-              const textBeforeCursor = textarea.value.substring(0, startPos);
-              const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-              textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-        
-              const newCursorPosition = startPos + selectedEmoji.length;
-              textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-        
-              textarea.dispatchEvent(new Event('input'));
-        
-              textarea.focus();
-            }
-          });
+     openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any,) {
+      const offsetY = 300;
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
+  
+      this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
+        if (selectedEmoji && addEmojiToTextArea) {
+          const textarea = document.getElementById('answerThread') as HTMLTextAreaElement;
+          const startPos = textarea.selectionStart;
+          const endPos = textarea.selectionEnd;
+  
+          const textBeforeCursor = textarea.value.substring(0, startPos);
+          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+  
+          const newCursorPosition = startPos + selectedEmoji.length;
+          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+  
+          textarea.dispatchEvent(new Event('input'));
+  
+          textarea.focus();
         }
+        if (selectedEmoji && addEmojiReaction) {
+         this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+        }
+      });
+    }
+
+    addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId:any) {
+      let selectedEmoji: string;
+      if (thumbsUp) {
+        selectedEmoji = "👍"
+       this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+      } else if (thumbsDown) {
+        selectedEmoji = "👎"; // Daumen runter Emoji
+        this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+      }
+    }
+  
+    addCurrentReaction(messageId:any, selectedEmoji:any){
+        this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+    }
 }
