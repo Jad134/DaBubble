@@ -198,6 +198,7 @@ button {
   cursor: pointer;
   transition: ease-in-out 125ms;
   padding-top: 8px;
+  padding-bottom: 8px;
 
   &:hover {
     background-color: $bg-color;
@@ -207,6 +208,23 @@ button {
     background-color: white;
     transition: ease-in-out 125ms;
   }
+}
+
+.show-reactions {
+  width: 48px;
+  height: 25px;
+  border-radius: 20px;
+  border: 1px solid $light-purple;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background-color: white;
+}
+
+.show-reactions-container{
+  display: flex;
+  gap: 8px;
 }
 
 .message-avatar {
@@ -257,6 +275,7 @@ button {
   cursor: pointer;
   transition: ease-in-out 125ms;
   padding-top: 8px;
+  padding-bottom: 8px;
 
   &:hover {
     background-color: $bg-color;
@@ -268,6 +287,8 @@ button {
   padding: 10px;
   border-radius: 1em 0 1em 1em;
   margin-left: 40px;
+  text-align: end;
+  width: fit-content;
 }
 
 //message
@@ -286,12 +307,14 @@ button {
   align-items: center;
   display: flex;
   justify-content: start;
+  gap: 20px;
 }
 
 .message-reaction-own-message {
   align-items: center;
   display: flex;
   justify-content: end;
+  gap: 20px;
 }
 
 form {
@@ -504,28 +527,28 @@ textarea::-webkit-scrollbar-thumb:hover {
   font-size: 24px;
   width: 25px;
   height: 25px;
-  display: flex;  
-  justify-content: center;  
+  display: flex;
+  justify-content: center;
   align-items: center;
 
   &:hover {
-    color: $purple1; 
+    color: $purple1;
   }
 }
 
-.quick-reaction{
+.quick-reaction {
   cursor: pointer;
   font-size: 18px;
   width: 25px;
   height: 25px;
-  display: flex;  
-  justify-content: center;  
+  display: flex;
+  justify-content: center;
   border-radius: 50%;
 
   &:hover {
     color: $purple1;
-    background-color: $bg-color;  
-    
+    background-color: $bg-color;
+
   }
 }
 
@@ -541,6 +564,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 .edit-message-icon {
   position: relative;
+
   &:hover {
     color: $purple1;
   }
@@ -619,10 +643,10 @@ textarea::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
   transition: ease-in 125ms;
 
-  &:hover{
+  &:hover {
     background-color: $purple1;
     color: white;
-}
+  }
 }
 
 .send-edit {
@@ -642,9 +666,9 @@ textarea::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
   transition: ease-in 125ms;
 
-  &:hover{
+  &:hover {
     background-color: lighten($purple1, 10%);
-}
+  }
 
 }
 
@@ -666,10 +690,23 @@ textarea::-webkit-scrollbar-thumb:hover {
   border-radius: 20px;
   overflow: hidden;
   background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.last-answer {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: $nunito;
+  color: rgba(104, 104, 104, 1);
+}
+
+.center-message {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 
 ::ng-deep .mdc-dialog__surface {

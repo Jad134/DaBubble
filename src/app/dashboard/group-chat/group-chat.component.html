@@ -58,7 +58,7 @@
                 <div *ngIf="messageObj?.message" class="message-avatar"><img class="message-avatar"
                         [src]="getUserAvatar(messageObj.user.id)" (click)="openUserDetail(messageObj.user)">
                 </div>
-                <div *ngIf="messageObj?.message">
+                <div [ngClass]="messageObj.ownMessage ? 'center-message': ''"  *ngIf="messageObj?.message">
                     <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
                         <span class="name" (click)="openUserDetail(messageObj.user)">{{ messageObj.user.name }}</span>
                         <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
@@ -67,9 +67,14 @@
                     <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'">
                         <div (click)="openThread(messageObj.time)" class="answers">{{messageObj.answer -1}} Antworten
                         </div>
-                        <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
-
+                        <div  class="last-answer" *ngIf="messageObj?.lastMessage && !messageObj.ownMessage">Letzt Antwort {{ formatLastMessageTime(messageObj.lastMessage) }} </div>
+                        <mat-icon *ngIf="messageObj.ownMessage" (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
                     </div>
+                    <div class="show-reactions-container">
+                        <div class="show-reactions">👍 2</div>
+                        <div class="show-reactions">👎 4</div>
+                    </div>
+                    
                 </div>
                 <div *ngIf="showButton[i]"
                     [ngClass]="messageObj.ownMessage ? 'own-quick-reactions-container' : 'quick-reactions-container'">

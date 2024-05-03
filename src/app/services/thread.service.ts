@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { FirestoreService } from './firestore.service';
-import { addDoc, collection, doc, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
 import { Firestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp } from '@angular/fire/app';
 import { getAuth } from 'firebase/auth';
@@ -123,7 +123,7 @@ export class ThreadService {
       let avatar = userData['avatar'];
       try {
        await this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)
-       await this.updateAnswerCount(this.currentGroupId, this.currentChatId)
+       await this.updateAnswerCount(this.currentGroupId, this.currentChatId, timeStamp)
         console.log("Chat-Dokument erfolgreich erstellt.");
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
@@ -137,11 +137,13 @@ export class ThreadService {
    /**
    * This function update the answer count in the chat db. The getCurrentLength... function get the length of the current Thread and return it to this variable .
    */
-  async updateAnswerCount(channelId:any, messageId:any){
+  async updateAnswerCount(channelId:any, messageId:any, timeStamp:any){
     let answersCount =  await this.getCurrentThreadCollectionLength(channelId, messageId)
     const channelRef = doc(this.db, "Channels", channelId, 'chat', messageId);
     await updateDoc(channelRef, {
-      answer: answersCount
+      answer: answersCount,
+      lastMessage: timeStamp,
+
     });
   }
 

@@ -276,7 +276,32 @@ export class GroupChatComponent {
       selectedEmoji = "👎"; // Daumen runter Emoji
       this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
     }
-    
   }
+
+
+  formatLastMessageTime(lastMessage: any): string {
+    const currentTime = new Date();
+    const messageTime = new Date(lastMessage);
+  
+    // Überprüfen, ob lastMessage eine Zahl ist und umwandeln in Datum
+    if (isNaN(messageTime.getTime())) {
+      messageTime.setTime(lastMessage);
+    }
+  
+    const diffInMilliseconds = currentTime.getTime() - messageTime.getTime();
+    const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+  
+    if (diffInDays < 1) {
+      // Innerhalb der letzten 24 Stunden
+      return messageTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffInDays < 2) {
+      // Gestern
+      return 'Gestern';
+    } else {
+      // Vor mehr als einem Tag
+      return messageTime.toLocaleDateString();
+    }
+  }
+
 
 }
