@@ -37,9 +37,11 @@ export class GroupChatComponent {
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
   messageForEdit: any;
+  // addEmojiToTextArea = false;
+  // addEmojiReaction = false;
 
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef, ) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
     this.getIdFromURL()
   }
 
@@ -194,7 +196,7 @@ export class GroupChatComponent {
    * @param event mouseclick
    * @returns position of the mouseclick
    */
-  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>, ) {
+  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
     const offsetLeft = 0;
     const offsetY = 0;
     return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
@@ -232,33 +234,49 @@ export class GroupChatComponent {
     this.editedMessageIndex = null;
   }
 
-      /**
-     * open the emojiDialog and insert the returned emoji in the textarea field
-     */
-      openEmojiDialog(event: MouseEvent) {
-        const offsetY = 300;
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
-        dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
-      
-        this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
-          if (selectedEmoji) {
-            const textarea = document.getElementById('answer') as HTMLTextAreaElement;
-            const startPos = textarea.selectionStart;
-            const endPos = textarea.selectionEnd;
-      
-            const textBeforeCursor = textarea.value.substring(0, startPos);
-            const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-            textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-      
-            const newCursorPosition = startPos + selectedEmoji.length;
-            textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-      
-            textarea.dispatchEvent(new Event('input'));
-      
-            textarea.focus();
-          }
-        });
+  /**
+ * open the emojiDialog and insert the returned emoji in the textarea field
+ */
+  openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any,) {
+    const offsetY = 300;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
+    dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
+
+    this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
+      if (selectedEmoji && addEmojiToTextArea) {
+        const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+        const startPos = textarea.selectionStart;
+        const endPos = textarea.selectionEnd;
+
+        const textBeforeCursor = textarea.value.substring(0, startPos);
+        const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+        textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+        const newCursorPosition = startPos + selectedEmoji.length;
+        textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+        textarea.dispatchEvent(new Event('input'));
+
+        textarea.focus();
       }
+      if (selectedEmoji && addEmojiReaction) {
+        this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
+      }
+    });
+  }
+
+
+  addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId:any) {
+    let selectedEmoji: string;
+    if (thumbsUp) {
+      selectedEmoji = "👍"
+      this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
+    } else if (thumbsDown) {
+      selectedEmoji = "👎"; // Daumen runter Emoji
+      this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
+    }
+    
+  }
 
 }

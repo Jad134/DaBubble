@@ -424,4 +424,19 @@ export class channelDataclientService {
     });
    await this.threadService.updateEditMessage(channelId,messageId, message)
   }
+
+
+ async addEmojiToMessage(channelId:any, messageId:any, emoji:any, userId:any){
+  let userData = await this.firestoreService.getUserDataById(userId);
+    if (userData) {
+      let userName = userData['name'];
+    const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
+    await updateDoc(docRef, {
+      emoji: arrayUnion({
+        emoji: emoji,
+        userName: userName,
+      })
+    });
+  }
+}
 }

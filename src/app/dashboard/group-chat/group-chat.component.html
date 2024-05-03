@@ -33,7 +33,7 @@
                     <div class="line"></div>
                 </div>
             </ng-container>
-            <!----------------------Edit Textarea------------------>
+            <!----------------------Edit Message Textarea------------------>
             <div class="textarea-edit-container" *ngIf="editedMessageIndex === i">
                 <div class="center-edit-objects">
                     <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id="" cols="30"
@@ -67,15 +67,15 @@
                     <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'">
                         <div (click)="openThread(messageObj.time)" class="answers">{{messageObj.answer -1}} Antworten
                         </div>
-                        <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
+                        <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
 
                     </div>
                 </div>
                 <div *ngIf="showButton[i]"
                     [ngClass]="messageObj.ownMessage ? 'own-quick-reactions-container' : 'quick-reactions-container'">
-                    <mat-icon class="quick-reaction">👍</mat-icon>
-                    <mat-icon class="quick-reaction">👎</mat-icon>
-                    <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
+                    <mat-icon (click)="addQuickReaction(true, false, messageObj.time)" class="quick-reaction">👍</mat-icon>
+                    <mat-icon (click)="addQuickReaction(false, true, messageObj.time)" class="quick-reaction">👎</mat-icon>
+                    <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
                     <mat-icon (click)="openThread(messageObj.time)" class="thread-icon">comment</mat-icon>
                     <mat-icon class="edit-message-icon" (click)="openEditMessageDialog($event, i)"
                         *ngIf="messageObj.ownMessage">more_vert</mat-icon>
@@ -100,7 +100,7 @@
                     <div class="add w-h-40">
                     </div>
                     <div class="vector"></div>
-                    <div class="emoji w-h-40" (click)="openEmojiDialog($event)"></div>
+                    <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>
                     <div class="email w-h-40"></div>
                 </div>
                 <div (click)="sendMessage(currentChannelData.id)" class="send w-h-40"></div>
