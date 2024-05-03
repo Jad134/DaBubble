@@ -224,7 +224,7 @@ export class GroupChatComponent {
      */
   setOpenReactionDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
     const offsetLeft = 0;
-    const offsetY = 110;
+    const offsetY = 125;
     return dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
 
