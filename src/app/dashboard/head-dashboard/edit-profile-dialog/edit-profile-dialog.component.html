@@ -5,10 +5,11 @@
   </div>
   <div class="profilePicture">
     <img
-      #profilePicture
-      [src]="actualUser.avatar"
+      class="editPic"
+      src="./../../../../assets/img/edit_square.svg"
       (click)="changeAvatar()"
     />
+    <img #profilePicture [src]="actualUser.avatar" (click)="changeAvatar()" />
   </div>
   <div class="input-section">
     <div class="d-flex-align-center">

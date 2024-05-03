@@ -1,11 +1,11 @@
 <mat-card>
   <mat-card-content>
     <div class="header">
-        <h2 mat-dialog-title>Dein Profil bearbeiten</h2>
+        <h2 mat-dialog-title>Dein Profilbild bearbeiten</h2>
         <div class="close" (click)="close()"></div>
       </div>
     <div class="avatar-selection">
-      <img [src]="this.actualUser.avatar" class="selected-avatar" alt="" />
+      <img [src]="avatar" class="selected-avatar" alt="" />
       <p>Aus der Liste wählen</p>
       <div class="avatar-imgs">
         <img

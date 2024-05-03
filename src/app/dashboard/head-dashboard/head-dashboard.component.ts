@@ -85,7 +85,9 @@ export class HeadDashboardComponent {
    */
   openDialog(){
     let user = this.actualUser;
+    if(user.avatar == 'ownPictureDA'){
     user.avatar = this.downloadService.downloadedProfileImg;
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {
       top: '100px',
