@@ -10,45 +10,48 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   standalone: true,
   imports: [MatCard, MatCardHeader, MatCardContent, CommonModule],
   templateUrl: './change-avatar-dialog.component.html',
-  styleUrl: './change-avatar-dialog.component.scss'
+  styleUrl: './change-avatar-dialog.component.scss',
 })
 export class ChangeAvatarDialogComponent {
-
-  constructor(private dialogRef: MatDialogRef<ChangeAvatarDialogComponent>, @Inject(MAT_DIALOG_DATA) public data:any) {}
+  constructor(
+    private dialogRef: MatDialogRef<ChangeAvatarDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   uploadService = inject(StorageService);
   firestore = inject(FirestoreService);
   avatar: any | string = 'assets/img/avatars/profile-blank.svg';
-  selectSucceed: boolean = false;
   selectOwnPicture: boolean = false;
   actualUser: any;
   userId = '';
 
-
-  async ngOnInit(){
+  async ngOnInit() {
     this.actualUser = this.data.user;
+    this.avatar = this.actualUser.avatar;
+    this.userId = this.actualUser.id;
   }
 
-
-    /**
+  /**
    * save selected Avatar to Firestore DB and redirect to the login
    */
-    updateAvatar() {
-      this.uploadService.uploadImg();
-      this.selectSucceed = true;
-      this.controllIfOwnPictureUsed()
-  
-      // setTimeout(() => {
-      //   this.router.navigate(['/']);
-      // }, 1500);
-  
+  updateAvatar() {
+    if(this.selectOwnPicture){
+    this.uploadService.uploadImg();
     }
+    this.controllIfOwnPictureUsed();
 
-    uploadOwnAvatar(event: any) {
-      this.uploadService.avatarSelected(event, this.userId);
-      this.ownPicturePreView(event);
-      this.selectOwnPicture = true;
-    }
+    this.close();
+  }
+
+  /**
+   * Upload a picture by press Datei Hochladen button
+   * @param event 1
+   */
+  uploadOwnAvatar(event: any) {
+    this.uploadService.avatarSelected(event, this.userId);
+    this.ownPicturePreView(event);
+    this.selectOwnPicture = true;
+  }
 
   /**
    * change the avatar picture name by click
@@ -62,30 +65,30 @@ export class ChangeAvatarDialogComponent {
     this.selectOwnPicture = false;
   }
 
-   /**
+  /**
    * This function controls, if the user use a own profilepicture or not. This is for upload a synonym for our avatar:'ownPictureDA' in DB.
    */
-    controllIfOwnPictureUsed() {
-      if (this.selectOwnPicture) {
-        this.firestore.updateUserAvatar(this.userId, 'ownPictureDA');
-      } else if (!this.selectOwnPicture) {
-        this.firestore.updateUserAvatar(this.userId, this.avatar);
-      }
+  controllIfOwnPictureUsed() {
+    if (this.selectOwnPicture) {
+      this.firestore.updateUserAvatar(this.userId, 'ownPictureDA');
+    } else if (!this.selectOwnPicture) {
+      this.firestore.updateUserAvatar(this.userId, this.avatar);
     }
+  }
 
-    ownPicturePreView(event: any) {
-      const file = event.target.files[0]; // Zugriff auf das ausgewählte Bild
-      // Überprüfe, ob eine Datei ausgewählt wurde und ob es sich um ein Bild handelt
-      if (file && file.type.startsWith('image')) {
-        const reader = new FileReader(); // Erstelle ein FileReader-Objekt
-        // Definiere eine Funktion, die aufgerufen wird, wenn das Bild geladen wurde
-        reader.onload = () => {
-          // Weise den Inhalt des Bildes der avatar-Variable zu
-          this.avatar = reader.result;
-        };
-        reader.readAsDataURL(file); // Lese das Bild als Daten-URL
-      }
+  ownPicturePreView(event: any) {
+    const file = event.target.files[0]; // Zugriff auf das ausgewählte Bild
+    // Überprüfe, ob eine Datei ausgewählt wurde und ob es sich um ein Bild handelt
+    if (file && file.type.startsWith('image')) {
+      const reader = new FileReader(); // Erstelle ein FileReader-Objekt
+      // Definiere eine Funktion, die aufgerufen wird, wenn das Bild geladen wurde
+      reader.onload = () => {
+        // Weise den Inhalt des Bildes der avatar-Variable zu
+        this.avatar = reader.result;
+      };
+      reader.readAsDataURL(file); // Lese das Bild als Daten-URL
     }
+  }
 
   /**
    * close the dialog complete
@@ -93,5 +96,4 @@ export class ChangeAvatarDialogComponent {
   close() {
     this.dialogRef.close();
   }
-
 }
