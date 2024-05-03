@@ -33,12 +33,13 @@ export class GroupChatComponent {
   currentUserId: any;
   @Input() users: User[] = [];
   showButton: boolean[] = Array(this.chatService.chatDatas.length).fill(false);
+  showReaction: boolean[] = Array(this.chatService.chatDatas.length).fill(false);
   @ViewChild('editMessageDialog') editMessageDialog: any;
+  @ViewChild('reactionInformationDialog') reactionInfo: any;
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
   messageForEdit: any;
-  // addEmojiToTextArea = false;
-  // addEmojiReaction = false;
+  currentHoverEmoji:any;
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
@@ -191,6 +192,43 @@ export class GroupChatComponent {
   }
 
 
+  openReactionDialog(event: MouseEvent, emoji: any) {
+    this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
+    if (!this.dialogReference) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.hasBackdrop = false;
+      dialogConfig.autoFocus = false;
+      dialogConfig.disableClose = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      this.setOpenReactionDialogPosition(event, dialogConfig)
+      this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
+
+      this.dialogReference.afterClosed().subscribe(() => {
+        this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
+      });
+    }
+  }
+
+
+  closeReactionDialog() {
+    if (this.dialogReference) {
+      this.dialogReference.close();
+    }
+  }
+
+
+  /**
+     * This function returns the position of the mouseclick
+     * @param event mouseclick
+     * @returns position of the mouseclick
+     */
+  setOpenReactionDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
+    const offsetLeft = 0;
+    const offsetY = 110;
+    return dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+  }
+
+
   /**
    * This function returns the position of the mouseclick
    * @param event mouseclick
@@ -267,7 +305,7 @@ export class GroupChatComponent {
   }
 
 
-  addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId:any) {
+  addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {
     let selectedEmoji: string;
     if (thumbsUp) {
       selectedEmoji = "👍"
@@ -278,7 +316,7 @@ export class GroupChatComponent {
     }
   }
 
-  addCurrentReaction(messageId:any, selectedEmoji:any){
+  addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
   }
 
@@ -286,15 +324,15 @@ export class GroupChatComponent {
   formatLastMessageTime(lastMessage: any): string {
     const currentTime = new Date();
     const messageTime = new Date(lastMessage);
-  
+
     // Überprüfen, ob lastMessage eine Zahl ist und umwandeln in Datum
     if (isNaN(messageTime.getTime())) {
       messageTime.setTime(lastMessage);
     }
-  
+
     const diffInMilliseconds = currentTime.getTime() - messageTime.getTime();
     const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-  
+
     if (diffInDays < 1) {
       // Innerhalb der letzten 24 Stunden
       return messageTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -306,6 +344,10 @@ export class GroupChatComponent {
       return messageTime.toLocaleDateString();
     }
   }
+
+
+
+
 
 
 }

@@ -222,10 +222,25 @@ button {
   background-color: white;
 }
 
-.show-reactions-container{
+.show-reactions-container {
   display: flex;
   gap: 8px;
 }
+
+.reaction-information {
+  width: 150px;
+  height: 100px;
+  gap: 5px;
+  border-radius: 30px 30px 30px 0px;
+  background-color: $purple1;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
 
 .message-avatar {
   img {

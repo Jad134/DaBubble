@@ -71,8 +71,15 @@
                         <mat-icon *ngIf="messageObj.ownMessage" (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
                     </div>
                     <div *ngIf="messageObj.emoji.length > 0" class="show-reactions-container">
-                        <div [style.display]="emoji.count > 0 ? 'flex' : 'none'"  *ngFor="let emoji of messageObj.emoji" (click)="addCurrentReaction(messageObj.time, emoji.emoji)"  class="show-reactions">{{emoji.emoji}} {{emoji.count}}</div>
-                    
+                        <div (mouseover)="openReactionDialog($event, emoji)" (mouseleave)="closeReactionDialog()" [style.display]="emoji.count > 0 ? 'flex' : 'none'"  *ngFor="let emoji of messageObj.emoji" (click)="addCurrentReaction(messageObj.time, emoji.emoji)"  class="show-reactions">{{emoji.emoji}} {{emoji.count}}
+                            <ng-template  #reactionInformationDialog>
+                                <div class="reaction-information">
+                                    <span>{{currentHoverEmoji.emoji}}</span>
+                                    <div>{{currentHoverEmoji.userNames}}</div>
+                                </div>
+                            </ng-template>
+                        </div>
+                       
                     </div>
                     
                 </div>
