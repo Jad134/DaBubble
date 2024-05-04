@@ -115,7 +115,7 @@
                 placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">
-                    <div class="add w-h-40">
+                    <div id="fileUploadDiv" (click)="openFilePicker()" class="add w-h-40">
                     </div>
                     <div class="vector"></div>
                     <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>

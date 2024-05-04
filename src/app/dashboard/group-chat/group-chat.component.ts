@@ -12,6 +12,7 @@ import { User } from '../../../models/user.class';
 import { MatIconModule } from '@angular/material/icon';
 import { ThreadService } from '../../services/thread.service';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
+import { StorageService } from '../../services/storage.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class GroupChatComponent {
   chatService = inject(channelDataclientService);
   fireStoreService = inject(FirestoreService);
   threadService = inject(ThreadService);
+  storageService = inject(StorageService)
   currentChannelData: any;
   currentChat: any;
   message: any;
@@ -39,7 +41,8 @@ export class GroupChatComponent {
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
   messageForEdit: any;
-  currentHoverEmoji:any;
+  currentHoverEmoji: any;
+  currentFile!: File;
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
@@ -106,6 +109,9 @@ export class GroupChatComponent {
 
     this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
     this.message = ''
+    if (this.currentFile) {
+      this.storageService.uploadToChannelRef(this.currentFile)
+    }
   }
 
 
@@ -204,7 +210,7 @@ export class GroupChatComponent {
       this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
 
       this.dialogReference.afterClosed().subscribe(() => {
-        this.dialogReference = null; 
+        this.dialogReference = null;
       });
     }
   }
@@ -311,7 +317,7 @@ export class GroupChatComponent {
       selectedEmoji = "👍"
       this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
     } else if (thumbsDown) {
-      selectedEmoji = "👎"; 
+      selectedEmoji = "👎";
       this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
     }
   }
@@ -343,5 +349,27 @@ export class GroupChatComponent {
       // Vor mehr als einem Tag
       return messageTime.toLocaleDateString();
     }
+  }
+
+
+  openFilePicker(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = (event: any) => {
+      const files = event.target.files;
+      console.log(files);
+      this.currentFile = files
+      if (files && files.length > 0) {
+        const file = files[0]; // Nehmen Sie die erste ausgewählte Datei
+        if (this.message) {
+          this.message += `\nDatei ausgewählt: ${file.name}`;
+        } else {
+          this.message = `Datei ausgewählt: ${file.name}`;
+        }
+        // Aktualisieren Sie das Textarea-Feld
+      }
+      // Führen Sie hier die gewünschten Operationen mit den Dateien aus
+    };
+    input.click();
   }
 }

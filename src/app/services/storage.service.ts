@@ -15,12 +15,12 @@ export class StorageService {
   imagesRef: any;
   pic: File | any;
   downloadedProfileImg: any;
-  userId :any;
-  
+  userId: any;
+
 
   // Create a reference from a Google Cloud Storage URI
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {  }
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
 
   /**
@@ -93,14 +93,47 @@ export class StorageService {
 
 
   async downloadImage(imagePath: string): Promise<string> {
-  const imgReference = ref(this.storage, imagePath);
-  try {
-    const imageUrl = await getDownloadURL(imgReference);
-    return imageUrl;
-  } catch (error) {
-    throw new Error('Error downloading image from storage: ' + error);
+    const imgReference = ref(this.storage, imagePath);
+    try {
+      const imageUrl = await getDownloadURL(imgReference);
+      return imageUrl;
+    } catch (error) {
+      throw new Error('Error downloading image from storage: ' + error);
+    }
   }
-}
+
+  async uploadToChannelRef(file:any) {
+    const storageRef = ref(this.storage, 'channels/' + file[0].name);
+    const uploadImage = async () => {
+      const blob = await this.getFileBlob(file[0]);
+      uploadBytes(storageRef, blob).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      }).catch((error) => {
+        console.error('Error uploading file:', error);
+      });
+    }
+  
+    uploadImage();
+  }
+  
+  async getFileBlob(file: any) {
+    return new Promise<Blob>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          const blob = new Blob([reader.result], { type: file.type });
+          resolve(blob);
+        } else {
+          reject(new Error('Fehler beim Lesen der Datei'));
+        }
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
 }
 
 
