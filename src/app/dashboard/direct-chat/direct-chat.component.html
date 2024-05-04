@@ -51,15 +51,31 @@
                     </div>
                     <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>
                     <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'">
-                        <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
-
+                        <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
+                        <div *ngIf="messageObj.emoji.length > 0" class="show-reactions-container">
+                            <div (mouseover)="openReactionDialog($event, emoji)" (mouseleave)="closeReactionDialog()"  [style.display]="emoji.count > 0 ? 'flex' : 'none'"  *ngFor="let emoji of messageObj.emoji" (click)="addCurrentReaction(messageObj.time, emoji.emoji)"  class="show-reactions">{{emoji.emoji}} {{emoji.count}}
+                                <ng-template  #reactionInformationDialog>
+                                    <div class="reaction-information">
+                                        <span class="current-emoji">{{currentHoverEmoji.emoji}}</span>
+                                        <div  class="current-emoji-users"><div class="current-emoji-users">
+                                            <ng-container *ngFor="let user of currentHoverEmoji.userNames.slice(0, 3); let i = index">
+                                              <span>{{ user }}</span>
+                                              <span *ngIf="i < 2 && i < currentHoverEmoji.userNames.length - 1">, </span> <!-- Füge ein Komma hinzu, wenn es nicht der letzte Benutzer ist -->
+                                            </ng-container>
+                                            <span *ngIf="currentHoverEmoji.userNames.length > 3">+{{ currentHoverEmoji.userNames.length - 3 }} weitere</span>
+                                          </div></div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
                     </div>
+                  
                 </div>
                 <div *ngIf="showButton[i]"
                     [ngClass]="messageObj.ownMessage ? 'own-quick-reactions-container' : 'quick-reactions-container'">
-                    <mat-icon class="quick-reaction">👍</mat-icon>
-                    <mat-icon class="quick-reaction">👎</mat-icon>
-                    <mat-icon class="add-reaction-icon">add_reaction</mat-icon>
+                    <mat-icon (click)="addQuickReaction(true, false, messageObj.time)" class="quick-reaction">👍</mat-icon>
+                    <mat-icon (click)="addQuickReaction(false, true, messageObj.time)" class="quick-reaction">👎</mat-icon>
+                    <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
                     <mat-icon class="edit-message-icon" (click)="openEditMessageDialog($event, i)"
                         *ngIf="messageObj.ownMessage">more_vert</mat-icon>
                     <ng-template #editMessageDialog>
@@ -83,7 +99,7 @@
                     <div class="add w-h-40">
                     </div>
                     <div class="vector"></div>
-                    <div class="emoji w-h-40" (click)="openEmojiDialog($event)"></div>
+                    <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>
                     <div class="email w-h-40"></div>
                 </div>
                 <div (click)="sendChat()" class="send w-h-40"></div>

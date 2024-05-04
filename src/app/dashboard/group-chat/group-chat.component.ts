@@ -204,7 +204,7 @@ export class GroupChatComponent {
       this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
 
       this.dialogReference.afterClosed().subscribe(() => {
-        this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
+        this.dialogReference = null; 
       });
     }
   }
@@ -311,7 +311,7 @@ export class GroupChatComponent {
       selectedEmoji = "👍"
       this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
     } else if (thumbsDown) {
-      selectedEmoji = "👎"; // Daumen runter Emoji
+      selectedEmoji = "👎"; 
       this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
     }
   }
@@ -344,10 +344,4 @@ export class GroupChatComponent {
       return messageTime.toLocaleDateString();
     }
   }
-
-
-
-
-
-
 }

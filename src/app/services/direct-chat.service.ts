@@ -77,7 +77,7 @@ export class DirectChatService {
           name: userName
         },
         time: timeStamp,
-        emoji: {},
+        emoji: [],
       });
     }
   }
@@ -168,5 +168,108 @@ export class DirectChatService {
       console.log("No such document!");
     }
   }
+
+
+  async addEmojiToMessage(chatPartnerId:any, currentUserId:any, messageId:any, emoji:any) {
+    let userData = await this.firestoreService.getUserDataById(currentUserId);
+    if (userData) {
+      let userName = userData['name'];
+      // Dokumentreferenz für die erste Unter-Sammlung
+      const userDocRef1 = doc(this.db, 'Direct-Message', currentUserId);
+      const chatPartnerSubcollectionRef1 = collection(userDocRef1, chatPartnerId);
+      const chatDocRef1 = doc(chatPartnerSubcollectionRef1, messageId.toString());
+      
+      // Dokumentreferenz für die zweite Unter-Sammlung
+      const userDocRef2 = doc(this.db, 'Direct-Message', chatPartnerId);
+      const chatPartnerSubcollectionRef2 = collection(userDocRef2, currentUserId);
+      const chatDocRef2 = doc(chatPartnerSubcollectionRef2, messageId.toString());
+  
+      // Überprüfen, ob das Dokument in der ersten Unter-Sammlung existiert
+      const docSnap1 = await getDoc(chatDocRef1);
+      if (docSnap1.exists()) {
+        const data = docSnap1.data();
+        // Überprüfen, ob 'emoji' ein Array ist und das erwartete Format hat
+        if (Array.isArray(data['emoji'])) {
+          // Wenn das Array leer ist, initialisiere es mit einem leeren Array
+          data['emoji'] = data['emoji'] || [];
+          
+          // Überprüfen, ob der Benutzer bereits auf das Emoji reagiert hat
+          const existingEmojiIndex = data['emoji'].findIndex((e: any) => e.emoji === emoji);
+          if (existingEmojiIndex !== -1) {
+            // Emoji existiert bereits
+            const existingEmoji = data['emoji'][existingEmojiIndex];
+            const userIndex = existingEmoji.userNames.indexOf(userName);
+            if (userIndex !== -1) {
+              // Benutzer hat bereits auf das Emoji reagiert, den Count verringern und Benutzername entfernen
+              existingEmoji.count--;
+              existingEmoji.userNames.splice(userIndex, 1);
+            } else {
+              // Benutzer hat noch nicht auf das Emoji reagiert, den Count erhöhen und Benutzername hinzufügen
+              existingEmoji.count++;
+              existingEmoji.userNames.push(userName);
+            }
+            // Aktualisierte Emoji-Daten in der ersten Unter-Sammlung speichern
+            await updateDoc(chatDocRef1, { emoji: data['emoji'] });
+          } else {
+            // Emoji ist neu, hinzufügen
+            await updateDoc(chatDocRef1, {
+              emoji: arrayUnion({
+                emoji: emoji,
+                userNames: [userName],
+                count: 1
+              })
+            });
+          }
+        } else {
+          // 'emoji' ist nicht im erwarteten Format
+          console.error("Emoji-Daten sind nicht im erwarteten Format.");
+        }
+      }
+
+      // Überprüfen, ob das Dokument in der zweiten Unter-Sammlung existiert
+      const docSnap2 = await getDoc(chatDocRef2);
+      if (docSnap2.exists()) {
+        const data = docSnap2.data();
+        // Überprüfen, ob 'emoji' ein Array ist und das erwartete Format hat
+        if (Array.isArray(data['emoji'])) {
+          // Wenn das Array leer ist, initialisiere es mit einem leeren Array
+          data['emoji'] = data['emoji'] || [];
+          
+          // Überprüfen, ob der Benutzer bereits auf das Emoji reagiert hat
+          const existingEmojiIndex = data['emoji'].findIndex((e: any) => e.emoji === emoji);
+          if (existingEmojiIndex !== -1) {
+            // Emoji existiert bereits
+            const existingEmoji = data['emoji'][existingEmojiIndex];
+            const userIndex = existingEmoji.userNames.indexOf(userName);
+            if (userIndex !== -1) {
+              // Benutzer hat bereits auf das Emoji reagiert, den Count verringern und Benutzername entfernen
+              existingEmoji.count--;
+              existingEmoji.userNames.splice(userIndex, 1);
+            } else {
+              // Benutzer hat noch nicht auf das Emoji reagiert, den Count erhöhen und Benutzername hinzufügen
+              existingEmoji.count++;
+              existingEmoji.userNames.push(userName);
+            }
+            // Aktualisierte Emoji-Daten in der zweiten Unter-Sammlung speichern
+            await updateDoc(chatDocRef2, { emoji: data['emoji'] });
+          } else {
+            // Emoji ist neu, hinzufügen
+            await updateDoc(chatDocRef2, {
+              emoji: arrayUnion({
+                emoji: emoji,
+                userNames: [userName],
+                count: 1
+              })
+            });
+          }
+        } else {
+          // 'emoji' ist nicht im erwarteten Format
+          console.error("Emoji-Daten sind nicht im erwarteten Format.");
+        }
+      }
+    }
+  }
+
+  
 
 }

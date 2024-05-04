@@ -1,66 +1,67 @@
 @import "./../../../styles.scss";
 
-.chat-header{
+.chat-header {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 110px;
+  box-shadow: 0 2px 0px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  padding-left: 32px;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: $nunito;
+
+  div {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    height: 110px;
-    box-shadow: 0 2px 0px rgba(0, 0, 0, 0.1);
     align-items: center;
-    padding-left: 32px;
-    font-size: 24px;
-    font-weight: 700;
-    font-family: $nunito;
-    div{
-        display: flex;
-        flex-direction: row; 
-        align-items: center;
-    }
+  }
 }
 
 
-.avatar-img{
+.avatar-img {
   width: 50px !important;
   height: 50px !important;
   border-radius: 30px;
 }
 
 
-  .statuslight {
-    border-radius: 50%;
-    border: solid white 2px;
-     background-color: rgb(19, 173, 19);
-    position: absolute;
-    height: 10px;
-    width: 10px;
-    right: 2px;
-    bottom: 4.5px;
-  }
+.statuslight {
+  border-radius: 50%;
+  border: solid white 2px;
+  background-color: rgb(19, 173, 19);
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  right: 2px;
+  bottom: 4.5px;
+}
 
-  .dm-image-container{
-    position: relative;
-  }
+.dm-image-container {
+  position: relative;
+}
 
-  textarea::-webkit-scrollbar {
-    width: 8px;
-    border-radius: 8px;
-  }
-  
-  textarea::-webkit-scrollbar-track {
-    background: $bg-color;
-  }
-  
-  textarea::-webkit-scrollbar-thumb {
-    background: $purple2;
-    border-radius: 8px;
-  }
-  
-  textarea::-webkit-scrollbar-thumb:hover {
-    background: $purple3;
-  }
+textarea::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: $bg-color;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: $purple2;
+  border-radius: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: $purple3;
+}
 
 
-  @import "./../../../styles.scss";
+@import "./../../../styles.scss";
 
 section {
   min-width: 100%;
@@ -328,12 +329,15 @@ button {
   align-items: center;
   display: flex;
   justify-content: start;
+  gap: 8px;
 }
 
 .message-reaction-own-message {
   align-items: center;
   display: flex;
   justify-content: end;
+  gap: 8px;
+  flex-direction: row-reverse;
 }
 
 form {
@@ -540,18 +544,18 @@ textarea::-webkit-scrollbar-thumb:hover {
   }
 }
 
-.quick-reaction{
+.quick-reaction {
   cursor: pointer;
   font-size: 18px;
   width: 25px;
   height: 25px;
-  display: flex;  
-  justify-content: center;  
+  display: flex;
+  justify-content: center;
   border-radius: 50%;
 
   &:hover {
     color: $purple1;
-    background-color: $bg-color;  
+    background-color: $bg-color;
   }
 }
 
@@ -560,12 +564,12 @@ textarea::-webkit-scrollbar-thumb:hover {
   font-size: 24px;
   width: 25px;
   height: 25px;
-  display: flex;  
-  justify-content: center;  
+  display: flex;
+  justify-content: center;
   align-items: center;
 
   &:hover {
-    color: $purple1; 
+    color: $purple1;
   }
 }
 
@@ -581,6 +585,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 .edit-message-icon {
   position: relative;
+
   &:hover {
     color: $purple1;
   }
@@ -659,10 +664,10 @@ textarea::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
   transition: ease-in 125ms;
 
-  &:hover{
+  &:hover {
     background-color: $purple1;
     color: white;
-}
+  }
 }
 
 .send-edit {
@@ -682,9 +687,9 @@ textarea::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
   transition: ease-in 125ms;
 
-  &:hover{
+  &:hover {
     background-color: lighten($purple1, 10%);
-}
+  }
 
 }
 
@@ -706,14 +711,61 @@ textarea::-webkit-scrollbar-thumb:hover {
   border-radius: 20px;
   overflow: hidden;
   background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-reactions {
+  width: 48px;
+  height: 25px;
+  border-radius: 20px;
+  border: 1px solid $light-purple;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background-color: white;
+}
+
+.show-reactions-container {
+  display: flex;
+  gap: 8px;
+}
+
+.reaction-information {
+  min-width: 150px;
+  min-height: 100px;
+  gap: 8px;
+  border-radius: 30px 30px 30px 0px;
+  background-color: #444df2;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-inline: 20px;
+  max-height: 120px;
+  padding-top: 4px;
+}
+
+.current-emoji {
+  font-size: 30px;
+  margin-top: 4px;
+}
+
+.current-emoji-users {
+  font-size: 16px;
+  font-family: $nunito;
+  font-weight: 700;
+  color: white;
+  flex-wrap: wrap;
+  max-width: 150px;
+  display: flex;
+  justify-content: center;
 }
 
 ::ng-deep .mdc-dialog__surface {
   overflow-y: visible !important;
 }
-
-  

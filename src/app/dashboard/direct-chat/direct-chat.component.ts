@@ -24,7 +24,7 @@ export class DirectChatComponent {
   fireStoreService = inject(FirestoreService)
   downloadService = inject(StorageService);
   currentChatPartnerData: any;
-  currentUserData:any;
+  currentUserData: any;
   directChatService = inject(DirectChatService);
   currentUserId: any;
   editedMessageIndex: number | null = null;
@@ -32,8 +32,11 @@ export class DirectChatComponent {
   showButton: boolean[] = Array(this.directChatService.chatDatas.length).fill(false);
   dialogReference: MatDialogRef<any> | null = null;
   @ViewChild('editMessageDialog') editMessageDialog: any;
-  message:any;
-  
+  @ViewChild('reactionInformationDialog') reactionInfo: any;
+  message: any;
+  currentHoverEmoji:any;
+
+
 
 
 
@@ -58,7 +61,7 @@ export class DirectChatComponent {
   }
 
 
- async getIdFromURL() {
+  async getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
       this.currentUserId = id;
@@ -105,27 +108,27 @@ export class DirectChatComponent {
    */
   async loadProfilePictures() {
     try {
-        if (this.currentChatPartnerData && typeof this.currentChatPartnerData === 'object' && this.currentChatPartnerData.avatar === 'ownPictureDA') {
-            const chatPartnerProfilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentChatPartnerData.id}/ownPictureDA`;
-            try {
-                await this.setProfilePictureToChatPartner(chatPartnerProfilePictureURL);
-            } catch (error) {
-                console.error('Error downloading chat partner profile picture:', error);
-            }
+      if (this.currentChatPartnerData && typeof this.currentChatPartnerData === 'object' && this.currentChatPartnerData.avatar === 'ownPictureDA') {
+        const chatPartnerProfilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentChatPartnerData.id}/ownPictureDA`;
+        try {
+          await this.setProfilePictureToChatPartner(chatPartnerProfilePictureURL);
+        } catch (error) {
+          console.error('Error downloading chat partner profile picture:', error);
         }
+      }
 
-        if (this.currentUserData && typeof this.currentUserData === 'object' && this.currentUserData.avatar === 'ownPictureDA') {
-            const currentUserProfilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentUserData.id}/ownPictureDA`;
-            try {
-                await this.setProfilePictureToCurrentUser(currentUserProfilePictureURL);
-            } catch (error) {
-                console.error('Error downloading current user profile picture:', error);
-            }
+      if (this.currentUserData && typeof this.currentUserData === 'object' && this.currentUserData.avatar === 'ownPictureDA') {
+        const currentUserProfilePictureURL = `gs://dabubble-51e17.appspot.com/${this.currentUserData.id}/ownPictureDA`;
+        try {
+          await this.setProfilePictureToCurrentUser(currentUserProfilePictureURL);
+        } catch (error) {
+          console.error('Error downloading current user profile picture:', error);
         }
+      }
     } catch (error) {
-        console.error('Error loading profile pictures:', error);
+      console.error('Error loading profile pictures:', error);
     }
-}
+  }
 
 
   /**
@@ -143,8 +146,8 @@ export class DirectChatComponent {
   async setProfilePictureToCurrentUser(profilePictureURL: string) {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
-    console.log(this.currentChatPartnerData ,'und', this.currentUserData);
-    
+    console.log(this.currentChatPartnerData, 'und', this.currentUserData);
+
   }
 
 
@@ -165,16 +168,16 @@ export class DirectChatComponent {
   }
 
   /**
-   * open the emojiDialog and insert the returned emoji in the textarea field
-   */
-  openEmojiDialog(event: MouseEvent) {
+* open the emojiDialog and insert the returned emoji in the textarea field
+*/
+  openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any,) {
     const offsetY = 300;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
     dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
 
     this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
-      if (selectedEmoji) {
+      if (selectedEmoji && addEmojiToTextArea) {
         const textarea = document.getElementById('answer') as HTMLTextAreaElement;
         const startPos = textarea.selectionStart;
         const endPos = textarea.selectionEnd;
@@ -190,83 +193,141 @@ export class DirectChatComponent {
 
         textarea.focus();
       }
+      if (selectedEmoji && addEmojiReaction) {
+        console.log(messageId);
+        this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
+
+      }
     });
   }
 
-async sendChat(){
-  let timeStamp = Date.now()
- await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message);
- this.message = '';
-}
+  async sendChat() {
+    let timeStamp = Date.now()
+    await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message);
+    this.message = '';
+  }
 
 
-cancelEdit() {
-  this.editedMessageIndex = null;
-}
+  cancelEdit() {
+    this.editedMessageIndex = null;
+  }
 
 
-async saveEdit(messageId: any, message: any) {
-  await this.directChatService.editMessage(this.currentUserId, this.currentChatPartnerId, message, messageId)
-  this.editedMessageIndex = null;
-}
+  async saveEdit(messageId: any, message: any) {
+    await this.directChatService.editMessage(this.currentUserId, this.currentChatPartnerId, message, messageId)
+    this.editedMessageIndex = null;
+  }
 
 
-getUserAvatar(userId: string){
-}
+  getUserAvatar(userId: string) {
+  }
 
 
- /**
-   * This function open the dialog for the button to edit a Message
+  /**
+    * This function open the dialog for the button to edit a Message
+    * @param event mouseclick
+    * @param i index
+    */
+  openEditMessageDialog(event: MouseEvent, i: number) {
+    this.dontLeaveHover(i)
+    if (!this.dialogReference) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.hasBackdrop = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      this.setEditMessageDialogPosition(event, dialogConfig)
+      this.dialogReference = this.dialog.open(this.editMessageDialog, dialogConfig);
+
+      this.dialogReference.afterClosed().subscribe(() => {
+        this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
+        this.showButton[i] = false;
+      });
+    }
+  }
+
+
+  /**
+   * This function returns the position of the mouseclick
    * @param event mouseclick
-   * @param i index
+   * @returns position of the mouseclick
    */
- openEditMessageDialog(event: MouseEvent, i: number) {
-  this.dontLeaveHover(i)
-  if (!this.dialogReference) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.hasBackdrop = true;
-    dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
-    this.setEditMessageDialogPosition(event, dialogConfig)
-    this.dialogReference = this.dialog.open(this.editMessageDialog, dialogConfig);
-
-    this.dialogReference.afterClosed().subscribe(() => {
-      this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
-      this.showButton[i] = false;
-    });
+  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
+    const offsetLeft = 0;
+    const offsetY = 0;
+    return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
-}
 
 
-/**
- * This function returns the position of the mouseclick
- * @param event mouseclick
- * @returns position of the mouseclick
- */
-setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>, ) {
-  const offsetLeft = 0;
-  const offsetY = 0;
-  return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
-}
+  /**
+   * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
+   * design when dialog edit message is open the hover effect doesnt go away
+   * @param i index of message 
+   */
+  dontLeaveHover(i: number) {
+    setTimeout(() => {
+      this.showButton[i] = true;
+    }, 3);
+  }
 
 
-/**
- * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
- * design when dialog edit message is open the hover effect doesnt go away
- * @param i index of message 
- */
-dontLeaveHover(i: number) {
-  setTimeout(() => {
-    this.showButton[i] = true;
-  }, 3);
-}
+  async editMessage(messageId: any, messageIndex: number) {
+    let message = await this.directChatService.getMessageForEdit(this.currentUserId, this.currentChatPartnerId, messageId)
+    console.log(message);
+    this.editedMessageIndex = messageIndex;
+    this.messageForEdit = message;
+    this.dialogReference?.close()
+  }
+
+  openReactionDialog(event: MouseEvent, emoji: any) {
+    this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
+    if (!this.dialogReference) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.hasBackdrop = false;
+      dialogConfig.autoFocus = false;
+      dialogConfig.disableClose = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      this.setOpenReactionDialogPosition(event, dialogConfig)
+      this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
+
+      this.dialogReference.afterClosed().subscribe(() => {
+        this.dialogReference = null; 
+      });
+    }
+  }
 
 
-async editMessage(messageId: any, messageIndex: number) {
-  let message = await this.directChatService.getMessageForEdit(this.currentUserId, this.currentChatPartnerId, messageId)
-  console.log(message);
-  this.editedMessageIndex = messageIndex;
-  this.messageForEdit = message;
-  this.dialogReference?.close()
-}
+  /**
+     * This function returns the position of the mouseclick
+     * @param event mouseclick
+     * @returns position of the mouseclick
+     */
+  setOpenReactionDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
+    const offsetLeft = 0;
+    const offsetY = 125;
+    return dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+  }
+
+
+  closeReactionDialog() {
+    if (this.dialogReference) {
+      this.dialogReference.close();
+    }
+  }
+
+
+  addCurrentReaction(messageId:any, selectedEmoji:any){
+    this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
+  }
+
+
+  addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {
+    let selectedEmoji: string;
+    if (thumbsUp) {
+      selectedEmoji = "👍"
+      this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
+    } else if (thumbsDown) {
+      selectedEmoji = "👎"; 
+      this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
+    }
+  }
 
 }
