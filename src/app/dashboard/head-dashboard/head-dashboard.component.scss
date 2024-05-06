@@ -154,3 +154,9 @@ input {
     margin-top: 90px;
   }
 }
+
+@media(max-width: 500px){
+  input{
+    display: none;
+  };
+}

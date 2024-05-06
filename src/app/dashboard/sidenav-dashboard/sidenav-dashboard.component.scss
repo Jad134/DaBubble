@@ -267,3 +267,42 @@ section {
   display: none;
 }
 
+// mobile
+
+.mobile{
+  width: 100vw;
+  display: none;
+  margin-top: 80px;
+}
+
+.sidenav-mobile {
+  padding: 40px 20px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.input-mobile {
+
+  border: 1px solid $bg-color;
+  outline: none;
+  border-radius: 48px;
+  width: calc(100% - 48px);
+  height: 38px;
+  background: url(/assets/img/search.png) no-repeat;
+  background-origin: content-box;
+  background-position: right center;
+  position: relative;
+  background-color: white;
+  padding: 8px 24px;
+  margin-bottom: 12px;
+}
+
+@media(max-width: 500px){
+  .mobile{
+    display: block;
+  }
+
+  section{
+    display: none;
+  }
+}
