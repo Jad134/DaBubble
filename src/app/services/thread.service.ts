@@ -43,7 +43,7 @@ export class ThreadService {
    * This function creates the subcollection 'thread' for each sended message. 
    * The variables comes from channelsData Client where the message was sendet and the informations created.
    */
-  async createThreadSubCollection(channelId: any, messageId: any, message: string, userId: any, userName: any) {
+  async createThreadSubCollection(channelId: any, messageId: any, message: string, userId: any, userName: any, imgUrl?:any) {
     const parentDocRef = doc(this.db, 'Channels', channelId, 'chat', messageId);
     const threadCollectionRef = collection(parentDocRef, 'thread');
     try {
@@ -56,6 +56,7 @@ export class ThreadService {
           id: userId,
           name: userName
         },
+        fileUrl: imgUrl || '',
       });
       console.log('Dokument in Subcollection "thread" wurde erfolgreich erstellt');
     } catch (error) {

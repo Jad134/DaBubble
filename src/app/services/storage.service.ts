@@ -102,20 +102,30 @@ export class StorageService {
     }
   }
 
-  async uploadToChannelRef(file:any) {
-    const storageRef = ref(this.storage, 'channels/' + file[0].name);
+
+  async uploadToChannelRef(file: any, channelId: any) {
+    const fileName = file[0].name;
+    const storageRef = ref(this.storage, `channels/${channelId}/${fileName}`);
+    let imgUrl = null; // Standardmäßig auf null setzen
+
     const uploadImage = async () => {
-      const blob = await this.getFileBlob(file[0]);
-      uploadBytes(storageRef, blob).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      }).catch((error) => {
+      try {
+        const blob = await this.getFileBlob(file[0]);
+        const snapshot = await uploadBytes(storageRef, blob);
+        imgUrl = await this.downloadImgUrl(channelId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
+  
+        console.log('Uploaded a blob or file!', imgUrl);
+      } catch (error) {
         console.error('Error uploading file:', error);
-      });
+        throw error; // Ausnahme auslösen, um sicherzustellen, dass ein Wert zurückgegeben wird
+      }
     }
   
-    uploadImage();
+    await uploadImage();
+    return imgUrl; //
   }
-  
+
+
   async getFileBlob(file: any) {
     return new Promise<Blob>((resolve, reject) => {
       const reader = new FileReader();
@@ -132,6 +142,18 @@ export class StorageService {
       };
       reader.readAsArrayBuffer(file);
     });
+  }
+
+
+  async downloadImgUrl(channelId: any, imgName: any) {
+    const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/channels/${channelId}/${imgName}`);
+    try {
+      const url = await getDownloadURL(imgReference);
+      return url; // Hier geben wir die URL zurück
+    } catch (error) {
+      console.error('Fehler beim Herunterladen des Bildes:', error);
+      return null;
+    }
   }
 
 }

@@ -84,16 +84,16 @@ export class channelDataclientService {
   /**
    * This function sets the document with the timestamp as id. This doc has the information for the chats 
    */
-  async sendChat(channelId: string, timeStamp: string, message: string, userId: string,) {
+  async sendChat(channelId: string, timeStamp: string, message: string, userId: string, imgUrl?:any) {
     const chatRef = doc(this.db, "Channels", channelId, 'chat', timeStamp);
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
       let answers = 0;
       try {
-        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers)
+        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers, imgUrl)
         console.log("Chat-Dokument erfolgreich erstellt.");
-        this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName);
+        this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName, imgUrl);
         this.updateAnswerCount(channelId, timeStamp)
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
@@ -119,7 +119,7 @@ export class channelDataclientService {
   /**
    * Sets a new message document in the specified chat reference.
    */
-  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number) {
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number, imgUrl?:any) {
     await setDoc(chatRef, {
       message: message,
       user: {
@@ -128,7 +128,8 @@ export class channelDataclientService {
       },
       time: timeStamp,
       emoji: [],
-      answers: answers
+      answers: answers,
+      fileUrl: imgUrl || '',
     });
   }
 

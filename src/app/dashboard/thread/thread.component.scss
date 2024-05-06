@@ -391,6 +391,8 @@ button {
   padding: 10px;
   border-radius: 0 1em 1em;
   margin-right: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .time {
@@ -437,6 +439,8 @@ button {
   padding: 10px;
   border-radius: 1em 0 1em 1em;
   margin-left: 40px;
+  display: flex;
+  flex-direction: column;
 }
 
 //message
@@ -754,4 +758,12 @@ textarea::-webkit-scrollbar-thumb:hover {
   max-width: 150px;
   display: flex;
   justify-content: center;
+}
+
+.send-image {
+  background-color: white;
+  height: 200px;
+  width: 200px;
+  object-fit: contain;
+  border-radius: 20px;
 }

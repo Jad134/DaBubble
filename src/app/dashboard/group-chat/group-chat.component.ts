@@ -42,7 +42,7 @@ export class GroupChatComponent {
   editedMessageIndex: number | null = null;
   messageForEdit: any;
   currentHoverEmoji: any;
-  currentFile!: File;
+  currentFile!: File | null;
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
@@ -103,15 +103,20 @@ export class GroupChatComponent {
   /**
    * send the message with the needed information to the chatservice and clears the textarea
    */
-  sendMessage(channelId: string) {
+  async sendMessage(channelId: string) {
     console.log(this.message, channelId);
     let timeStamp = Date.now().toString()
-
-    this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
-    this.message = ''
     if (this.currentFile) {
-      this.storageService.uploadToChannelRef(this.currentFile)
-    }
+      const imgUrl = await this.storageService.uploadToChannelRef(this.currentFile, channelId)
+      console.log(imgUrl);
+      
+      await this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId, imgUrl)
+      this.currentFile = null;
+      this.message = ''
+    } else
+      this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
+    this.message = ''
+
   }
 
 
