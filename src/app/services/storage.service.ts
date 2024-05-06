@@ -112,7 +112,7 @@ export class StorageService {
       try {
         const blob = await this.getFileBlob(file[0]);
         const snapshot = await uploadBytes(storageRef, blob);
-        imgUrl = await this.downloadImgUrl(channelId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
+        imgUrl = await this.downloadImgChannelUrl(channelId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
   
         console.log('Uploaded a blob or file!', imgUrl);
       } catch (error) {
@@ -145,7 +145,7 @@ export class StorageService {
   }
 
 
-  async downloadImgUrl(channelId: any, imgName: any) {
+  async downloadImgChannelUrl(channelId: any, imgName: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/channels/${channelId}/${imgName}`);
     try {
       const url = await getDownloadURL(imgReference);
@@ -154,6 +154,43 @@ export class StorageService {
       console.error('Fehler beim Herunterladen des Bildes:', error);
       return null;
     }
+  }
+
+
+  async downloadImgPrivateChatUrl(userId: any, imgName: any) {
+    const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/privateChats/${userId}/${imgName}`);
+    try {
+      const url = await getDownloadURL(imgReference);
+      return url; // Hier geben wir die URL zurück
+    } catch (error) {
+      console.error('Fehler beim Herunterladen des Bildes:', error);
+      return null;
+    }
+  }
+
+
+  async uploadToPrivateRef(file: any, userId: any, chatPartnerId: any) {
+    const fileName = file[0].name;
+    const userStorageRef = ref(this.storage, `privateChats/${userId}/${fileName}`);
+    const chatPartnerStorageRef = ref(this.storage, `privateChats/${chatPartnerId}/${fileName}`);
+    let imgUrl = null; // Standardmäßig auf null setzen
+  
+    const uploadImage = async (storageRef: any) => {
+      try {
+        const blob = await this.getFileBlob(file[0]);
+        const snapshot = await uploadBytes(storageRef, blob);
+        imgUrl = await this.downloadImgPrivateChatUrl(userId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
+  
+        console.log('Uploaded a blob or file!', imgUrl);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        throw error; // Ausnahme auslösen, um sicherzustellen, dass ein Wert zurückgegeben wird
+      }
+    }
+  
+    await uploadImage(userStorageRef); // Für den Benutzer hochladen
+    await uploadImage(chatPartnerStorageRef); // Für den Chat-Partner hochladen
+    return imgUrl; // Rückgabe von imgUrl, unabhängig davon, ob das Bild hochgeladen wurde oder nicht
   }
 
 }

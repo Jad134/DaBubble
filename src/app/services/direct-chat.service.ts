@@ -22,10 +22,10 @@ export class DirectChatService {
 
   constructor() { }
 
-  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any) {
-    await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);
-    await this.saveMessageAtCurrentUserDB(currentUserId, chatPartnerId, timeStamp, message)
-    await this.saveMessateAtChatPartnerDB(currentUserId, chatPartnerId, timeStamp, message)
+  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, imgUrl?:any, ) {
+    await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);  
+    await this.saveMessageAtCurrentUserDB(currentUserId, chatPartnerId, timeStamp, message, imgUrl)
+    await this.saveMessateAtChatPartnerDB(currentUserId, chatPartnerId, timeStamp, message, imgUrl)
 }
 
 
@@ -49,23 +49,23 @@ export class DirectChatService {
   }
 
 
-  async saveMessageAtCurrentUserDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any) {
+  async saveMessageAtCurrentUserDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?:any) {
     const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
     const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
-    await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp);
+    await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp, fileUrl);
   }
 
 
-  async saveMessateAtChatPartnerDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any) {
+  async saveMessateAtChatPartnerDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?:any) {
     const userDocRef = doc(this.db, 'Direct-Message', chatPartnerId);
     const chatPartnerSubcollectionRef = collection(userDocRef, currentUserId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
-    await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp);
+    await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp, fileUrl);
   }
 
 
-  async setMessageDocument(currentUserId: any, chatDocRef: any, message: any, timeStamp: any) {
+  async setMessageDocument(currentUserId: any, chatDocRef: any, message: any, timeStamp: any, fileUrl?:any) {
     let userData = await this.firestoreService.getUserDataById(currentUserId);
     if (userData) {
       let userName = userData['name'];
@@ -78,6 +78,7 @@ export class DirectChatService {
         },
         time: timeStamp,
         emoji: [],
+        fileUrl:fileUrl || ''
       });
     }
   }

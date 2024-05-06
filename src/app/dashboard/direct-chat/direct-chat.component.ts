@@ -34,7 +34,8 @@ export class DirectChatComponent {
   @ViewChild('editMessageDialog') editMessageDialog: any;
   @ViewChild('reactionInformationDialog') reactionInfo: any;
   message: any;
-  currentHoverEmoji:any;
+  currentHoverEmoji: any;
+  currentFile!: File | null;
 
 
 
@@ -203,8 +204,18 @@ export class DirectChatComponent {
 
   async sendChat() {
     let timeStamp = Date.now()
-    await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message);
-    this.message = '';
+
+    if (this.currentFile) {
+      const imgUrl = await this.downloadService.uploadToPrivateRef(this.currentFile, this.currentChatPartnerId, this.currentUserId)
+      console.log(imgUrl);
+
+      await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message, imgUrl);
+      this.currentFile = null;
+      this.message = ''
+    } else
+      await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message);
+    this.message = ''
+
   }
 
 
@@ -289,7 +300,7 @@ export class DirectChatComponent {
       this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
 
       this.dialogReference.afterClosed().subscribe(() => {
-        this.dialogReference = null; 
+        this.dialogReference = null;
       });
     }
   }
@@ -314,7 +325,7 @@ export class DirectChatComponent {
   }
 
 
-  addCurrentReaction(messageId:any, selectedEmoji:any){
+  addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
   }
 
@@ -325,9 +336,32 @@ export class DirectChatComponent {
       selectedEmoji = "👍"
       this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
     } else if (thumbsDown) {
-      selectedEmoji = "👎"; 
+      selectedEmoji = "👎";
       this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
     }
+  }
+
+
+
+  openFilePicker(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = (event: any) => {
+      const files = event.target.files;
+      console.log(files);
+      this.currentFile = files
+      if (files && files.length > 0) {
+        const file = files[0]; // Nehmen Sie die erste ausgewählte Datei
+        if (this.message) {
+          this.message += `\nDatei ausgewählt: ${file.name}`;
+        } else {
+          this.message = `Datei ausgewählt: ${file.name}`;
+        }
+        // Aktualisieren Sie das Textarea-Feld
+      }
+      // Führen Sie hier die gewünschten Operationen mit den Dateien aus
+    };
+    input.click();
   }
 
 }

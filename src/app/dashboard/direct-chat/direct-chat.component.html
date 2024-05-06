@@ -49,7 +49,8 @@
                         <span class="name" (click)="openUserDetail(messageObj.user)">{{ messageObj.user.name }}</span>
                         <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
                     </div>
-                    <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}</div>
+                    <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}
+                        <img class="send-image" *ngIf="messageObj.fileUrl" [src]="messageObj.fileUrl" alt=""></div>
                     <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'">
                         <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)" class="add-reaction-icon">add_reaction</mat-icon>
                         <div *ngIf="messageObj.emoji.length > 0" class="show-reactions-container">
@@ -96,7 +97,7 @@
                 placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">
-                    <div class="add w-h-40">
+                    <div id="fileUploadDiv" (click)="openFilePicker()" class="add w-h-40">
                     </div>
                     <div class="vector"></div>
                     <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>
