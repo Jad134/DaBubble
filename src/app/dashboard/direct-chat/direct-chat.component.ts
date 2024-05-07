@@ -156,7 +156,8 @@ export class DirectChatComponent {
   /**
  * open the user detail dialog
  */
-  openUserDetail(id: string) {
+  openUserDetail(user: string) {
+    const dummyUsersInChannel = [this.currentUserData, this.currentChatPartnerData];
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {
       top: '100px',
@@ -164,7 +165,10 @@ export class DirectChatComponent {
     };
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
-      userId: id,
+      user: user,
+      userInChannel: {
+        usersInChannel: dummyUsersInChannel
+      }
     }
     this.dialog.open(UserDetailDialogComponent, dialogConfig);
   }
