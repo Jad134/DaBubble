@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, ViewChild, ElementRef, } from '@angular/core';
+import { Component, inject, AfterViewInit, ViewChild, ElementRef, HostListener} from '@angular/core';
 import { HeadDashboardComponent } from './head-dashboard/head-dashboard.component';
 import { SidenavDashboardComponent } from './sidenav-dashboard/sidenav-dashboard.component';
 import { ChatDashboardComponent } from './chat-dashboard/chat-dashboard.component';
@@ -31,6 +31,7 @@ export class DashboardComponent {
   directChatVisible: boolean = false;
   currentGroupChat!: string;
   currentDirectChat!: string;
+  sidenavVisible = true;
 
 
 
@@ -65,6 +66,7 @@ export class DashboardComponent {
   */
   handleGroupChatVisibility(event: boolean) {
     this.groupChatVisible = event;
+    this.updateSidenavVisibility();
   }
 
 
@@ -73,16 +75,40 @@ export class DashboardComponent {
    */
   handleDirectChatVisibility(event: boolean) {
     this.directChatVisible = event;
+    this.updateSidenavVisibility();
   }
 
 
   handleCurrentGroupId(id: string) {
     this.currentGroupChat = id;
     console.log(this.currentGroupChat);
+    this.updateSidenavVisibility();
   }
 
 
   handleDirectChatId(id: string) {
     this.currentDirectChat = id;
+    this.updateSidenavVisibility();
+  }
+
+  /**
+   * update the sidenav visibility if event is clicked and window with is lower 500px
+   */
+  updateSidenavVisibility(): void {
+    const shouldHideSidenav = (window.innerWidth < 500) && (this.groupChatVisible || this.directChatVisible || this.currentGroupChat || this.currentDirectChat);
+    this.sidenavVisible = !shouldHideSidenav;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.checkWindowWidth();
+  }
+
+  /**
+   * check if window width < 500px
+   */
+  checkWindowWidth(): void {
+    const shouldHideSidenav = this.groupChatVisible || this.directChatVisible || this.currentGroupChat || this.currentDirectChat;
+    this.sidenavVisible = window.innerWidth >= 500 || !shouldHideSidenav;
   }
 }

@@ -1,8 +1,25 @@
 <app-head-dashboard></app-head-dashboard>
 <section>
-<app-sidenav-dashboard (clickedUserIdEvent)=" handleDirectChatId($event)" (clickedChannelIdEvent)="handleCurrentGroupId($event)" (directChatEvent)="handleDirectChatVisibility($event)" (groupChatEvent)="handleGroupChatVisibility($event)"   #sideNav  [users]="users"></app-sidenav-dashboard>
-<!-- <app-chat-dashboard class="dashboard"></app-chat-dashboard> -->
-<app-group-chat [users]="users" [currentId]="currentGroupChat"  *ngIf="groupChatVisible"  class="chat-components"></app-group-chat>
-<app-direct-chat [currentChatPartnerId]="currentDirectChat"  *ngIf="directChatVisible" class="chat-components"></app-direct-chat>
-<app-thread></app-thread>
+  <app-sidenav-dashboard
+  *ngIf="sidenavVisible"  
+  (clickedUserIdEvent)="handleDirectChatId($event)"
+    (clickedChannelIdEvent)="handleCurrentGroupId($event)"
+    (directChatEvent)="handleDirectChatVisibility($event)"
+    (groupChatEvent)="handleGroupChatVisibility($event)"
+    #sideNav
+    [users]="users"
+  ></app-sidenav-dashboard>
+  <!-- <app-chat-dashboard class="dashboard"></app-chat-dashboard> -->
+  <app-group-chat
+    [users]="users"
+    [currentId]="currentGroupChat"
+    *ngIf="groupChatVisible"
+    class="chat-components"
+  ></app-group-chat>
+  <app-direct-chat
+    [currentChatPartnerId]="currentDirectChat"
+    *ngIf="directChatVisible"
+    class="chat-components"
+  ></app-direct-chat>
+  <app-thread></app-thread>
 </section>
