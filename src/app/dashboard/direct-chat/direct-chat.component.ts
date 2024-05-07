@@ -91,7 +91,7 @@ export class DirectChatComponent {
       const data = await this.fireStoreService.getUserDataById(this.currentChatPartnerId);
       this.currentChatPartnerData = data;
 
-      console.log(this.currentChatPartnerData);
+
 
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
@@ -148,7 +148,7 @@ export class DirectChatComponent {
   async setProfilePictureToCurrentUser(profilePictureURL: string) {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
-    console.log(this.currentChatPartnerData, 'und', this.currentUserData);
+    
 
   }
 

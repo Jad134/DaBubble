@@ -114,7 +114,7 @@ export class DirectChatService {
       chat.push(message);
       this.chatDatas = chat;
       this.controllIfOwnMessageSend(message, currentUserId)
-      console.log(this.chatDatas);
+
 
     });
   }
