@@ -209,10 +209,11 @@ export class ThreadService {
   /**
    * This function updatet the edit message in the thread too
    */
- async updateEditMessage(channelId:any ,messageId:any, message:any){
+ async updateEditMessage(channelId:any ,messageId:any, message:any, fileUrl?:any){
     const docRef = doc(this.db, "Channels", channelId, 'chat', messageId, 'thread', messageId);
     await updateDoc(docRef, {
       message: message,
+      fileUrl: fileUrl || '',
     });
   }
 

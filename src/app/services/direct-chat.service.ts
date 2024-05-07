@@ -22,11 +22,11 @@ export class DirectChatService {
 
   constructor() { }
 
-  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, imgUrl?:any, ) {
-    await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);  
+  async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, imgUrl?: any,) {
+    await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);
     await this.saveMessageAtCurrentUserDB(currentUserId, chatPartnerId, timeStamp, message, imgUrl)
     await this.saveMessateAtChatPartnerDB(currentUserId, chatPartnerId, timeStamp, message, imgUrl)
-}
+  }
 
 
   async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, timeStamp: any) {
@@ -49,7 +49,7 @@ export class DirectChatService {
   }
 
 
-  async saveMessageAtCurrentUserDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?:any) {
+  async saveMessageAtCurrentUserDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?: any) {
     const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
     const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
@@ -57,7 +57,7 @@ export class DirectChatService {
   }
 
 
-  async saveMessateAtChatPartnerDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?:any) {
+  async saveMessateAtChatPartnerDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?: any) {
     const userDocRef = doc(this.db, 'Direct-Message', chatPartnerId);
     const chatPartnerSubcollectionRef = collection(userDocRef, currentUserId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, timeStamp.toString())
@@ -65,7 +65,7 @@ export class DirectChatService {
   }
 
 
-  async setMessageDocument(currentUserId: any, chatDocRef: any, message: any, timeStamp: any, fileUrl?:any) {
+  async setMessageDocument(currentUserId: any, chatDocRef: any, message: any, timeStamp: any, fileUrl?: any) {
     let userData = await this.firestoreService.getUserDataById(currentUserId);
     if (userData) {
       let userName = userData['name'];
@@ -78,7 +78,7 @@ export class DirectChatService {
         },
         time: timeStamp,
         emoji: [],
-        fileUrl:fileUrl || ''
+        fileUrl: fileUrl || ''
       });
     }
   }
@@ -140,12 +140,25 @@ export class DirectChatService {
   /**
    * This function saves the edited message
    */
-  async editMessage(currentUserId: any, chatPartnerId: any, message: any, messageId: any) {
+  async editMessage(currentUserId: any, chatPartnerId: any, message: any, messageId: any, fileUrl?: any) {
     const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
     const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
     await updateDoc(chatDocRef, {
       message: message,
+      fileUrl: fileUrl || ''
+    });
+    await this.editMessageAtChatPartner(currentUserId, chatPartnerId, message, messageId, fileUrl)
+  }
+
+
+ async editMessageAtChatPartner(currentUserId: any, chatPartnerId: any, message: any, messageId: any, fileUrl?: any) {
+    const userDocRef = doc(this.db, 'Direct-Message', chatPartnerId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, currentUserId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
+    await updateDoc(chatDocRef, {
+      message: message,
+      fileUrl: fileUrl || ''
     });
   }
 
@@ -158,7 +171,7 @@ export class DirectChatService {
     const chatPartnerSubcollectionRef = collection(userDocRef, currentChatPartnerId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
     const docSnap = await getDoc(chatDocRef);
-    
+
     console.log(docSnap.data());
     if (docSnap.exists()) {
       let message = docSnap.data()['message']
@@ -171,7 +184,25 @@ export class DirectChatService {
   }
 
 
-  async addEmojiToMessage(chatPartnerId:any, currentUserId:any, messageId:any, emoji:any) {
+  async getImgForDelete(currentUserId: any, currentChatPartnerId: any, messageId: any) {
+    const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
+    const chatPartnerSubcollectionRef = collection(userDocRef, currentChatPartnerId);
+    const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
+    const docSnap = await getDoc(chatDocRef);
+
+    console.log(docSnap.data());
+    if (docSnap.exists()) {
+      let img = docSnap.data()['fileUrl']
+      return img
+
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+
+  async addEmojiToMessage(chatPartnerId: any, currentUserId: any, messageId: any, emoji: any) {
     let userData = await this.firestoreService.getUserDataById(currentUserId);
     if (userData) {
       let userName = userData['name'];
@@ -179,12 +210,12 @@ export class DirectChatService {
       const userDocRef1 = doc(this.db, 'Direct-Message', currentUserId);
       const chatPartnerSubcollectionRef1 = collection(userDocRef1, chatPartnerId);
       const chatDocRef1 = doc(chatPartnerSubcollectionRef1, messageId.toString());
-      
+
       // Dokumentreferenz für die zweite Unter-Sammlung
       const userDocRef2 = doc(this.db, 'Direct-Message', chatPartnerId);
       const chatPartnerSubcollectionRef2 = collection(userDocRef2, currentUserId);
       const chatDocRef2 = doc(chatPartnerSubcollectionRef2, messageId.toString());
-  
+
       // Überprüfen, ob das Dokument in der ersten Unter-Sammlung existiert
       const docSnap1 = await getDoc(chatDocRef1);
       if (docSnap1.exists()) {
@@ -193,7 +224,7 @@ export class DirectChatService {
         if (Array.isArray(data['emoji'])) {
           // Wenn das Array leer ist, initialisiere es mit einem leeren Array
           data['emoji'] = data['emoji'] || [];
-          
+
           // Überprüfen, ob der Benutzer bereits auf das Emoji reagiert hat
           const existingEmojiIndex = data['emoji'].findIndex((e: any) => e.emoji === emoji);
           if (existingEmojiIndex !== -1) {
@@ -235,7 +266,7 @@ export class DirectChatService {
         if (Array.isArray(data['emoji'])) {
           // Wenn das Array leer ist, initialisiere es mit einem leeren Array
           data['emoji'] = data['emoji'] || [];
-          
+
           // Überprüfen, ob der Benutzer bereits auf das Emoji reagiert hat
           const existingEmojiIndex = data['emoji'].findIndex((e: any) => e.emoji === emoji);
           if (existingEmojiIndex !== -1) {
@@ -271,6 +302,6 @@ export class DirectChatService {
     }
   }
 
-  
+
 
 }

@@ -36,6 +36,7 @@ export class DirectChatComponent {
   message: any;
   currentHoverEmoji: any;
   currentFile!: File | null;
+  imgForDelete:any;
 
 
 
@@ -224,9 +225,14 @@ export class DirectChatComponent {
   }
 
 
-  async saveEdit(messageId: any, message: any) {
-    await this.directChatService.editMessage(this.currentUserId, this.currentChatPartnerId, message, messageId)
+  async saveEdit(messageId: any, message: any, img?:any) {
+    await this.directChatService.editMessage(this.currentUserId, this.currentChatPartnerId, message, messageId, img)
     this.editedMessageIndex = null;
+  }
+
+
+  deleteImg(){
+    this.imgForDelete = ''
   }
 
 
@@ -282,9 +288,11 @@ export class DirectChatComponent {
 
   async editMessage(messageId: any, messageIndex: number) {
     let message = await this.directChatService.getMessageForEdit(this.currentUserId, this.currentChatPartnerId, messageId)
+    let img = await this.directChatService.getImgForDelete(this.currentUserId, this.currentChatPartnerId, messageId)
     console.log(message);
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
+    this.imgForDelete = img;
     this.dialogReference?.close()
   }
 

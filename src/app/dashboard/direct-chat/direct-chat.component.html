@@ -25,10 +25,14 @@
                     <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id="" cols="30"
                         rows="10"></textarea>
                     <div class="edit-message-send-container">
-                        <mat-icon>sentiment_satisfied </mat-icon>
+                        <div class="edit-img-container">
+                            <mat-icon>sentiment_satisfied </mat-icon>
+                            <img class="delete-img" *ngIf="imgForDelete" [src]="imgForDelete" alt="">
+                            <mat-icon *ngIf="imgForDelete" (click)="deleteImg()" class="delete-img-btn">cancel </mat-icon>
+                        </div>
                         <div class="edit-message-final-buttons">
                             <div (click)="cancelEdit()" class="cancel-edit"> Abbrechen</div>
-                            <div (click)="saveEdit(messageObj.time, messageForEdit)" class="send-edit"> Speichern</div>
+                            <div (click)="saveEdit(messageObj.time, messageForEdit, imgForDelete)" class="send-edit"> Speichern</div>
                         </div>
                     </div>
                 </div>

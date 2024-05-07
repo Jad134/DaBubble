@@ -41,6 +41,7 @@ export class GroupChatComponent {
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
   messageForEdit: any;
+  imgForDelete:any;
   currentHoverEmoji: any;
   currentFile!: File | null;
 
@@ -266,9 +267,11 @@ export class GroupChatComponent {
 
   async editMessage(messageId: any, messageIndex: number) {
     let message = await this.chatService.getMessageForEdit(this.currentId, messageId)
+    let img = await this.chatService.getImgForDelete(this.currentId, messageId)
     console.log(message);
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
+    this.imgForDelete = img;
     this.dialogReference?.close()
   }
 
@@ -278,9 +281,13 @@ export class GroupChatComponent {
   }
 
 
-  async saveEdit(messageId: any, message: any) {
-    await this.chatService.editMessage(this.currentId, messageId, message)
+  async saveEdit(messageId: any, message: any, img?:any) {
+    await this.chatService.editMessage(this.currentId, messageId, message, img)
     this.editedMessageIndex = null;
+  }
+
+  deleteImg(){
+    this.imgForDelete = ''
   }
 
   /**

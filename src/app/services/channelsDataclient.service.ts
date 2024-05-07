@@ -416,14 +416,33 @@ export class channelDataclientService {
 
 
   /**
+   * This function retrieves the current message to edit it
+   */
+  async getImgForDelete(channelId: any, messageId: any) {
+    const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      let file = docSnap.data()['fileUrl']
+      return file
+
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+
+  /**
    * This function saves the edited message
    */
- async editMessage(channelId:any, messageId:any, message:any){
+ async editMessage(channelId:any, messageId:any, message:any, fileUrl?:any){
     const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
     await updateDoc(docRef, {
       message: message,
+      fileUrl: fileUrl || ''
     });
-   await this.threadService.updateEditMessage(channelId,messageId, message)
+   await this.threadService.updateEditMessage(channelId,messageId, message, fileUrl)
   }
 
 
