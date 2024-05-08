@@ -37,11 +37,13 @@ input {
   justify-content: end;
   padding-right: 15px;
   position: relative;
+
   h2 {
     margin: 0;
     font-family: $nunito;
     font-weight: 700;
   }
+
   div {
     background-color: white;
     border-radius: 50%;
@@ -49,10 +51,12 @@ input {
     height: 70px;
     overflow: hidden;
   }
+
   button {
     border: none;
     background-color: transparent;
   }
+
   .statuslight {
     border-radius: 50%;
     border: solid white 2px;
@@ -78,11 +82,28 @@ input {
   cursor: pointer;
 }
 
+.show-filter-contend {
+  position: absolute;
+  left: 127px;
+  width: 500px;
+  background: white;
+  height: auto;
+  z-index: 5555;
+}
+
+.input-filter-container {
+  width: 60%;
+  position: relative;
+}
+
+
+
 @media (max-width: 1200px) {
   .head {
     flex-direction: column;
     padding: 0;
   }
+
   .logo_container {
     order: 1;
     position: absolute;
@@ -109,6 +130,7 @@ input {
 }
 
 @media (max-width: 600px) {
+
   button,
   h2 {
     display: none;
@@ -129,6 +151,7 @@ input {
 
   .container_current_user {
     width: 70px;
+
     div {
       background-color: $bg-color;
     }
@@ -145,6 +168,7 @@ input {
       height: auto;
     }
   }
+
   .container_current_user {
     top: 10px;
   }
@@ -155,8 +179,10 @@ input {
   }
 }
 
-@media(max-width: 500px){
-  input{
+@media(max-width: 500px) {
+  input {
     display: none;
-  };
+  }
+
+  ;
 }

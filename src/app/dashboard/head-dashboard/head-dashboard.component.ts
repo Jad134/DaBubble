@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule, Router, } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { User } from '../../../models/user.class';
-import {MatDialogConfig, MatDialogModule} from '@angular/material/dialog';
+import { MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -11,11 +11,16 @@ import {
   MatDialogContent,
 } from '@angular/material/dialog';
 import { UserMenuDialogComponent } from './user-menu-dialog/user-menu-dialog.component';
+import { channel } from '../../../models/channels.class';
+import { channelDataclientService } from '../../services/channelsDataclient.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-head-dashboard',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './head-dashboard.component.html',
   styleUrl: './head-dashboard.component.scss'
 })
@@ -23,16 +28,34 @@ export class HeadDashboardComponent {
 
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
+  channelService = inject(channelDataclientService)
   userId = '';
   actualUser: any;
   name: any;
   @ViewChild('profilePicture') profilePicture!: ElementRef;
+  channels: channel[] = [];
+  users: any
+  profilePicturesLoaded: boolean = false;
+  filteredChannels: channel[] = [];
+  filteredUsers: any[] = [];
+  searchTerm: string = '';
+
 
   constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getIdFromURL();
     this.downloadProfileDatas(this.userId);
+    this.channels = this.channelService.channels
+    console.log(this.channels);
+    this.firestoreService.getAllUsers().then(async (users) => {
+      await this.loadProfilePictures(users);
+      this.users = users;
+      console.log(this.users);
+    })
+      .catch((error) => {
+        console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
+      });
   }
 
 
@@ -51,8 +74,8 @@ export class HeadDashboardComponent {
    * @param userID 
    */
   async downloadProfileDatas(userID: any) {
-   await this.firestoreService
-       .getUserDataById(this.userId)
+    await this.firestoreService
+      .getUserDataById(this.userId)
       .then((data) => {
         this.actualUser = new User(data);
         if (this.actualUser) {
@@ -62,7 +85,7 @@ export class HeadDashboardComponent {
       .catch((error) => {
         console.log('Fehler beim Laden des Benutzers: ', error);
       });
-      this.controlIfOwnPictureUsed(this.userId)  
+    this.controlIfOwnPictureUsed(this.userId)
   }
 
 
@@ -70,10 +93,10 @@ export class HeadDashboardComponent {
    * this function checks if the user use an uploaded or standard avatar picture
    * @param userID 
    */
-  async controlIfOwnPictureUsed(userID:any){
-    if (this.actualUser.avatar === 'ownPictureDA'){
-    await  this.downloadService.downloadAvatar(userID);
-    }else if (this.profilePicture && this.profilePicture.nativeElement) {
+  async controlIfOwnPictureUsed(userID: any) {
+    if (this.actualUser.avatar === 'ownPictureDA') {
+      await this.downloadService.downloadAvatar(userID);
+    } else if (this.profilePicture && this.profilePicture.nativeElement) {
       this.profilePicture.nativeElement.src = this.actualUser.avatar;
     } else {
       console.error('Das Bild-Element wurde nicht richtig initialisiert.');
@@ -83,10 +106,10 @@ export class HeadDashboardComponent {
   /**
    * this function opens the user menu dialog
    */
-  openDialog(){
+  openDialog() {
     let user = this.actualUser;
-    if(user.avatar == 'ownPictureDA'){
-    user.avatar = this.downloadService.downloadedProfileImg;
+    if (user.avatar == 'ownPictureDA') {
+      user.avatar = this.downloadService.downloadedProfileImg;
     }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {
@@ -98,6 +121,74 @@ export class HeadDashboardComponent {
       user: user,
     }
     this.dialog.open(UserMenuDialogComponent, dialogConfig);
+  }
+
+
+
+  /**
+   * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
+   */
+  async loadProfilePictures(users: User[]) {
+    let allProfilePicturesLoaded = true; // Annahme: Alle Bilder sind zunächst geladen
+    for (const user of users) {
+      if (user.avatar === 'ownPictureDA') {
+        const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
+        try {
+          const downloadedImageUrl = await this.downloadService.downloadImage(
+            profilePictureURL
+          );
+          // Weisen Sie die heruntergeladenen Bild-URL dem Benutzerobjekt zu
+          user.avatar = downloadedImageUrl;
+        } catch (error) {
+          console.error('Error downloading user profile picture:', error);
+          allProfilePicturesLoaded = false; // Setzen Sie den Zustand auf falsch, wenn ein Bild nicht geladen werden konnte
+        }
+      }
+    }
+    this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
+  }
+
+
+  filterChannelsAndUsers() {
+    if (this.searchTerm) {
+      if (this.searchTerm.startsWith('@')) {
+        this.filteredChannels = [];
+        this.filteredUsers = this.users.filter((user: { name: string; }) => {
+          return user.name.toLowerCase().includes(this.searchTerm.substring(1).toLowerCase());
+        });
+      } else if (this.searchTerm.startsWith('#')) {
+        this.filteredUsers = [];
+        this.filteredChannels = this.channels.filter(channel => {
+          return channel.name.toLowerCase().includes(this.searchTerm.substring(1).toLowerCase()) ||
+            channel.id.toLowerCase().includes(this.searchTerm.substring(1).toLowerCase());
+        });
+      } else {
+        // Wenn weder '@' noch '#' am Anfang stehen, nach beiden suchen
+        this.filteredChannels = this.channels.filter(channel => {
+          return channel.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            channel.id.toLowerCase().includes(this.searchTerm.toLowerCase());
+        });
+
+        this.filteredUsers = this.users.filter((user: { name: string; id: string; }) => {
+          return user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            user.id.toLowerCase().includes(this.searchTerm.toLowerCase());
+        });
+      }
+    } else {
+      // Wenn das Suchfeld leer ist, alle Kanäle und Benutzer anzeigen
+      this.filteredChannels = this.channels;
+      this.filteredUsers = this.users;
+    }
+  }
+
+
+  openUserMessage(id:any) {
+    console.log(id);
+
+  }
+
+  openChannel(id:any) {
+    console.log(id);
   }
 }
 
