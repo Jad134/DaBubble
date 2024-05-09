@@ -30,3 +30,13 @@ app-head-dashboard{
     height: calc(100% - 180px);
   }
 }
+
+@media (max-width: 500px) {
+  .dashboard{
+    margin-right: 0px;
+  }
+  
+  .chat-components{
+    margin-right: 0px;
+  }
+}

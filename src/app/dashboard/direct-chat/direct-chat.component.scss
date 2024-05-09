@@ -60,9 +60,6 @@ textarea::-webkit-scrollbar-thumb:hover {
   background: $purple3;
 }
 
-
-@import "./../../../styles.scss";
-
 section {
   min-width: 100%;
   height: calc(100% - 40px);
@@ -801,4 +798,18 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 ::ng-deep .mdc-dialog__surface {
   overflow-y: visible !important;
+}
+
+@media (max-width: 500px){
+  section {
+    height: calc(100vh - 80px);
+    background-color: white;
+    border-radius: 0px;
+    margin-top: 80px;
+    margin-bottom: 0px;
+  }
+
+  .chat-header {
+    height: 60px;
+  }
 }

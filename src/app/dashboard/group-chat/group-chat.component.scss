@@ -781,3 +781,45 @@ textarea::-webkit-scrollbar-thumb:hover {
 ::ng-deep .mdc-dialog__surface {
   overflow-y: visible !important;
 }
+
+@media(max-width: 500px){
+  section {
+    height: calc(100vh - 80px);
+    border-radius: 0px;
+    margin-bottom: 0px;
+    margin-top: 80px;
+  }
+
+  .chat-header {
+    height: 60px;
+  }
+
+  .chat-header-left {
+    cursor: pointer;
+    padding: 6px 10px;
+    height: 33px;
+    margin-left: 0px;
+    gap: 10px;
+  
+    span {
+      font-size: 18px;
+    }
+  
+    .tag {
+      background-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  
+    &:hover {
+      .tag {
+        background-size: 20px;
+      }
+    }
+  }
+
+  .add-person {
+    margin-right: 8px;
+  }
+
+}
