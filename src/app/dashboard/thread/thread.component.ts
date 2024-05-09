@@ -65,7 +65,7 @@ export class ThreadComponent {
 
   checkScreenSize() {
     if (typeof window !== 'undefined') {
-      this.isSmallScreen = window.innerWidth < 1200;
+      this.isSmallScreen = window.innerWidth < 1305;
     }
   }
 

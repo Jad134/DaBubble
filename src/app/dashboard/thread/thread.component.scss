@@ -767,3 +767,9 @@ textarea::-webkit-scrollbar-thumb:hover {
   object-fit: contain;
   border-radius: 20px;
 }
+
+@media (max-width: 1500px){
+  .thread-container{
+    width: 366px;
+  }
+}
