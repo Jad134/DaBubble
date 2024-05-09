@@ -273,12 +273,14 @@ section {
   width: 100vw;
   display: none;
   margin-top: 80px;
+  height: calc(100vh - 80px);
 }
 
 .sidenav-mobile {
   padding: 40px 20px;
   background-color: white;
   overflow: hidden;
+  height: calc(100% - 80px);
 }
 
 .input-mobile {
