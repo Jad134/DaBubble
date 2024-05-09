@@ -1,8 +1,13 @@
-<app-head-dashboard></app-head-dashboard>
+<app-head-dashboard
+  [groupChatVisible]="groupChatVisible"
+  [directChatVisible]="directChatVisible"
+  [sidenavVisible]="sidenavVisible"
+  (backClicked)="handleBackClick()"
+></app-head-dashboard>
 <section>
   <app-sidenav-dashboard
-  *ngIf="sidenavVisible"  
-  (clickedUserIdEvent)="handleDirectChatId($event)"
+    *ngIf="sidenavVisible"
+    (clickedUserIdEvent)="handleDirectChatId($event)"
     (clickedChannelIdEvent)="handleCurrentGroupId($event)"
     (directChatEvent)="handleDirectChatVisibility($event)"
     (groupChatEvent)="handleGroupChatVisibility($event)"

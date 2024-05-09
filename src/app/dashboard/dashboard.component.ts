@@ -25,15 +25,14 @@ export class DashboardComponent {
   downloadService = inject(StorageService)
   userId: any;
   users: User[] = [];
-  profilePictureReady = false;
+  profilePictureReady: boolean = false;
   @ViewChild('sidenav') sidenav!: SidenavDashboardComponent;
   groupChatVisible: boolean = false;
   directChatVisible: boolean = false;
   currentGroupChat!: string;
   currentDirectChat!: string;
-  sidenavVisible = true;
-
-
+  sidenavVisible: boolean = true;
+  
 
   ngOnInit(): void {
     this.getIdFromURL();
@@ -110,5 +109,14 @@ export class DashboardComponent {
   checkWindowWidth(): void {
     const shouldHideSidenav = this.groupChatVisible || this.directChatVisible || this.currentGroupChat || this.currentDirectChat;
     this.sidenavVisible = window.innerWidth >= 500 || !shouldHideSidenav;
+  }
+
+  /**
+   * this function make sidnav visible and directChat and groupChat unvisible, after click back funtion in deh head-dashboard (only width lower 500px)
+   */
+  handleBackClick(): void {
+    this.sidenavVisible = true;
+    this.directChatVisible = false;
+    this.groupChatVisible = false;
   }
 }

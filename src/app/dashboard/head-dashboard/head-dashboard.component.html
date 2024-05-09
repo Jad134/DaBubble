@@ -1,6 +1,7 @@
 <section>
   <div class="head">
     <div class="logo_container">
+      <img class="back" src="/assets/img/go-back-arrow.svg" *ngIf="!sidenavVisible && groupChatVisible || !sidenavVisible && directChatVisible" (click)="backClicked.emit()">
       <img src="/assets/img/home-workspace.svg" alt="" />
     </div>
     <div class="input-filter-container" >
@@ -11,9 +12,6 @@
         <div (click)="openUserMessage(user.id)" *ngFor="let user of filteredUsers">{{ user.name }}</div>
       </div>
     </div>
-
-
-
 
     <div class="container_current_user">
       <h2>{{this.name}}</h2>

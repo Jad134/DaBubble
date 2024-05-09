@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Input, Output, ViewChild, inject, EventEmitter } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router, } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { FirestoreService } from '../../services/firestore.service';
@@ -39,6 +39,10 @@ export class HeadDashboardComponent {
   filteredChannels: channel[] = [];
   filteredUsers: any[] = [];
   searchTerm: string = '';
+  @Input() groupChatVisible: boolean = false;
+  @Input() directChatVisible: boolean = false;
+  @Input() sidenavVisible: boolean = true;
+  @Output() backClicked = new EventEmitter<void>();
 
 
   constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
