@@ -11,6 +11,7 @@ import {
   ViewChildren,
   QueryList,
   OnDestroy,
+  HostListener,
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -81,6 +82,16 @@ export class SidenavDashboardComponent implements OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    if (window.innerWidth < 950) {
+      this.sidenavIsHide = true;
+    } else {
+      this.sidenavIsHide = false;
+    }
+  }
+
   
 
   /**
