@@ -93,6 +93,11 @@ export class GroupChatComponent {
   openEditDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'transparent-dialog';
+    if (window.innerWidth < 500) {
+      dialogConfig.width = '100%'; 
+      dialogConfig.height = '100%';
+      dialogConfig.position = { top: '0', left: '0' };
+    }
     dialogConfig.data = {
       channelId: this.currentChannelData.id,
       userId: this.currentUserId
