@@ -1,19 +1,14 @@
 import { Component, ElementRef, Input, Output, ViewChild, inject, EventEmitter } from '@angular/core';
-import { ActivatedRoute, RouterModule, Router, } from '@angular/router';
+import { ActivatedRoute, Router, } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { User } from '../../../models/user.class';
-import { MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogTitle,
-  MatDialogContent,
-} from '@angular/material/dialog';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { UserMenuDialogComponent } from './user-menu-dialog/user-menu-dialog.component';
 import { channel } from '../../../models/channels.class';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 

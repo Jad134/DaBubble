@@ -159,10 +159,16 @@ export class DirectChatComponent {
   openUserDetail(user: string) {
     const dummyUsersInChannel = [this.currentUserData, this.currentChatPartnerData];
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.position = {
-      top: '100px',
-      right: '20px'
-    };
+    if (window.innerWidth < 500) {
+      dialogConfig.width = '100%'; 
+      dialogConfig.height = '100%';
+      dialogConfig.position = { top: '0', left: '0' };
+  } else {
+      dialogConfig.position = {
+          top: '100px',
+          right: '20px'
+      };
+  }
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
       user: user,

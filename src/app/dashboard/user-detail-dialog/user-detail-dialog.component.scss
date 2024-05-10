@@ -107,3 +107,11 @@ mat-card{
     justify-content: center;
     padding-top: 30px;
 }
+
+@media (max-width: 500px){
+  mat-card{
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0px;
+}
+}

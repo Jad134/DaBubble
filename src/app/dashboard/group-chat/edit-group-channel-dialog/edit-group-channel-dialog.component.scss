@@ -132,3 +132,16 @@ h3 {
         background-color: lighten($purple1, 10%);
     }
 }
+
+@media (max-width: 1000px){
+    mat-card {
+        width: 85vw;
+        padding: 15px;
+
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+}
