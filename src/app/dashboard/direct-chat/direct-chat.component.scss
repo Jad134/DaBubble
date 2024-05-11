@@ -73,8 +73,7 @@ section {
 
 .chat {
   overflow-y: auto;
-  max-height: 500px;
-  height: 500px;
+ height: calc(100% - 300px);
 
 
 
@@ -595,7 +594,6 @@ textarea::-webkit-scrollbar-thumb:hover {
 .edit-message-container {
   width: fit-content;
   min-width: 300px;
-  // height: 73px;
   padding: 10px 20px 10px 20px;
   gap: 15px;
   border-radius: 0px 30px 30px 30px;
@@ -811,5 +809,15 @@ textarea::-webkit-scrollbar-thumb:hover {
 
   .chat-header {
     height: 60px;
+  }
+
+  .answer-section {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .chat {
+    height: calc(100% - 250px);
   }
 }

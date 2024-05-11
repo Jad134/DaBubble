@@ -13,8 +13,9 @@ section {
 
 .chat {
   overflow-y: auto;
-  max-height: 500px;
-  height: 500px;
+  // max-height: 500px;
+  // height: 500px;
+  height: calc(100% - 300px);
 
 
 
@@ -822,4 +823,13 @@ textarea::-webkit-scrollbar-thumb:hover {
     margin-right: 8px;
   }
 
+  .answer-section {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .chat {
+    height: calc(100% - 250px);
+  }
 }
