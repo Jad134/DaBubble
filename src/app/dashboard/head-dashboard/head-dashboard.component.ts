@@ -39,6 +39,11 @@ export class HeadDashboardComponent {
   @Input() sidenavVisible: boolean = true;
   @Output() backClicked = new EventEmitter<void>();
 
+  @Output() groupChatEvent = new EventEmitter<boolean>();
+  @Output() directChatEvent = new EventEmitter<boolean>();
+  @Output() clickedChannelIdEvent = new EventEmitter<string>();
+  @Output() clickedUserIdEvent = new EventEmitter<string>();
+
 
   constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
@@ -183,11 +188,19 @@ export class HeadDashboardComponent {
 
   openUserMessage(id:any) {
     console.log(id);
+    this.groupChatEvent.emit(false);
+    this.directChatEvent.emit(true);
+    this.clickedUserIdEvent.emit(id);
+    this.searchTerm = '';
 
   }
 
   openChannel(id:any) {
     console.log(id);
+    this.directChatEvent.emit(false);
+    this.groupChatEvent.emit(true);
+    this.clickedChannelIdEvent.emit(id);
+    this.searchTerm = '';
   }
 }
 

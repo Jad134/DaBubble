@@ -3,6 +3,10 @@
   [directChatVisible]="directChatVisible"
   [sidenavVisible]="sidenavVisible"
   (backClicked)="handleBackClick()"
+  (clickedUserIdEvent)="handleDirectChatId($event)"
+  (clickedChannelIdEvent)="handleCurrentGroupId($event)"
+  (directChatEvent)="handleDirectChatVisibility($event)"
+  (groupChatEvent)="handleGroupChatVisibility($event)"
 ></app-head-dashboard>
 <section>
   <app-sidenav-dashboard
