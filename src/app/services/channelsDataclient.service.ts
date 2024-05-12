@@ -29,6 +29,7 @@ export class channelDataclientService {
   chatDatas: any[] = [];
   ownMessage = false;
   chatLength!: number;
+  allChatMessages:any;
 
 
 
@@ -91,7 +92,7 @@ export class channelDataclientService {
       let userName = userData['name'];
       let answers = 0;
       try {
-        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers, imgUrl)
+        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers, channelId, imgUrl, )
         console.log("Chat-Dokument erfolgreich erstellt.");
         this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName, imgUrl);
         this.updateAnswerCount(channelId, timeStamp)
@@ -119,7 +120,7 @@ export class channelDataclientService {
   /**
    * Sets a new message document in the specified chat reference.
    */
-  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number, imgUrl?:any) {
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number, channelId:string, imgUrl?:any, ) {
     await setDoc(chatRef, {
       message: message,
       user: {
@@ -130,6 +131,7 @@ export class channelDataclientService {
       emoji: [],
       answers: answers,
       fileUrl: imgUrl || '',
+      channelId: channelId,
     });
   }
 
@@ -164,7 +166,29 @@ export class channelDataclientService {
       const newChannel = new channel(channelData);
       this.channels.push(newChannel);
     });
+  }
 
+
+  async getAllMessages(){
+    const allChatMessages: { id: string; }[] = []; // Array zum Speichern aller Chat-Nachrichten
+
+  // Schleife durch die angegebenen Kanal-IDs
+  for (const channelId of this.channelIds) {
+    const channelDocRef = doc(this.firestore, 'Channels', channelId);
+    const messagesSnapshot = await getDocs(collection(channelDocRef, 'chat'));
+
+    // Für jeden Kanal alle Nachrichten durchlaufen
+    messagesSnapshot.forEach((messageDoc) => {
+      const messageData = messageDoc.data();
+      const newMessage = { id: messageDoc.id, ...messageData };
+      allChatMessages.push(newMessage); // Neue Nachricht zum Array hinzufügen
+    });
+  }
+
+  // Speichern Sie das Array der Chat-Nachrichten in der Instanzvariablen
+  this.allChatMessages = allChatMessages;
+  console.log(this.allChatMessages);
+  
   }
 
 
@@ -251,6 +275,7 @@ export class channelDataclientService {
         });
       }
     }
+    await this.getAllMessages()
   }
 
 

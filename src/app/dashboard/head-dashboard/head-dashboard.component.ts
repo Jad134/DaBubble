@@ -4,11 +4,11 @@ import { StorageService } from '../../services/storage.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { User } from '../../../models/user.class';
 import { MatDialogConfig } from '@angular/material/dialog';
-import { MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UserMenuDialogComponent } from './user-menu-dialog/user-menu-dialog.component';
 import { channel } from '../../../models/channels.class';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
-import { FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 
@@ -33,6 +33,7 @@ export class HeadDashboardComponent {
   profilePicturesLoaded: boolean = false;
   filteredChannels: channel[] = [];
   filteredUsers: any[] = [];
+  filteredMessages: any[] = []
   searchTerm: string = '';
   @Input() groupChatVisible: boolean = false;
   @Input() directChatVisible: boolean = false;
@@ -177,16 +178,21 @@ export class HeadDashboardComponent {
           return user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
             user.id.toLowerCase().includes(this.searchTerm.toLowerCase());
         });
-      }
-    } else {
-      // Wenn das Suchfeld leer ist, alle Kanäle und Benutzer anzeigen
-      this.filteredChannels = this.channels;
-      this.filteredUsers = this.users;
+        // Durchsuchen der Nachrichten im Array this.allChatMessages
+      this.filteredMessages = this.channelService.allChatMessages.filter((message: { message: string; }) => {
+        return message && message.message && typeof message.message === 'string' &&
+          message.message.toLowerCase().includes(this.searchTerm.toLowerCase());
+      });
     }
+  } else {
+    this.filteredChannels = this.channels;
+    this.filteredUsers = this.users;
+    this.filteredMessages = this.channelService.allChatMessages;
+  }
   }
 
 
-  openUserMessage(id:any) {
+  openUserMessage(id: any) {
     console.log(id);
     this.groupChatEvent.emit(false);
     this.directChatEvent.emit(true);
@@ -195,7 +201,7 @@ export class HeadDashboardComponent {
 
   }
 
-  openChannel(id:any) {
+  openChannel(id: any) {
     console.log(id);
     this.directChatEvent.emit(false);
     this.groupChatEvent.emit(true);
