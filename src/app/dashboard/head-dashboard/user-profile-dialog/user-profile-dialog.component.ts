@@ -36,10 +36,17 @@ export class UserProfileDialogComponent {
    */
   openEdit() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.position = {
-      top: '100px',
-      right: '20px'
-    };
+    if (window.innerWidth < 500) {
+      dialogConfig.width = '100%'; 
+      dialogConfig.height = '100%';
+      dialogConfig.maxWidth = '100vw';
+      dialogConfig.maxHeight = '100vh';
+  } else {
+      dialogConfig.position = {
+          top: '100px',
+          right: '20px'
+      };
+  }
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
       user: this.actualUser,

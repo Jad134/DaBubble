@@ -119,7 +119,7 @@ export class HeadDashboardComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {
       top: '100px',
-      right: '20px'
+      right: '20px',
     };
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
