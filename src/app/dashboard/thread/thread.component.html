@@ -28,7 +28,7 @@
                   rows="10"></textarea>
               <div class="edit-message-send-container">
                   <div class="edit-img-container">
-                      <mat-icon  class="edit-emoji">sentiment_satisfied </mat-icon>
+                      <mat-icon (click)="openEmojiDialog($event, true, false, undefined, true)"  class="edit-emoji">sentiment_satisfied </mat-icon>
                       <img class="delete-img" *ngIf="imgForDelete" [src]="imgForDelete" alt="">
                       <mat-icon *ngIf="imgForDelete" (click)="deleteImg()" class="delete-img-btn">cancel </mat-icon>
                   </div>
@@ -104,7 +104,7 @@
           <div class="d-flex-sb">
             <div class="add w-h-40"></div>
             <div class="vector"></div>
-            <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>
+            <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false, undefined, false)"></div>
             <div class="email w-h-40"></div>
           </div>
           <div (click)="sendMessageToThread(message)" class="send w-h-40"></div>

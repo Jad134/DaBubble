@@ -24,8 +24,8 @@ export class ThreadComponent {
   currentUserId: any;
   message: any;
   showButton: boolean[] = Array(this.threadService.chatDatas.length).fill(false);
-  currentChannelData:any;
-  currentHoverEmoji:any;
+  currentChannelData: any;
+  currentHoverEmoji: any;
   messageForEdit: any;
   imgForDelete: any;
   @ViewChild('reactionInformationDialog') reactionInfo: any;
@@ -104,77 +104,104 @@ export class ThreadComponent {
     }
   }
 
-     /**
-     * open the emojiDialog and insert the returned emoji in the textarea field
-     */
-     openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any,) {
-      const offsetY = 300;
+  /**
+* open the emojiDialog and insert the returned emoji in the textarea field
+*/
+  openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any, emojiToEditMessage?: boolean) {
+    const offsetY = 300;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
+    dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
+
+    this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
+      if (selectedEmoji && addEmojiToTextArea) {
+        if (emojiToEditMessage) {
+          this.addEmojitoEditMessageTextArea(selectedEmoji)
+        } else if (!emojiToEditMessage) {
+          this.addEmojitoAnswerMessageTextArea(selectedEmoji)
+        }
+      }
+      if (selectedEmoji && addEmojiReaction) {
+        this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+      }
+    });
+  }
+
+
+  addEmojitoEditMessageTextArea(selectedEmoji: any) {
+    const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
+    const startPos = textarea.selectionStart;
+    const endPos = textarea.selectionEnd;
+    const textBeforeCursor = textarea.value.substring(0, startPos);
+    const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+
+    textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+    const newCursorPosition = startPos + selectedEmoji.length;
+    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+    textarea.dispatchEvent(new Event('input'));
+    textarea.focus();
+  }
+
+
+  addEmojitoAnswerMessageTextArea(selectedEmoji: any) {
+    const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+    const startPos = textarea.selectionStart;
+    const endPos = textarea.selectionEnd;
+
+    const textBeforeCursor = textarea.value.substring(0, startPos);
+    const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+    textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+    const newCursorPosition = startPos + selectedEmoji.length;
+    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+    textarea.dispatchEvent(new Event('input'));
+
+    textarea.focus();
+  }
+
+
+
+  addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {
+    let selectedEmoji: string;
+    if (thumbsUp) {
+      selectedEmoji = "👍"
+      this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+    } else if (thumbsDown) {
+      selectedEmoji = "👎"; // Daumen runter Emoji
+      this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+    }
+  }
+
+  addCurrentReaction(messageId: any, selectedEmoji: any) {
+    this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+  }
+
+
+  openReactionDialog(event: MouseEvent, emoji: any) {
+    this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
+    if (!this.dialogReference) {
       const dialogConfig = new MatDialogConfig();
-      dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
-      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
-  
-      this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
-        if (selectedEmoji && addEmojiToTextArea) {
-          const textarea = document.getElementById('answerThread') as HTMLTextAreaElement;
-          const startPos = textarea.selectionStart;
-          const endPos = textarea.selectionEnd;
-  
-          const textBeforeCursor = textarea.value.substring(0, startPos);
-          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-  
-          const newCursorPosition = startPos + selectedEmoji.length;
-          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-  
-          textarea.dispatchEvent(new Event('input'));
-  
-          textarea.focus();
-        }
-        if (selectedEmoji && addEmojiReaction) {
-         this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
-        }
+      dialogConfig.hasBackdrop = false;
+      dialogConfig.autoFocus = false;
+      dialogConfig.disableClose = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      this.setOpenReactionDialogPosition(event, dialogConfig)
+      this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
+
+      this.dialogReference.afterClosed().subscribe(() => {
+        this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
       });
     }
-
-    addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId:any) {
-      let selectedEmoji: string;
-      if (thumbsUp) {
-        selectedEmoji = "👍"
-       this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
-      } else if (thumbsDown) {
-        selectedEmoji = "👎"; // Daumen runter Emoji
-        this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
-      }
-    }
-  
-    addCurrentReaction(messageId:any, selectedEmoji:any){
-        this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
-    }
+  }
 
 
-    openReactionDialog(event: MouseEvent, emoji: any) {
-      this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
-      if (!this.dialogReference) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.hasBackdrop = false;
-        dialogConfig.autoFocus = false;
-        dialogConfig.disableClose = true;
-        dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
-        this.setOpenReactionDialogPosition(event, dialogConfig)
-        this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
-  
-        this.dialogReference.afterClosed().subscribe(() => {
-          this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
-        });
-      }
-    }
-
-
-    /**
-     * This function returns the position of the mouseclick
-     * @param event mouseclick
-     * @returns position of the mouseclick
-     */
+  /**
+   * This function returns the position of the mouseclick
+   * @param event mouseclick
+   * @returns position of the mouseclick
+   */
   setOpenReactionDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
     const offsetLeft = 0;
     const offsetY = 125;
@@ -189,12 +216,12 @@ export class ThreadComponent {
   }
 
 
-   /**
-   * This function open the dialog for the button to edit a Message
-   * @param event mouseclick
-   * @param i index
-   */
-   openEditMessageDialog(event: MouseEvent, i: number) {
+  /**
+  * This function open the dialog for the button to edit a Message
+  * @param event mouseclick
+  * @param i index
+  */
+  openEditMessageDialog(event: MouseEvent, i: number) {
     this.dontLeaveHover(i)
     if (!this.dialogReference) {
       const dialogConfig = new MatDialogConfig();
@@ -245,14 +272,14 @@ export class ThreadComponent {
   }
 
 
-  async saveEdit(messageId: any, message: any, ) {
-    await this.threadService.editMessage( messageId, message)
+  async saveEdit(messageId: any, message: any,) {
+    await this.threadService.editMessage(messageId, message)
     this.editedMessageIndex = null;
   }
 
   async editMessage(messageId: any, messageIndex: number) {
     let message = await this.threadService.getMessageForEdit(messageId)
-    
+
     // let img = await this.chatService.getImgForDelete(this.currentId, messageId)
     console.log(message);
     this.editedMessageIndex = messageIndex;
