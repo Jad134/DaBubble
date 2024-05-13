@@ -57,7 +57,7 @@ export class channelDataclientService {
         await this.firestoreService.updateUsersChannels(user.id, channelId);
       }
 
-      await this.createChatCollection(channelId)
+      await this.createChatCollection(channelId, channel.creator)
 
     } catch (error) {
       console.log('Error writing document: ', error);
@@ -68,7 +68,7 @@ export class channelDataclientService {
   /**
   * This function create a subcollection which is called 'chat' for the chat function
   */
-  async createChatCollection(collectionId: string) {
+  async createChatCollection(collectionId: string, creator:string) {
     const timeStamp = Date.now();
     const parentDocRef = doc(this.db, 'Channels', collectionId);
     const chatCollectionRef = collection(parentDocRef, 'chat');
@@ -79,6 +79,8 @@ export class channelDataclientService {
     // Setze die Daten für das Dokument
     await setDoc(chatDocRef, {
       time: timeStamp,
+      creator:creator,
+      welcomeMessage : true,
     });
   }
 

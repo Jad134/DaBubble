@@ -145,7 +145,7 @@ export class ThreadComponent {
 
 
   addEmojitoAnswerMessageTextArea(selectedEmoji: any) {
-    const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+    const textarea = document.getElementById('answerThread') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
     const endPos = textarea.selectionEnd;
 
