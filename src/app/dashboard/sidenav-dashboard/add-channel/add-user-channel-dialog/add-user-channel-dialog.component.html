@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="place_btn">
-                <button (click)="addUsersToChannel()" class="create_btn">Erstellen</button>
+                <button [disabled]="selectedOption == ''" (click)="addUsersToChannel()" class="create_btn">Erstellen</button>
             </div>
         </form>
     </div>

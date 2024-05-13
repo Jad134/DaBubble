@@ -54,7 +54,7 @@ export class AddUserChannelDialogComponent {
     this.addChannelAdmin()
   }
 
-  
+
   addChannelAdmin() {
     const channelAdmin = this.channelAdmin;
     if (channelAdmin) {
@@ -144,7 +144,7 @@ export class AddUserChannelDialogComponent {
   }
 
 
-  addUsersToChannel() {
+ async addUsersToChannel() {
     this.newChannel.creator = this.channelAdmin.name;
     if (this.selectedOption === 'allUsers') {
       this.selectedUser = [...this.users];
@@ -153,8 +153,9 @@ export class AddUserChannelDialogComponent {
       this.newChannel.usersInChannel = this.selectedUser;
     }
     // Hier kann die Service funktion eingefügt werden 
-    console.log('Neuer Channel: ',this.newChannel);
-    this.channelDataclient.storeNewChannel(this.newChannel);
+    console.log('Neuer Channel: ', this.newChannel);
+   await this.channelDataclient.storeNewChannel(this.newChannel);
+    this.closeDialog()
   }
 
 }

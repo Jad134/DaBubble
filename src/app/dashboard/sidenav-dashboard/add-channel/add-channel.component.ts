@@ -103,6 +103,10 @@ export class AddChannelComponent {
       // this.toggleUserOverlay();
       this.openDialog()
       validChannelName.style = 'opacity: 0';
+      setTimeout(() => {
+        this.closeOverlay()
+      },500);
+
     } else {
       validChannelName.style = 'opacity: 1';
     }
