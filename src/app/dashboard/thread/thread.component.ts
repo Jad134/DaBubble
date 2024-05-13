@@ -26,8 +26,13 @@ export class ThreadComponent {
   showButton: boolean[] = Array(this.threadService.chatDatas.length).fill(false);
   currentChannelData:any;
   currentHoverEmoji:any;
+  messageForEdit: any;
+  imgForDelete: any;
   @ViewChild('reactionInformationDialog') reactionInfo: any;
+  @ViewChild('editMessageDialog') editMessageDialog: any;
   dialogReference: MatDialogRef<any> | null = null;
+
+  editedMessageIndex: number | null = null;
 
 
   @HostListener('window:resize', ['$event'])
@@ -181,5 +186,78 @@ export class ThreadComponent {
     if (this.dialogReference) {
       this.dialogReference.close();
     }
+  }
+
+
+   /**
+   * This function open the dialog for the button to edit a Message
+   * @param event mouseclick
+   * @param i index
+   */
+   openEditMessageDialog(event: MouseEvent, i: number) {
+    this.dontLeaveHover(i)
+    if (!this.dialogReference) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.hasBackdrop = true;
+      dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
+      this.setEditMessageDialogPosition(event, dialogConfig)
+      this.dialogReference = this.dialog.open(this.editMessageDialog, dialogConfig);
+
+      this.dialogReference.afterClosed().subscribe(() => {
+        this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
+        this.showButton[i] = false;
+      });
+    }
+  }
+
+
+  /**
+   * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
+   * design when dialog edit message is open the hover effect doesnt go away
+   * @param i index of message 
+   */
+  dontLeaveHover(i: number) {
+    setTimeout(() => {
+      this.showButton[i] = true;
+    }, 3);
+  }
+
+
+  /**
+   * This function returns the position of the mouseclick
+   * @param event mouseclick
+   * @returns position of the mouseclick
+   */
+  setEditMessageDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
+    const offsetLeft = 0;
+    const offsetY = 0;
+    return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+  }
+
+
+  deleteImg() {
+    this.imgForDelete = ''
+  }
+
+
+  cancelEdit() {
+    this.editedMessageIndex = null;
+  }
+
+
+  async saveEdit(messageId: any, message: any, ) {
+    await this.threadService.editMessage( messageId, message)
+    this.editedMessageIndex = null;
+  }
+
+  async editMessage(messageId: any, messageIndex: number) {
+    let message = await this.threadService.getMessageForEdit(messageId)
+    
+    // let img = await this.chatService.getImgForDelete(this.currentId, messageId)
+    console.log(message);
+    this.editedMessageIndex = messageIndex;
+    this.messageForEdit = message;
+    // this.imgForDelete = img;
+    this.dialogReference?.close()
   }
 }

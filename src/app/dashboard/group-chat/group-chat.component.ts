@@ -313,35 +313,9 @@ export class GroupChatComponent {
     this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
       if (selectedEmoji && addEmojiToTextArea) {
         if (emojiToEditMessage) {
-          const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
-          const startPos = textarea.selectionStart;
-          const endPos = textarea.selectionEnd;
-
-          const textBeforeCursor = textarea.value.substring(0, startPos);
-          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-
-          const newCursorPosition = startPos + selectedEmoji.length;
-          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-
-          textarea.dispatchEvent(new Event('input'));
-
-          textarea.focus();
+         this.addEmojitoEditMessageTextArea(selectedEmoji)
         } else if (!emojiToEditMessage) {
-          const textarea = document.getElementById('answer') as HTMLTextAreaElement;
-          const startPos = textarea.selectionStart;
-          const endPos = textarea.selectionEnd;
-
-          const textBeforeCursor = textarea.value.substring(0, startPos);
-          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-
-          const newCursorPosition = startPos + selectedEmoji.length;
-          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-
-          textarea.dispatchEvent(new Event('input'));
-
-          textarea.focus();
+         this.addEmojitoAnswerMessageTextArea(selectedEmoji)
         }
       }
       if (selectedEmoji && addEmojiReaction) {
@@ -349,6 +323,41 @@ export class GroupChatComponent {
       }
     });
   }
+
+
+  addEmojitoEditMessageTextArea(selectedEmoji:any){
+    const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
+    const startPos = textarea.selectionStart;
+    const endPos = textarea.selectionEnd;
+    const textBeforeCursor = textarea.value.substring(0, startPos);
+    const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+
+    textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+    const newCursorPosition = startPos + selectedEmoji.length;
+    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+    textarea.dispatchEvent(new Event('input'));
+    textarea.focus();
+  }
+
+
+  addEmojitoAnswerMessageTextArea(selectedEmoji:any){
+    const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+    const startPos = textarea.selectionStart;
+    const endPos = textarea.selectionEnd;
+
+    const textBeforeCursor = textarea.value.substring(0, startPos);
+    const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+    textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+    const newCursorPosition = startPos + selectedEmoji.length;
+    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+    textarea.dispatchEvent(new Event('input'));
+
+    textarea.focus();
+  }
+
 
 
   addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {

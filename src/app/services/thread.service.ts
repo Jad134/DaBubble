@@ -114,6 +114,35 @@ export class ThreadService {
 
 
   /**
+   * This function retrieves the current message to edit it
+   */
+  async getMessageForEdit(messageId: any) {
+    const docRef = doc(this.db, "Channels", this.currentGroupId, 'chat', this.currentChatId, 'thread', messageId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      let message = docSnap.data()['message']
+      return message
+
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+
+    /**
+   * This function saves the edited message
+   */
+ async editMessage( messageId:any, message:any){
+  const docRef = doc(this.db, "Channels", this.currentGroupId, 'chat', this.currentChatId, 'thread', messageId);
+  await updateDoc(docRef, {
+    message: message,
+  });
+}
+
+
+  /**
    * This function saved the message in the thread subcollection
    */
   async sendMessageToThread(timeStamp: string, message: string, userId: string,) {
