@@ -784,7 +784,7 @@ textarea::-webkit-scrollbar-thumb:hover {
   overflow-y: visible !important;
 }
 
-@media(max-width: 500px){
+@media(max-width: 500px) {
   section {
     height: calc(100vh - 80px);
     border-radius: 0px;
@@ -803,17 +803,17 @@ textarea::-webkit-scrollbar-thumb:hover {
     height: 33px;
     margin-left: 0px;
     gap: 10px;
-  
+
     span {
       font-size: 18px;
     }
-  
+
     .tag {
       background-size: 20px;
       width: 20px;
       height: 20px;
     }
-  
+
     &:hover {
       .tag {
         background-size: 20px;
@@ -833,5 +833,13 @@ textarea::-webkit-scrollbar-thumb:hover {
 
   .chat {
     height: calc(100% - 250px);
+  }
+}
+
+.edit-emoji {
+  cursor: pointer;
+
+  &:hover {
+    color: $purple1;
   }
 }

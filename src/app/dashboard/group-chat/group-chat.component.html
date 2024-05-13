@@ -36,11 +36,11 @@
             <!----------------------Edit Message Textarea------------------>
             <div class="textarea-edit-container" *ngIf="editedMessageIndex === i">
                 <div class="center-edit-objects">
-                    <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id="" cols="30"
+                    <textarea [(ngModel)]="messageForEdit" class="edit-message-textarea" name="" id="edit-message" cols="30"
                         rows="10"></textarea>
                     <div class="edit-message-send-container">
                         <div class="edit-img-container">
-                            <mat-icon>sentiment_satisfied </mat-icon>
+                            <mat-icon (click)="openEmojiDialog($event, true, false, undefined, true )" class="edit-emoji">sentiment_satisfied </mat-icon>
                             <img class="delete-img" *ngIf="imgForDelete" [src]="imgForDelete" alt="">
                             <mat-icon *ngIf="imgForDelete" (click)="deleteImg()" class="delete-img-btn">cancel </mat-icon>
                         </div>
@@ -125,7 +125,7 @@
                     <div id="fileUploadDiv" (click)="openFilePicker()" class="add w-h-40">
                     </div>
                     <div class="vector"></div>
-                    <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>
+                    <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false, undefined, false)"></div>
                     <div class="email w-h-40"></div>
                 </div>
                 <div (click)="sendMessage(currentChannelData.id)" class="send w-h-40"></div>

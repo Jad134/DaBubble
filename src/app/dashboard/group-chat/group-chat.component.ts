@@ -41,7 +41,7 @@ export class GroupChatComponent {
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
   messageForEdit: any;
-  imgForDelete:any;
+  imgForDelete: any;
   currentHoverEmoji: any;
   currentFile!: File | null;
 
@@ -94,7 +94,7 @@ export class GroupChatComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'transparent-dialog';
     if (window.innerWidth < 500) {
-      dialogConfig.width = '100%'; 
+      dialogConfig.width = '100%';
       dialogConfig.height = '100%';
       dialogConfig.position = { top: '0', left: '0' };
     }
@@ -115,7 +115,7 @@ export class GroupChatComponent {
     if (this.currentFile) {
       const imgUrl = await this.storageService.uploadToChannelRef(this.currentFile, channelId)
       console.log(imgUrl);
-      
+
       await this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId, imgUrl)
       this.currentFile = null;
       this.message = ''
@@ -165,15 +165,15 @@ export class GroupChatComponent {
   openUserDetail(user: any) {
     const dialogConfig = new MatDialogConfig();
     if (window.innerWidth < 500) {
-      dialogConfig.width = '100%'; 
+      dialogConfig.width = '100%';
       dialogConfig.height = '100%';
       dialogConfig.position = { top: '0', left: '0' };
-  } else {
+    } else {
       dialogConfig.position = {
-          top: '100px',
-          right: '20px'
+        top: '100px',
+        right: '20px'
       };
-  }
+    }
     dialogConfig.panelClass = 'transparent-dialog';
     dialogConfig.data = {
       user: user,
@@ -292,19 +292,19 @@ export class GroupChatComponent {
   }
 
 
-  async saveEdit(messageId: any, message: any, img?:any) {
+  async saveEdit(messageId: any, message: any, img?: any) {
     await this.chatService.editMessage(this.currentId, messageId, message, img)
     this.editedMessageIndex = null;
   }
 
-  deleteImg(){
+  deleteImg() {
     this.imgForDelete = ''
   }
 
   /**
  * open the emojiDialog and insert the returned emoji in the textarea field
  */
-  openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any,) {
+  openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any, emojiToEditMessage?: boolean) {
     const offsetY = 300;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
@@ -312,20 +312,37 @@ export class GroupChatComponent {
 
     this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
       if (selectedEmoji && addEmojiToTextArea) {
-        const textarea = document.getElementById('answer') as HTMLTextAreaElement;
-        const startPos = textarea.selectionStart;
-        const endPos = textarea.selectionEnd;
+        if (emojiToEditMessage) {
+          const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
+          const startPos = textarea.selectionStart;
+          const endPos = textarea.selectionEnd;
 
-        const textBeforeCursor = textarea.value.substring(0, startPos);
-        const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-        textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+          const textBeforeCursor = textarea.value.substring(0, startPos);
+          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
 
-        const newCursorPosition = startPos + selectedEmoji.length;
-        textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+          const newCursorPosition = startPos + selectedEmoji.length;
+          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
 
-        textarea.dispatchEvent(new Event('input'));
+          textarea.dispatchEvent(new Event('input'));
 
-        textarea.focus();
+          textarea.focus();
+        } else if (!emojiToEditMessage) {
+          const textarea = document.getElementById('answer') as HTMLTextAreaElement;
+          const startPos = textarea.selectionStart;
+          const endPos = textarea.selectionEnd;
+
+          const textBeforeCursor = textarea.value.substring(0, startPos);
+          const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
+          textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
+
+          const newCursorPosition = startPos + selectedEmoji.length;
+          textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+          textarea.dispatchEvent(new Event('input'));
+
+          textarea.focus();
+        }
       }
       if (selectedEmoji && addEmojiReaction) {
         this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
