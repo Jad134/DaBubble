@@ -89,6 +89,11 @@ input {
   background: white;
   height: auto;
   z-index: 5555;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-radius: 0px 0px 20px 20px;
 }
 
 .input-filter-container {
@@ -96,7 +101,7 @@ input {
   position: relative;
 }
 
-.back{
+.back {
   width: 40px !important;
   height: 40px !important;
   cursor: pointer;
@@ -195,4 +200,66 @@ input {
   }
 
   ;
+}
+
+.search-channel {
+  font-size: 18px;
+  font-weight: 700;
+  color: $purple1;
+  height: 32px;
+  border: 1px solid $purple2;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  cursor: pointer;
+  transition: 125ms ease-in-out;
+
+  &:hover {
+    background-color: $bg-color;
+  }
+}
+
+.search-user {
+  font-size: 18px;
+  font-weight: 700;
+  color: $purple1;
+  height: 32px;
+  border: 1px solid $purple2;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  gap: 8px;
+  cursor: pointer;
+  transition: 125ms ease-in-out;
+
+  &:hover {
+    background-color: $bg-color;
+  }
+}
+
+.search-user-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.search-message {
+  font-size: 18px;
+  font-weight: 700;
+  color: $purple1;
+  height: 32px;
+  border: 1px solid $purple2;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  gap: 8px;
+  cursor: pointer;
+  transition: 125ms ease-in-out;
+
+  &:hover {
+    background-color: $bg-color;
+  }
 }
