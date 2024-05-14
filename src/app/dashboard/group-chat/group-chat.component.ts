@@ -148,9 +148,17 @@ export class GroupChatComponent {
       showMemberSection: showMember, // Hier wird der Zustand für showMemberSection gesetzt
       addMemberSection: addMember // Hier wird der Zustand für addMemberSection ge
     }
+    if (window.innerWidth < 500) {
+      dialogConfig.width = '100%'; 
+      dialogConfig.height = '100%';
+      dialogConfig.maxWidth = '100vw';
+      dialogConfig.maxHeight = '100vh';
+  } else {
     const offsetLeft = 400;
     const offsetY = 20;
     dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+  }
+    
     this.dialog.open(ShowMemberDialogComponent, dialogConfig);
   }
 

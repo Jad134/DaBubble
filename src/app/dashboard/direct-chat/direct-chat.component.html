@@ -2,9 +2,8 @@
     <div *ngIf="currentChatPartnerData" class="chat-header">
         <div class="dm-image-container">
             <img *ngIf="currentChatPartnerData.avatar !== 'ownPictureDA'" [src]="currentChatPartnerData.avatar"
-                class="avatar-img">
+                class="avatar-img" (click)="openUserDetail(currentChatPartnerData)">
             <div class="statuslight"></div>
-
         </div>
         <p>{{currentChatPartnerData.name}}</p>
     </div>

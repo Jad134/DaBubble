@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
@@ -9,8 +9,6 @@ import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component'
 import { DirectChatService } from '../../services/direct-chat.service';
 import { FormsModule } from '@angular/forms'
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../models/user.class';
-
 
 @Component({
   selector: 'app-direct-chat',
