@@ -36,14 +36,9 @@ export class DirectChatComponent {
   currentFile!: File | null;
   imgForDelete:any;
 
-
-
-
-
   constructor(public dialog: MatDialog, private route: ActivatedRoute) {
     this.getIdFromURL()
   }
-
 
   /**
    * This function download get the datas from the current user
@@ -52,15 +47,14 @@ export class DirectChatComponent {
     try {
       const data = await this.fireStoreService.getUserDataById(this.currentUserId);
       this.currentUserData = data;
-
-      console.log(this.currentUserData);
-
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
     }
   }
 
-
+/**
+ * get the user-id from the url 
+ */
   async getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
@@ -68,7 +62,6 @@ export class DirectChatComponent {
     }
     this.loadCurrentUserDatas()
   }
-
 
   /**
    * This function checks changes for updating the chat component
@@ -80,7 +73,6 @@ export class DirectChatComponent {
     }
   }
 
-
   /**
    * This function download get the datas from the other user for the Private chat
    */
@@ -88,20 +80,18 @@ export class DirectChatComponent {
     try {
       const data = await this.fireStoreService.getUserDataById(this.currentChatPartnerId);
       this.currentChatPartnerData = data;
-
-
-
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
     }
     await this.loadCurrentChat()
   }
 
-
+  /**
+   * load current chat datas
+   */
   async loadCurrentChat() {
     await this.directChatService.getCurrentChats(this.currentUserId, this.currentChatPartnerId);
   }
-
 
   /**
    * This function checks if the user used a own profile picture and downloaded the url with the function from downloadService. After that the currentUser will be updatet.
@@ -130,7 +120,6 @@ export class DirectChatComponent {
     }
   }
 
-
   /**
    * This function push the right url for own profile pictures to the user 
    */
@@ -139,21 +128,17 @@ export class DirectChatComponent {
     this.currentChatPartnerData.avatar = downloadedImageUrl;
   }
 
-
   /**
    * This function push the right url for own profile pictures to the  current user 
    */
   async setProfilePictureToCurrentUser(profilePictureURL: string) {
     const downloadedImageUrl = await this.downloadService.downloadImage(profilePictureURL);
     this.currentUserData.avatar = downloadedImageUrl;
-    
-
   }
 
-
   /**
- * open the user detail dialog
- */
+  * open the user detail dialog
+  */
   openUserDetail(user: string) {
     const dummyUsersInChannel = [this.currentUserData, this.currentChatPartnerData];
     const dialogConfig = new MatDialogConfig();
@@ -177,7 +162,7 @@ export class DirectChatComponent {
     this.dialog.open(UserDetailDialogComponent, dialogConfig);
   }
 
-  /**
+/**
 * open the emojiDialog and insert the returned emoji in the textarea field
 */
   openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any,) {
@@ -204,19 +189,19 @@ export class DirectChatComponent {
         textarea.focus();
       }
       if (selectedEmoji && addEmojiReaction) {
-        console.log(messageId);
         this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
-
       }
     });
   }
 
+  /**
+   * send message to chat
+   */
   async sendChat() {
     let timeStamp = Date.now()
 
     if (this.currentFile) {
       const imgUrl = await this.downloadService.uploadToPrivateRef(this.currentFile, this.currentChatPartnerId, this.currentUserId)
-      console.log(imgUrl);
 
       await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message, imgUrl);
       this.currentFile = null;
@@ -224,37 +209,42 @@ export class DirectChatComponent {
     } else
       await this.directChatService.sendChat(this.currentUserId, this.currentChatPartnerId, timeStamp, this.message);
     this.message = ''
-
   }
 
+  /**
+   * sent answer with enter key to the chat
+   */
   onEnterPressed(event:any): void {
     if (event.key === 'Enter' && !event.shiftKey) {
-      // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten
       this.sendChat();
-      event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
+      event.preventDefault(); 
     }
   }
 
-
+  /**
+   * cancle edit dialog
+   */
   cancelEdit() {
     this.editedMessageIndex = null;
   }
 
-
+  /**
+   * save the edit user details
+   */
   async saveEdit(messageId: any, message: any, img?:any) {
     await this.directChatService.editMessage(this.currentUserId, this.currentChatPartnerId, message, messageId, img)
     this.editedMessageIndex = null;
   }
 
-
+  /**
+   * delete the image
+   */
   deleteImg(){
     this.imgForDelete = ''
   }
 
-
-  getUserAvatar(userId: string) {
-  }
-
+  // getUserAvatar(userId: string) {
+  // }
 
   /**
     * This function open the dialog for the button to edit a Message
@@ -277,7 +267,6 @@ export class DirectChatComponent {
     }
   }
 
-
   /**
    * This function returns the position of the mouseclick
    * @param event mouseclick
@@ -288,7 +277,6 @@ export class DirectChatComponent {
     const offsetY = 0;
     return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
-
 
   /**
    * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
@@ -301,17 +289,21 @@ export class DirectChatComponent {
     }, 3);
   }
 
-
+  /**
+   * edit a created message
+   */
   async editMessage(messageId: any, messageIndex: number) {
     let message = await this.directChatService.getMessageForEdit(this.currentUserId, this.currentChatPartnerId, messageId)
     let img = await this.directChatService.getImgForDelete(this.currentUserId, this.currentChatPartnerId, messageId)
-    console.log(message);
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
     this.imgForDelete = img;
     this.dialogReference?.close()
   }
 
+  /**
+   * opens the reaction dialog 
+   */
   openReactionDialog(event: MouseEvent, emoji: any) {
     this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
     if (!this.dialogReference) {
@@ -329,31 +321,36 @@ export class DirectChatComponent {
     }
   }
 
-
-  /**
-     * This function returns the position of the mouseclick
-     * @param event mouseclick
-     * @returns position of the mouseclick
-     */
+    /**
+    * This function returns the position of the mouseclick
+    * @param event mouseclick
+    * @returns position of the mouseclick
+    */
   setOpenReactionDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
     const offsetLeft = 0;
     const offsetY = 125;
     return dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
 
-
+  /**
+   * close the reaction dialog
+   */
   closeReactionDialog() {
     if (this.dialogReference) {
       this.dialogReference.close();
     }
   }
 
-
+  /**
+   * add a reation to a message
+   */
   addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
   }
 
-
+  /**
+   * add a quick reaction to a message
+   */
   addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {
     let selectedEmoji: string;
     if (thumbsUp) {
@@ -365,14 +362,14 @@ export class DirectChatComponent {
     }
   }
 
-
-
+  /**
+   * open the file picker 
+   */
   openFilePicker(): void {
     const input = document.createElement('input');
     input.type = 'file';
     input.onchange = (event: any) => {
       const files = event.target.files;
-      console.log(files);
       this.currentFile = files
       if (files && files.length > 0) {
         const file = files[0]; // Nehmen Sie die erste ausgewählte Datei
@@ -381,11 +378,8 @@ export class DirectChatComponent {
         } else {
           this.message = `Datei ausgewählt: ${file.name}`;
         }
-        // Aktualisieren Sie das Textarea-Feld
       }
-      // Führen Sie hier die gewünschten Operationen mit den Dateien aus
     };
     input.click();
   }
-
 }
