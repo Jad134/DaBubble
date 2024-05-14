@@ -43,7 +43,7 @@
               <button (click)="logIn()" type="button" class="sign-up">
                 Anmelden
               </button>
-              <button type="button" class="guest-login">Gäste-Login</button>
+              <button (click)="guestLogin()" type="button" class="guest-login">Gäste-Login</button>
             </div>
           </form>
           <span *ngIf="loginService.logInInvalid" class="invalid-login">Invalid email or password.</span>

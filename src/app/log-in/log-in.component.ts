@@ -32,6 +32,10 @@ export class LogInComponent {
     this.loginService.Login(this.mail, this.password) // erst nach dem check 
   }
 
+  guestLogin(){
+    this.loginService.Login('Guest@mail.com', '12345678')
+  }
+
   async logInWithGoogle(){
     //this.firestore.GoogleAuth();
    await this.loginService.loginWithGoogle()
