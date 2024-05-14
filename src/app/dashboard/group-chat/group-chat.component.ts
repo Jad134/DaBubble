@@ -1,4 +1,4 @@
-import { Component, Input, Inject, inject, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, inject, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogConfig, MatDialogClose, MatDialogRef, } from '@angular/material/dialog';
@@ -50,14 +50,15 @@ export class GroupChatComponent {
     this.getIdFromURL()
   }
 
-
+  /**
+   * get the user id from url
+   */
   getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
       this.currentUserId = id;
     }
   }
-
 
   /**
    * This function checks if the id is changed by clicked on another channel in sidenav
@@ -75,14 +76,15 @@ export class GroupChatComponent {
     try {
       const data = await this.chatService.getCurrentChannel(this.currentId);
       this.currentChannelData = data;
-      console.log(this.currentChannelData);
     } catch (error) {
       console.error('Fehler beim Laden der Daten:', error);
     }
     await this.loadCurrentChat()
   }
 
-
+  /**
+   * load the current chat from db
+   */
   async loadCurrentChat() {
     await this.chatService.getCurrentChats(this.currentId, this.currentUserId);
   }
@@ -105,27 +107,24 @@ export class GroupChatComponent {
     this.dialog.open(EditGroupChannelDialogComponent, dialogConfig);
   }
 
-
   /**
    * send the message with the needed information to the chatservice and clears the textarea
    */
   async sendMessage(channelId: string) {
-    console.log(this.message, channelId);
     let timeStamp = Date.now().toString()
     if (this.currentFile) {
       const imgUrl = await this.storageService.uploadToChannelRef(this.currentFile, channelId)
-      console.log(imgUrl);
-
       await this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId, imgUrl)
       this.currentFile = null;
       this.message = ''
     } else
       this.chatService.sendChat(channelId, timeStamp, this.message, this.currentUserId)
     this.message = ''
-
   }
 
-
+  /**
+   * get the user avatar from db
+   */
   getUserAvatar(userId: string): string {
     if (this.currentChannelData && this.currentChannelData.usersInChannel) {
       const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
@@ -135,7 +134,9 @@ export class GroupChatComponent {
     }
   }
 
-
+  /**
+   * shows all in chat included user in a dialog
+   */
   openShowMemberDialog(event: MouseEvent, showMember: boolean, addMember: boolean): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -145,8 +146,8 @@ export class GroupChatComponent {
         clientX: event.clientX,
         clientY: event.clientY
       },
-      showMemberSection: showMember, // Hier wird der Zustand für showMemberSection gesetzt
-      addMemberSection: addMember // Hier wird der Zustand für addMemberSection ge
+      showMemberSection: showMember, 
+      addMemberSection: addMember
     }
     if (window.innerWidth < 500) {
       dialogConfig.width = '100%'; 
@@ -158,18 +159,19 @@ export class GroupChatComponent {
     const offsetY = 20;
     dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
-    
     this.dialog.open(ShowMemberDialogComponent, dialogConfig);
   }
 
-
+  /**
+   * open a dialog to add a user to chat
+   */
   openAddUserDialog(event: MouseEvent): void {
     this.openShowMemberDialog(event, false, true)
   }
 
   /**
-     * open the user detail dialog
-     */
+  * open the user detail dialog
+  */
   openUserDetail(user: any) {
     const dialogConfig = new MatDialogConfig();
     if (window.innerWidth < 500) {
@@ -190,16 +192,16 @@ export class GroupChatComponent {
     this.dialog.open(UserDetailDialogComponent, dialogConfig);
   }
 
-
+  /**
+   * open the thread component
+   */
   openThread(messageId: any) {
-    console.log(messageId);
     this.threadService.closeTab = false;
     this.threadService.currentChatId = messageId;
     this.threadService.currentGroupId = this.currentId
     this.threadService.getCurrentThreadCollection(this.currentId, messageId, this.currentUserId)
     this.threadService.setCurrentChannelData(this.currentChannelData)
   }
-
 
   /**
    * This function open the dialog for the button to edit a Message
@@ -214,7 +216,6 @@ export class GroupChatComponent {
       dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
       this.setEditMessageDialogPosition(event, dialogConfig)
       this.dialogReference = this.dialog.open(this.editMessageDialog, dialogConfig);
-
       this.dialogReference.afterClosed().subscribe(() => {
         this.dialogReference = null; // Setzen Sie this.dialogReference auf null, wenn der Dialog geschlossen wurde
         this.showButton[i] = false;
@@ -222,7 +223,9 @@ export class GroupChatComponent {
     }
   }
 
-
+  /**
+   * open the reaction dialog
+   */
   openReactionDialog(event: MouseEvent, emoji: any) {
     this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
     if (!this.dialogReference) {
@@ -233,32 +236,31 @@ export class GroupChatComponent {
       dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop'
       this.setOpenReactionDialogPosition(event, dialogConfig)
       this.dialogReference = this.dialog.open(this.reactionInfo, dialogConfig);
-
       this.dialogReference.afterClosed().subscribe(() => {
         this.dialogReference = null;
       });
     }
   }
 
-
+  /**
+   * close the reaction dialog
+   */
   closeReactionDialog() {
     if (this.dialogReference) {
       this.dialogReference.close();
     }
   }
 
-
   /**
-     * This function returns the position of the mouseclick
-     * @param event mouseclick
-     * @returns position of the mouseclick
-     */
+    * This function returns the position of the mouseclick
+    * @param event mouseclick
+    * @returns position of the mouseclick
+  */
   setOpenReactionDialogPosition(event: MouseEvent, dialogConfig: MatDialogConfig<any>,) {
     const offsetLeft = 0;
     const offsetY = 125;
     return dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
-
 
   /**
    * This function returns the position of the mouseclick
@@ -271,7 +273,6 @@ export class GroupChatComponent {
     return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
 
-
   /**
    * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
    * design when dialog edit message is open the hover effect doesnt go away
@@ -283,41 +284,48 @@ export class GroupChatComponent {
     }, 3);
   }
 
-
+  /**
+   * edit a created message
+   */
   async editMessage(messageId: any, messageIndex: number) {
     let message = await this.chatService.getMessageForEdit(this.currentId, messageId)
     let img = await this.chatService.getImgForDelete(this.currentId, messageId)
-    console.log(message);
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
     this.imgForDelete = img;
     this.dialogReference?.close()
   }
 
-
+  /**
+   * cancle the edited message
+   */
   cancelEdit() {
     this.editedMessageIndex = null;
   }
 
-
+  /**
+   * save a edited message
+   */
   async saveEdit(messageId: any, message: any, img?: any) {
     await this.chatService.editMessage(this.currentId, messageId, message, img)
     this.editedMessageIndex = null;
   }
 
+  /**
+   * delete a added image
+   */
   deleteImg() {
     this.imgForDelete = ''
   }
 
   /**
- * open the emojiDialog and insert the returned emoji in the textarea field
- */
+  * open the emojiDialog and insert the returned emoji in the textarea field
+  */
   openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any, emojiToEditMessage?: boolean) {
     const offsetY = 300;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX}px` };
     dialogConfig.backdropClass = 'cdk-overlay-transparent-backdrop';
-
     this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
       if (selectedEmoji && addEmojiToTextArea) {
         if (emojiToEditMessage) {
@@ -332,42 +340,42 @@ export class GroupChatComponent {
     });
   }
 
-
+  /**
+   * add a emoji to a edited message
+   */
   addEmojitoEditMessageTextArea(selectedEmoji:any){
     const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
     const endPos = textarea.selectionEnd;
     const textBeforeCursor = textarea.value.substring(0, startPos);
     const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
-
     textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-
     const newCursorPosition = startPos + selectedEmoji.length;
     textarea.setSelectionRange(newCursorPosition, newCursorPosition);
     textarea.dispatchEvent(new Event('input'));
     textarea.focus();
   }
 
-
+  /**
+   * add a emoji to a answer
+   */
   addEmojitoAnswerMessageTextArea(selectedEmoji:any){
     const textarea = document.getElementById('answer') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
     const endPos = textarea.selectionEnd;
-
     const textBeforeCursor = textarea.value.substring(0, startPos);
     const textAfterCursor = textarea.value.substring(endPos, textarea.value.length);
     textarea.value = textBeforeCursor + selectedEmoji + textAfterCursor;
-
     const newCursorPosition = startPos + selectedEmoji.length;
     textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-
     textarea.dispatchEvent(new Event('input'));
-
     textarea.focus();
   }
 
 
-
+  /**
+   * add a reaction to a message
+   */
   addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {
     let selectedEmoji: string;
     if (thumbsUp) {
@@ -379,42 +387,41 @@ export class GroupChatComponent {
     }
   }
 
+  /**
+   * add a reaction to a message
+   */
   addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
   }
 
-
+  /**
+   * format time stamp
+   */
   formatLastMessageTime(lastMessage: any): string {
     const currentTime = new Date();
     const messageTime = new Date(lastMessage);
-
-    // Überprüfen, ob lastMessage eine Zahl ist und umwandeln in Datum
     if (isNaN(messageTime.getTime())) {
       messageTime.setTime(lastMessage);
     }
-
     const diffInMilliseconds = currentTime.getTime() - messageTime.getTime();
     const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-
     if (diffInDays < 1) {
-      // Innerhalb der letzten 24 Stunden
       return messageTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     } else if (diffInDays < 2) {
-      // Gestern
       return 'Gestern';
     } else {
-      // Vor mehr als einem Tag
       return messageTime.toLocaleDateString();
     }
   }
 
-
+  /**
+   * open a file picer to add a image
+   */
   openFilePicker(): void {
     const input = document.createElement('input');
     input.type = 'file';
     input.onchange = (event: any) => {
       const files = event.target.files;
-      console.log(files);
       this.currentFile = files
       if (files && files.length > 0) {
         const file = files[0]; // Nehmen Sie die erste ausgewählte Datei
@@ -423,16 +430,16 @@ export class GroupChatComponent {
         } else {
           this.message = `Datei ausgewählt: ${file.name}`;
         }
-        // Aktualisieren Sie das Textarea-Feld
       }
-      // Führen Sie hier die gewünschten Operationen mit den Dateien aus
     };
     input.click();
   }
 
+  /**
+   * add a answer by hit the enter button
+   */
   onEnterPressed(event:any): void {
     if (event.key === 'Enter' && !event.shiftKey) {
-      // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten
       this.sendMessage(this.currentChannelData.id);
       event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
     }

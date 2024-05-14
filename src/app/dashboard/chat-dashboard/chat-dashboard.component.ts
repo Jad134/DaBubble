@@ -2,7 +2,6 @@ import { Component, ViewChild, ElementRef, HostListener, inject} from '@angular/
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-/* import { PickerModule } from '@ctrl/ngx-emoji-mart' */
 import { ThreadComponent } from '../thread/thread.component';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 
@@ -26,24 +25,16 @@ export class ChatDashboardComponent {
     this.getAllChannels();
   }
 
+  /**
+   * load all channels from db
+   */
   async getAllChannels() {
     try {
       this.channels = await this.channelService.getAllChannels(); // Warten Sie, bis die Daten zurückgegeben werden
       this.testChannel = this.channels[0];
-      console.log(this.testChannel);
     } catch (error) {
       console.error('Fehler beim Abrufen der Kanäle: ', error);
     }
-  }
-
-  addEmoji(event: any) {
-    // Implementiere hier die Logik zum Hinzufügen des ausgewählten Emojis
-    console.log('Ausgewähltes Emoji:', event);
-    // Beispiel: Fügen Sie das Emoji zum Eingabefeld hinzu
-  }
-
-  openEmojiPicker(){
-   
   }
 
   @ViewChild(ThreadComponent) threadComponent!: ThreadComponent;
@@ -57,12 +48,18 @@ export class ChatDashboardComponent {
       this.checkScreenSize();
     }
   
+    /**
+     * check if screensize is lower than 770px
+     */
     checkScreenSize() {
       if(typeof window !== 'undefined'){
       this.isSmallScreen = window.innerWidth < 770;
       }
     }
   
+    /**
+     * open the thread component
+     */
     openThread() {
       if (this.threadComponent) {
         this.threadComponent.closeTab = false;

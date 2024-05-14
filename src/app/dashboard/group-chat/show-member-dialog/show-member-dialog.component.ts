@@ -20,7 +20,6 @@ import { channelDataclientService } from '../../../services/channelsDataclient.s
 export class ShowMemberDialogComponent {
   constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<ShowMemberDialogComponent>) {
     this.users = data.allUsers
-
   }
 
   onlineStatusMap: Map<string, boolean> = new Map<string, boolean>();
@@ -51,7 +50,6 @@ export class ShowMemberDialogComponent {
     this.filterUsersInChannel();
   }
 
-
   /**
    * This function sets the variable for the ngif to show the right sections
    */
@@ -60,7 +58,6 @@ export class ShowMemberDialogComponent {
     this.addMemberSection = this.data.addMemberSection;
   }
 
-
   /**
    * This function filters out users who are already in the channel
    */
@@ -68,21 +65,23 @@ export class ShowMemberDialogComponent {
     if (this.data.channelData && this.data.channelData.usersInChannel) {
       const usersInChannelIds = this.usersInChannel.map((user: any) => user.id);
       this.users = this.users.filter(user => !usersInChannelIds.includes(user.id));
-      console.log(this.users);
     }
   }
 
-
+  /**
+   * close the dialog
+   */
   closeDialog() {
     this.dialogRef.close()
   }
 
-
+  /**
+   * open the member section
+   */
   openAddMemberSection() {
     this.showMemberSection = false;
     this.addMemberSection = true;
   }
-
 
   /**
    * This function is always activated when typing to filter the user search
@@ -97,7 +96,6 @@ export class ShowMemberDialogComponent {
     }
   }
 
-
   /**
    * @returns requirements for filterfunction
    */
@@ -105,14 +103,12 @@ export class ShowMemberDialogComponent {
     return !this.currentName || this.currentName.trim() === ''
   }
 
-
   /**
    * @returns  all users except those already selected
    */
   showAllUsers() {
     return this.userList = this.users.filter(user => !this.selectedUser.some(selected => selected.id === user.id));
   }
-
 
   /**
    * @returns the filtered name
@@ -127,21 +123,18 @@ export class ShowMemberDialogComponent {
     }).filter(user => !this.selectedUser.some(selected => selected.id === user.id));
   }
 
-
   /**
- * Adds a user to the selected users list based on the provided user ID
- */
+  * Adds a user to the selected users list based on the provided user ID
+  */
   chooseUser(userId: string) {
     const userToAdd = this.users.filter(user => user.id === userId);
     if (userToAdd.length > 0) {
       this.selectedUser.push(...userToAdd);
-      console.log('Selected users:', this.selectedUser);
     } else {
-      console.log('User not found with ID:', userId);
+      console.error('User not found with ID:', userId);
     }
     this.showUser()
   }
-
 
 /**
  * This function opens the userList dialog to add an User to the Channel
@@ -162,7 +155,6 @@ export class ShowMemberDialogComponent {
     }
   }
 
-
   /**
    * @returns the position for the user Dialog under the input field
    */
@@ -172,7 +164,6 @@ export class ShowMemberDialogComponent {
     const offsetY = 155;
     return dialogConfig.position = { top: `${mouseEventData.clientY + offsetY}px`, left: `${mouseEventData.clientX - offsetLeft}px` };
   }
-
 
  /** 
   * Sets up focus behavior for the dialog when opened and closed.
@@ -189,14 +180,12 @@ export class ShowMemberDialogComponent {
     }
   }
 
-
   /**
    * Prevent Closing the userlist dialog, when click on inputfield for searching user
    */
   preventDialogClose(event: MouseEvent): void {
-    event.stopPropagation(); // Verhindert, dass das Klickereignis den Dialog schließt
+    event.stopPropagation(); 
   }
-
 
   /**
    * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
@@ -209,25 +198,20 @@ export class ShowMemberDialogComponent {
           const downloadedImageUrl = await this.downloadService.downloadImage(
             profilePictureURL
           );
-          // Weisen Sie die heruntergeladenen Bild-URL dem Benutzerobjekt zu
           user.avatar = downloadedImageUrl;
         } catch (error) {
           console.error('Error downloading user profile picture:', error);
-          // Setzen Sie den Zustand auf falsch, wenn ein Bild nicht geladen werden konnte
         }
       }
     }
   }
-
 
   /**
   * This function removes the selected user for the Channel 
   */
   removeSelectedUser(userId: any) {
     this.selectedUser = this.selectedUser.filter(user => user.id !== userId);
-    console.log('Selected users after removal:', this.selectedUser);
   }
-
 
   /**
    * This function launches the necessary functions to add a user to a channel
@@ -240,6 +224,9 @@ export class ShowMemberDialogComponent {
     this.closeDialog()
   }
 
+  /**
+   * check if user is online
+   */
   isUserOnline(userId: string): boolean {
     if (this.onlineStatusMap.has(userId)) {
       const status = this.onlineStatusMap.get(userId);
@@ -255,5 +242,4 @@ export class ShowMemberDialogComponent {
       return isOnline;
     }
   }
-
 }

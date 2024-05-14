@@ -3,7 +3,6 @@ import { MatCardModule } from '@angular/material/card';
 import { User } from '../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FirestoreService } from '../services/firestore.service';
 import { CreateAccountService } from '../services/create-account.service';
 import { RouterModule } from '@angular/router';
 

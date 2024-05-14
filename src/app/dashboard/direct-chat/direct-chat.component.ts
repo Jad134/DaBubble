@@ -52,9 +52,9 @@ export class DirectChatComponent {
     }
   }
 
-/**
- * get the user-id from the url 
- */
+  /**
+  * get the user-id from the url 
+  */
   async getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
@@ -242,9 +242,6 @@ export class DirectChatComponent {
   deleteImg(){
     this.imgForDelete = ''
   }
-
-  // getUserAvatar(userId: string) {
-  // }
 
   /**
     * This function open the dialog for the button to edit a Message

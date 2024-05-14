@@ -111,7 +111,9 @@ export class EditGroupChannelDialogComponent {
     this.updatedNameValue = event.target.value;
   }
 
-
+  /**
+   * leave a channel
+   */
   leaveChannel() {
     this.channelsDataclientService.leaveChannel( this.currentUserId, this.channelId)
   }

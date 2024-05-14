@@ -35,8 +35,8 @@ export class ChangeAvatarDialogComponent {
    * save selected Avatar to Firestore DB and redirect to the login
    */
   updateAvatar() {
-    if(this.selectOwnPicture){
-    this.uploadService.uploadImg();
+    if (this.selectOwnPicture) {
+      this.uploadService.uploadImg();
     }
     this.controllIfOwnPictureUsed();
 
@@ -76,14 +76,14 @@ export class ChangeAvatarDialogComponent {
     }
   }
 
+  /**
+   * shows the chosen picture as preview in the dialog
+   */
   ownPicturePreView(event: any) {
-    const file = event.target.files[0]; // Zugriff auf das ausgewählte Bild
-    // Überprüfe, ob eine Datei ausgewählt wurde und ob es sich um ein Bild handelt
+    const file = event.target.files[0];
     if (file && file.type.startsWith('image')) {
       const reader = new FileReader(); // Erstelle ein FileReader-Objekt
-      // Definiere eine Funktion, die aufgerufen wird, wenn das Bild geladen wurde
       reader.onload = () => {
-        // Weise den Inhalt des Bildes der avatar-Variable zu
         this.avatar = reader.result;
       };
       reader.readAsDataURL(file); // Lese das Bild als Daten-URL
