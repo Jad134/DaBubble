@@ -749,6 +749,7 @@ textarea::-webkit-scrollbar-thumb:hover {
   display: flex;
   flex-direction: column;
   align-items: end;
+  gap: 4px;
 }
 
 .send-image {

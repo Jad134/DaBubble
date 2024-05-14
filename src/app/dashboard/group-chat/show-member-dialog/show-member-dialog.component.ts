@@ -23,6 +23,7 @@ export class ShowMemberDialogComponent {
 
   }
 
+  onlineStatusMap: Map<string, boolean> = new Map<string, boolean>();
   channelData: any;
   usersInChannel: any;
   channelId: any;
@@ -48,7 +49,6 @@ export class ShowMemberDialogComponent {
     this.showRightSection()
     await this.loadProfilePictures(this.users)
     this.filterUsersInChannel();
-
   }
 
 
@@ -238,6 +238,22 @@ export class ShowMemberDialogComponent {
       await this.fireStoreService.updateUsersChannels(user.id, channelId)
     }
     this.closeDialog()
+  }
+
+  isUserOnline(userId: string): boolean {
+    if (this.onlineStatusMap.has(userId)) {
+      const status = this.onlineStatusMap.get(userId);
+      if (typeof status === 'boolean') {
+        return status;
+      } else {
+        return false; // Default-Wert, falls der Status nicht definiert ist
+      }
+    } else {
+      const user = this.users.find(user => user.id === userId);
+      const isOnline = user ? user.isOnline : false;
+      this.onlineStatusMap.set(userId, isOnline);
+      return isOnline;
+    }
   }
 
 }

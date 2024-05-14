@@ -9,7 +9,9 @@
         <div *ngIf="usersInChannel" class="user-container">
             <div class="user" *ngFor="let user of usersInChannel">
                 <img class="avatar-img" [src]="user.avatar" alt="">
-                <div class="statuslight"></div>
+                <div [ngStyle]="{
+                    'background-color': isUserOnline(user.id) ? 'green' : 'red'
+                  }"  class="statuslight"></div>
                 <div class="user-name">{{user.name}}</div>
             </div>
         </div>
