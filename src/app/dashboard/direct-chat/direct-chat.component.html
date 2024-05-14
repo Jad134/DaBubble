@@ -118,7 +118,7 @@
 
     <div class="answer-section">
         <div class="answer-field">
-            <textarea [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
+            <textarea  (keydown.enter)="onEnterPressed($event)" [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
                 placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">

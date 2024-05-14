@@ -58,12 +58,12 @@
             </div>
 
 
-            <div *ngIf=" editedMessageIndex !== i" (mouseover)="showButton[i] = true"
+            <div *ngIf=" editedMessageIndex !== i && messageObj?.message !== ''" (mouseover)="showButton[i] = true"
                 (mouseleave)="showButton[i] = false"
                 [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
 
-                <div *ngIf="messageObj.welcomeMessage" class="welcome-message-container">
-                    <span class="welcome-channel-name"># {{currentChannelData.name}}</span>
+                <div *ngIf="messageObj.welcomeMessage && currentChannelData &&currentChannelData?.name" class="welcome-message-container">
+                    <span *ngIf="currentChannelData &&currentChannelData?.name" class="welcome-channel-name"># {{currentChannelData.name}}</span>
                     <div class="welcome-message">
                         <span> {{messageObj.creator}} hat diesen Channel erstellt. <br> Das ist der Anfang des Channels <span class="small-channel-name"> # {{currentChannelData.name}}</span>
                         </span>
@@ -144,7 +144,7 @@
 
     <div *ngIf="currentChannelData" class="answer-section">
         <div class="answer-field">
-            <textarea [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
+            <textarea  (keydown.enter)="onEnterPressed($event)" [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
                 placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">

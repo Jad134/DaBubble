@@ -421,4 +421,12 @@ export class GroupChatComponent {
     };
     input.click();
   }
+
+  onEnterPressed(event:any): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten
+      this.sendMessage(this.currentChannelData.id);
+      event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
+    }
+  }
 }

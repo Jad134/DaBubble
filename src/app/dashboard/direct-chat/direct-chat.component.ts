@@ -229,6 +229,14 @@ export class DirectChatComponent {
 
   }
 
+  onEnterPressed(event:any): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten
+      this.sendChat();
+      event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
+    }
+  }
+
 
   cancelEdit() {
     this.editedMessageIndex = null;

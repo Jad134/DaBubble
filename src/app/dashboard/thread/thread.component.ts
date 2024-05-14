@@ -287,4 +287,12 @@ export class ThreadComponent {
     // this.imgForDelete = img;
     this.dialogReference?.close()
   }
+
+  onEnterPressed(event:any): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten
+      this.sendMessageToThread(this.message);
+      event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
+    }
+  }
 }
