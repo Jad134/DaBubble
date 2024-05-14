@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, ViewChild, ElementRef, HostListener} from '@angular/core';
+import { Component, inject, AfterViewInit, ViewChild, HostListener} from '@angular/core';
 import { HeadDashboardComponent } from './head-dashboard/head-dashboard.component';
 import { SidenavDashboardComponent } from './sidenav-dashboard/sidenav-dashboard.component';
 import { ChatDashboardComponent } from './chat-dashboard/chat-dashboard.component';
@@ -78,13 +78,18 @@ export class DashboardComponent {
   }
 
 
+  /**
+   * handle the current group id
+   */
   handleCurrentGroupId(id: string) {
     this.currentGroupChat = id;
     console.log(this.currentGroupChat);
     this.updateSidenavVisibility();
   }
 
-
+  /**
+   * handle the current direct chat id
+   */
   handleDirectChatId(id: string) {
     this.currentDirectChat = id;
     this.updateSidenavVisibility();

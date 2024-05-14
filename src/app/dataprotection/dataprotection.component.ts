@@ -15,9 +15,10 @@ import { Location } from '@angular/common';
 export class DataprotectionComponent {
   constructor(private location: Location){}
 
+  /**
+   * go back to the last screen
+   */
   goBack(){
     this.location.back();
   }
-
-
 }

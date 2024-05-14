@@ -34,19 +34,16 @@ export class ThreadComponent {
 
   editedMessageIndex: number | null = null;
 
-
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.checkScreenSize();
   }
-
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog) {
     this.checkScreenSize();
     this.getIdFromURL();
     this.subscribeToCurrentChannelData();
   }
-
 
   private subscribeToCurrentChannelData(): void {
     this.threadService.currentChannelData$.subscribe(data => {
@@ -55,7 +52,6 @@ export class ThreadComponent {
       }
     });
   }
-
 
   /**
    * This function get the id from the current logged in user from the url
@@ -67,18 +63,21 @@ export class ThreadComponent {
     }
   }
 
-
+  /**
+   * check if size screen is lower 1305px
+   */
   checkScreenSize() {
     if (typeof window !== 'undefined') {
       this.isSmallScreen = window.innerWidth < 1305;
     }
   }
 
-
+  /**
+   * hide the tab
+   */
   Dnone() {
     this.threadService.closeTab = true;
   }
-
 
   /**
    * This function send the message to the threadservice and sets the timestamp as id
@@ -94,17 +93,19 @@ export class ThreadComponent {
 
   }
 
-
+  /**
+   * get the user avatar picture
+   */
   getUserAvatar(userId: string): string {
     if (this.currentChannelData && this.currentChannelData.usersInChannel) {
       const user = this.currentChannelData.usersInChannel.find((user: any) => user.id === userId);
       return user ? user.avatar : 'assets/img/Logo.svg';
     } else {
-      return 'assets/img/Logo.svg'; // Fallback, wenn currentChannelData oder usersInChannel nicht definiert ist
+      return 'assets/img/Logo.svg';
     }
   }
 
-  /**
+/**
 * open the emojiDialog and insert the returned emoji in the textarea field
 */
   openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any, emojiToEditMessage?: boolean) {
@@ -127,7 +128,9 @@ export class ThreadComponent {
     });
   }
 
-
+  /**
+   * add a emoji to the edit message field
+   */
   addEmojitoEditMessageTextArea(selectedEmoji: any) {
     const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
@@ -143,7 +146,9 @@ export class ThreadComponent {
     textarea.focus();
   }
 
-
+  /**
+   * add a emoji to the answer field
+   */
   addEmojitoAnswerMessageTextArea(selectedEmoji: any) {
     const textarea = document.getElementById('answerThread') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
@@ -161,8 +166,9 @@ export class ThreadComponent {
     textarea.focus();
   }
 
-
-
+  /**
+   * add a reaction to a message 
+   */
   addQuickReaction(thumbsUp: boolean, thumbsDown: boolean, messageId: any) {
     let selectedEmoji: string;
     if (thumbsUp) {
@@ -174,11 +180,16 @@ export class ThreadComponent {
     }
   }
 
+  /**
+   * add a reaction to a message 
+   */
   addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
   }
 
-
+  /**
+   * open the reaction dialog
+   */
   openReactionDialog(event: MouseEvent, emoji: any) {
     this.currentHoverEmoji = emoji; // Speichere die ausgewählte Emoji-Option
     if (!this.dialogReference) {
@@ -196,7 +207,6 @@ export class ThreadComponent {
     }
   }
 
-
   /**
    * This function returns the position of the mouseclick
    * @param event mouseclick
@@ -208,13 +218,14 @@ export class ThreadComponent {
     return dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
 
-
+  /**
+   * close the reaction dialog
+   */
   closeReactionDialog() {
     if (this.dialogReference) {
       this.dialogReference.close();
     }
   }
-
 
   /**
   * This function open the dialog for the button to edit a Message
@@ -237,7 +248,6 @@ export class ThreadComponent {
     }
   }
 
-
   /**
    * This function sets the showbutton variable to true with timeout, because the (mouseleave) sets the variable with delay of false. Its for the
    * design when dialog edit message is open the hover effect doesnt go away
@@ -248,7 +258,6 @@ export class ThreadComponent {
       this.showButton[i] = true;
     }, 3);
   }
-
 
   /**
    * This function returns the position of the mouseclick
@@ -261,17 +270,23 @@ export class ThreadComponent {
     return dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
   }
 
-
+  /**
+   * delete a added image
+   */
   deleteImg() {
     this.imgForDelete = ''
   }
 
-
+  /**
+   * cancle the edit field
+   */
   cancelEdit() {
     this.editedMessageIndex = null;
   }
 
-
+  /**
+   * save a edited message
+   */
   async saveEdit(messageId: any, message: any,) {
     await this.threadService.editMessage(messageId, message)
     this.editedMessageIndex = null;
@@ -280,14 +295,14 @@ export class ThreadComponent {
   async editMessage(messageId: any, messageIndex: number) {
     let message = await this.threadService.getMessageForEdit(messageId)
 
-    // let img = await this.chatService.getImgForDelete(this.currentId, messageId)
-    console.log(message);
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
-    // this.imgForDelete = img;
     this.dialogReference?.close()
   }
 
+  /**
+   * add a answer by hit the enter key
+   */
   onEnterPressed(event:any): void {
     if (event.key === 'Enter' && !event.shiftKey) {
       // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten

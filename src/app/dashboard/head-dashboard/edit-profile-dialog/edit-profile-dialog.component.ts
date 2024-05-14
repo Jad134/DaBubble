@@ -49,6 +49,9 @@ export class EditProfileDialogComponent {
     this.dialog.closeAll();
   }
 
+  /**
+   * open a dialog for changing the avatar picture
+   */
   changeAvatar(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.position = {

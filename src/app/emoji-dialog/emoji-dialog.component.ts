@@ -14,6 +14,10 @@ export class EmojiDialogComponent {
 
   selectedEmoji: string = "";
 
+  /**
+   * pics a selected emoji
+   * @param id 
+   */
   emojiClick(id: string) {
     const emoji = document.getElementById(id)?.innerHTML;
 
@@ -27,7 +31,6 @@ export class EmojiDialogComponent {
    * close the dialog complete
    */
   close() {
-    // this.dialog.closeAll();
     this.dialogRef.close(this.selectedEmoji);
   }
 }

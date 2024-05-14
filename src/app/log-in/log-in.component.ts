@@ -26,21 +26,31 @@ export class LogInComponent {
   firestore = inject(FirestoreService)
   uploadService = inject(StorageService)
 
-
+  /**
+   * log in function
+   */
   logIn() {
     this.validateCheck()
     this.loginService.Login(this.mail, this.password) // erst nach dem check 
   }
 
+  /**
+   * guest log in
+   */
   guestLogin(){
     this.loginService.Login('Guest@mail.com', '12345678')
   }
 
+  /**
+   * log in with google function
+   */
   async logInWithGoogle(){
-    //this.firestore.GoogleAuth();
    await this.loginService.loginWithGoogle()
   }
 
+  /**
+   * form validation for the log in datas
+   */
   validateCheck() {
     const mailfield = this.mailField.nativeElement;
     const passwordMessage = this.passwordMessage.nativeElement;
@@ -51,7 +61,5 @@ export class LogInComponent {
       passwordMessage.style = 'opacity: 0'
       console.log(this.mail, this.password)
     }
-    // this.firestore.createUserWithEmailAndPassword(this.mail, this.password) dies war nur ein test zum anlegen der daten
   }
-
 }

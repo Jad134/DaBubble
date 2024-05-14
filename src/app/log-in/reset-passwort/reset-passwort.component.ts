@@ -18,23 +18,20 @@ export class ResetPasswortComponent {
   
   firestore = inject(FirestoreService)
 
- 
-
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
   ]);
 
+  /**
+   * send a mail for reset the password
+   */
   sendMail() {
     const emailValue = this.emailFormControl.value;
     if (emailValue && this.emailFormControl.valid) {
       this.firestore.sendPasswordResetEmails(emailValue);
-      console.log('E-Mail-Adresse gültig:', emailValue);
-      // Hier können Sie den Code einfügen, um die E-Mail zu senden oder andere Aktionen durchzuführen
     } else {
-      console.log('Ungültige E-Mail-Adresse');
+      console.error('Ungültige E-Mail-Adresse');
     }
   }
-
-  
 }

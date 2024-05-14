@@ -3,9 +3,6 @@ import { MatCardModule } from '@angular/material/card';
 import { FirestoreService } from '../services/firestore.service';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { doc, onSnapshot } from '@angular/fire/firestore';
-import { error } from 'console';
-import { user } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { StorageService } from '../services/storage.service';
 
@@ -91,7 +88,6 @@ export class SelectAvatarComponent {
 
   }
 
-
   /**
    * This function controls, if the user use a own profilepicture or not. This is for upload a synonym for our avatar:'ownPictureDA' in DB.
    */
@@ -103,22 +99,23 @@ export class SelectAvatarComponent {
     }
   }
 
-
+  /**
+   * upload a own avatar picture to the db
+   */
   uploadOwnAvatar(event: any) {
     this.uploadService.avatarSelected(event, this.userId);
     this.ownPicturePreView(event);
     this.selectOwnPicture = true;
   }
 
-
+  /**
+   * shows the chosen avatar pic as preview
+   */
   ownPicturePreView(event: any) {
     const file = event.target.files[0]; // Zugriff auf das ausgewählte Bild
-    // Überprüfe, ob eine Datei ausgewählt wurde und ob es sich um ein Bild handelt
     if (file && file.type.startsWith('image')) {
       const reader = new FileReader(); // Erstelle ein FileReader-Objekt
-      // Definiere eine Funktion, die aufgerufen wird, wenn das Bild geladen wurde
       reader.onload = () => {
-        // Weise den Inhalt des Bildes der avatar-Variable zu
         this.avatar = reader.result;
       };
       reader.readAsDataURL(file); // Lese das Bild als Daten-URL

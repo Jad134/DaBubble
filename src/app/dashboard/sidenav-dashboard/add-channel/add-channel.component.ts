@@ -1,28 +1,12 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Output,
-  EventEmitter,
-  Input,
-  inject,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, Output, EventEmitter, Input, inject, ViewChild, ElementRef} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { channel } from '../../../../models/channels.class';
 import { FirestoreService } from '../../../services/firestore.service';
-import { MatDialog, MatDialogModule, MatDialogConfig } from '@angular/material/dialog';
-
-
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { MatDialog} from '@angular/material/dialog';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import { channelDataclientService } from '../../../services/channelsDataclient.service';
 import { ActivatedRoute } from '@angular/router';
 import { AddUserChannelDialogComponent } from './add-user-channel-dialog/add-user-channel-dialog.component';
@@ -65,17 +49,20 @@ export class AddChannelComponent {
     this.getIdFromURL()
   }
 
-
   ngAfterViewInit(): void {
     this.addChannelAdmin()
   }
 
-
+  /**
+   * close the overlay
+   */
   closeOverlay() {
     this.close.emit();
   }
 
-
+  /**
+   * get user id from the url
+   */
   getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
@@ -83,19 +70,22 @@ export class AddChannelComponent {
     }
   }
 
-
+  /**
+   * add channel creator as channel admin
+   */
   addChannelAdmin() {
     const channelAdmin = this.users.find(user => user.id === this.currentUserId);
     if (channelAdmin) {
       this.selectedUser.push(channelAdmin);
       this.channelAdmin = channelAdmin
-      console.log('Channel Admin added:', channelAdmin);
     } else {
-      console.log('Channel Admin not found with ID:', this.currentUserId);
+      console.error('Channel Admin not found with ID:', this.currentUserId);
     }
   }
 
-
+  /**
+   * check the channel name
+   */
   checkFormChannelName() {
     const channelName = this.channelName.nativeElement;
     const validChannelName = this.validChannelName.nativeElement;
@@ -106,20 +96,21 @@ export class AddChannelComponent {
       setTimeout(() => {
         this.closeOverlay()
       },500);
-
     } else {
       validChannelName.style = 'opacity: 1';
     }
   }
 
-  
+  /**
+   * open the add user dialog
+   */
   openDialog() {
     const dialogRef = this.dialog.open(AddUserChannelDialogComponent, {
       data: {
         channelAdmin: this.channelAdmin,
         channelName: this.newChannel.name,
         description: this.newChannel.description,
-        users: this.users // Übergeben Sie die Benutzerdaten hier
+        users: this.users
       }
     });
   }

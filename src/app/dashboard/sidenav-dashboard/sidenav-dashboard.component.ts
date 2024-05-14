@@ -100,16 +100,13 @@ export class SidenavDashboardComponent implements OnDestroy {
     }
   }
 
-
-
-  
-
   /**
    *this function toggle the variable sidenavIsHide to true, if sidenav closed
    */
   toggleSidenav() {
     this.sidenavIsHide = !this.sidenavIsHide;
   }
+
   /**
    * change the src für the "Workspace Menü" button bei hover it
    */
@@ -121,9 +118,9 @@ export class SidenavDashboardComponent implements OnDestroy {
     }
   }
 
-   /**
-   * change the src für the "Workspace Menü" button bei hover it
-   */
+  /**
+  * change the src für the "Workspace Menü" button bei hover it
+  */
   onMouseLeave(): void {
     if (!this.sidenavIsHide) {
       this.imageUrl = '../../../assets/img/close-menu.svg';
@@ -166,7 +163,6 @@ export class SidenavDashboardComponent implements OnDestroy {
           const downloadedImageUrl = await this.downloadService.downloadImage(
             profilePictureURL
           );
-          // Weisen Sie die heruntergeladenen Bild-URL dem Benutzerobjekt zu
           user.avatar = downloadedImageUrl;
         } catch (error) {
           console.error('Error downloading user profile picture:', error);
@@ -177,41 +173,61 @@ export class SidenavDashboardComponent implements OnDestroy {
     this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
 
+  /**
+   * toggle the channel menu
+   */
   togglechannelsMenu() {
     this.channelsmenu = !this.channelsmenu;
   }
 
+  /**
+   * toggle the user menu
+   */
   toggleUsersMenu() {
     this.userMenu = !this.userMenu;
   }
 
+  /**
+   * toggle the sidenav
+   */
   toggleChannelOverlay() {
     this.channelOverlay = !this.channelOverlay;
   }
 
+  /**
+   * get the user id from the url
+   */
   getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
       this.currentUserId = id;
     }
   }
-
   async downloadChannels(userId: any) {
     await this.channelService.getUserChannelId(userId);
   }
 
+  /**
+   * open the group chat by id
+   */
   openGroupChat(id: any) {
     this.directChatEvent.emit(false);
     this.groupChatEvent.emit(true);
     this.clickedChannelIdEvent.emit(id);
   }
 
+  /**
+   * open the direct chat by id
+   */
   openDirectChat(id: any) {
     this.groupChatEvent.emit(false);
     this.directChatEvent.emit(true);
     this.clickedUserIdEvent.emit(id);
   }
 
+  /**
+   * filter channels and users by name
+   */
   filterChannelsAndUsers() {
     if (this.searchTerm) {
       if (this.searchTerm.startsWith('@')) {
@@ -249,17 +265,20 @@ export class SidenavDashboardComponent implements OnDestroy {
   }
   }
 
+  /**
+   * open a message
+   */
   openUserMessage(id: any) {
-    console.log(id);
     this.groupChatEvent.emit(false);
     this.directChatEvent.emit(true);
     this.clickedUserIdEvent.emit(id);
     this.searchTerm = '';
-
   }
 
+  /**
+   * open the channel by id
+   */
   openChannel(id: any) {
-    console.log(id);
     this.directChatEvent.emit(false);
     this.groupChatEvent.emit(true);
     this.clickedChannelIdEvent.emit(id);

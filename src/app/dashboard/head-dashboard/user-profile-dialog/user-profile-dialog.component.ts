@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Inject, inject } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogConfig, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';

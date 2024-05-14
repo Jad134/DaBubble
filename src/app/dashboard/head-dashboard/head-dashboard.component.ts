@@ -45,28 +45,24 @@ export class HeadDashboardComponent {
   @Output() clickedChannelIdEvent = new EventEmitter<string>();
   @Output() clickedUserIdEvent = new EventEmitter<string>();
 
-
   constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getIdFromURL();
     this.downloadProfileDatas(this.userId);
     this.channels = this.channelService.channels
-    console.log(this.channels);
     this.firestoreService.getAllUsers().then(async (users) => {
       await this.loadProfilePictures(users);
       this.users = users;
-      console.log(this.users);
     })
       .catch((error) => {
         console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
       });
   }
 
-
   /**
-     * read UserID from the Url.
-     */
+    * read UserID from the Url.
+  */
   getIdFromURL() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id != null) {
@@ -88,11 +84,10 @@ export class HeadDashboardComponent {
         }
       })
       .catch((error) => {
-        console.log('Fehler beim Laden des Benutzers: ', error);
+        console.error('Fehler beim Laden des Benutzers: ', error);
       });
     this.controlIfOwnPictureUsed(this.userId)
   }
-
 
   /**
    * this function checks if the user use an uploaded or standard avatar picture
@@ -128,8 +123,6 @@ export class HeadDashboardComponent {
     this.dialog.open(UserMenuDialogComponent, dialogConfig);
   }
 
-
-
   /**
    * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
    */
@@ -153,7 +146,9 @@ export class HeadDashboardComponent {
     this.profilePicturesLoaded = allProfilePicturesLoaded; // Setzen Sie das Flag basierend auf dem Ladezustand der Bilder
   }
 
-
+  /**
+   * filter channels and users by name
+   */
   filterChannelsAndUsers() {
     if (this.searchTerm) {
       if (this.searchTerm.startsWith('@')) {
@@ -191,18 +186,20 @@ export class HeadDashboardComponent {
   }
   }
 
-
+  /**
+   * open a message by id
+   */
   openUserMessage(id: any) {
-    console.log(id);
     this.groupChatEvent.emit(false);
     this.directChatEvent.emit(true);
     this.clickedUserIdEvent.emit(id);
     this.searchTerm = '';
-
   }
 
+  /**
+   * open a channel by id
+   */
   openChannel(id: any) {
-    console.log(id);
     this.directChatEvent.emit(false);
     this.groupChatEvent.emit(true);
     this.clickedChannelIdEvent.emit(id);
