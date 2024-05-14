@@ -30,11 +30,13 @@ import { ActivatedRoute } from '@angular/router';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { Subscription } from 'rxjs';
 import { SharedServiceService } from '../../services/shared-service.service';
+import { FormsModule } from '@angular/forms';
+import { channel } from '../../../models/channels.class';
 
 @Component({
   selector: 'app-sidenav-dashboard',
   standalone: true,
-  imports: [CommonModule, AddChannelComponent],
+  imports: [CommonModule, AddChannelComponent, FormsModule],
   templateUrl: './sidenav-dashboard.component.html',
   styleUrl: './sidenav-dashboard.component.scss',
   animations: [
@@ -58,6 +60,12 @@ export class SidenavDashboardComponent implements OnDestroy {
   channelsmenu: boolean = true;
   userMenu: boolean = true;
   channelNames: any;
+  searchTerm: string = '';
+  filteredChannels: channel[] = [];
+  filteredUsers: any[] = [];
+  filteredMessages: any[] = []
+  channels: channel[] = [];
+
   @Input() users: User[] = [];
   @ViewChildren('profilePicture') profilePictures!: QueryList<ElementRef>;
   @ViewChildren('statusLight') statusLights!: QueryList<ElementRef>;
@@ -91,6 +99,8 @@ export class SidenavDashboardComponent implements OnDestroy {
       this.sidenavIsHide = false;
     }
   }
+
+
 
   
 
@@ -127,6 +137,7 @@ export class SidenavDashboardComponent implements OnDestroy {
    */
   ngAfterViewInit(): void {
     this.getIdFromURL();
+    this.channels = this.channelService.channels
     this.firestoreService
       .getAllUsers()
       .then(async (users) => {
@@ -199,5 +210,59 @@ export class SidenavDashboardComponent implements OnDestroy {
     this.groupChatEvent.emit(false);
     this.directChatEvent.emit(true);
     this.clickedUserIdEvent.emit(id);
+  }
+
+  filterChannelsAndUsers() {
+    if (this.searchTerm) {
+      if (this.searchTerm.startsWith('@')) {
+        this.filteredChannels = [];
+        this.filteredUsers = this.users.filter((user: { name: string; }) => {
+          return user.name.toLowerCase().includes(this.searchTerm.substring(1).toLowerCase());
+        });
+      } else if (this.searchTerm.startsWith('#')) {
+        this.filteredUsers = [];
+        this.filteredChannels = this.channels.filter(channel => {
+          return channel.name.toLowerCase().includes(this.searchTerm.substring(1).toLowerCase()) ||
+            channel.id.toLowerCase().includes(this.searchTerm.substring(1).toLowerCase());
+        });
+      } else {
+        // Wenn weder '@' noch '#' am Anfang stehen, nach beiden suchen
+        this.filteredChannels = this.channels.filter(channel => {
+          return channel.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            channel.id.toLowerCase().includes(this.searchTerm.toLowerCase());
+        });
+
+        this.filteredUsers = this.users.filter((user: { name: string; id: string; }) => {
+          return user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            user.id.toLowerCase().includes(this.searchTerm.toLowerCase());
+        });
+        // Durchsuchen der Nachrichten im Array this.allChatMessages
+      this.filteredMessages = this.channelService.allChatMessages.filter((message: { message: string; }) => {
+        return message && message.message && typeof message.message === 'string' &&
+          message.message.toLowerCase().includes(this.searchTerm.toLowerCase());
+      });
+    }
+  } else {
+    this.filteredChannels = this.channels;
+    this.filteredUsers = this.users;
+    this.filteredMessages = this.channelService.allChatMessages;
+  }
+  }
+
+  openUserMessage(id: any) {
+    console.log(id);
+    this.groupChatEvent.emit(false);
+    this.directChatEvent.emit(true);
+    this.clickedUserIdEvent.emit(id);
+    this.searchTerm = '';
+
+  }
+
+  openChannel(id: any) {
+    console.log(id);
+    this.directChatEvent.emit(false);
+    this.groupChatEvent.emit(true);
+    this.clickedChannelIdEvent.emit(id);
+    this.searchTerm = '';
   }
 }

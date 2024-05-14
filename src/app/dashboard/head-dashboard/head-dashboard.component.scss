@@ -144,6 +144,12 @@ input {
   }
 }
 
+@media (max-width: 750px) {
+  .show-filter-contend {
+    left: 50px;
+  }
+}
+
 @media (max-width: 600px) {
 
   button,
@@ -192,7 +198,13 @@ input {
     padding: 8px 24px;
     margin-top: 90px;
   }
+
+  .show-filter-contend {
+    left: 15px;
+    width: 350px;
+  }
 }
+
 
 @media(max-width: 500px) {
   input {

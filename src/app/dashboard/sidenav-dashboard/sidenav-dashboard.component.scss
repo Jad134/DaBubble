@@ -299,6 +299,84 @@ section {
   margin-bottom: 12px;
 }
 
+.show-filter-contend {
+  position: absolute;
+  left: 50px;
+  width: 300px;
+  background: white;
+  height: auto;
+  z-index: 5555;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.search-channel {
+  font-size: 14px;
+  font-weight: 500;
+  color: $purple1;
+  height: 32px;
+  border: 1px solid $purple2;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  cursor: pointer;
+  transition: 125ms ease-in-out;
+
+  &:hover {
+    background-color: $bg-color;
+  }
+}
+
+.search-user {
+  font-size: 14px;
+    font-weight: 500;
+  color: $purple1;
+  height: 32px;
+  border: 1px solid $purple2;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  gap: 8px;
+  cursor: pointer;
+  transition: 125ms ease-in-out;
+
+  &:hover {
+    background-color: $bg-color;
+  }
+}
+
+.search-user-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.search-message {
+  font-size: 14px;
+    font-weight: 500;
+    color: #444df2;
+    height: 32px;
+    border: 1px solid #797ef3;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    gap: 8px;
+    cursor: pointer;
+    transition: 125ms ease-in-out;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+  &:hover {
+    background-color: $bg-color;
+  }
+}
+
 @media(max-width: 500px){
   .mobile{
     display: block;
