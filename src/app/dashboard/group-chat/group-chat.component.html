@@ -94,7 +94,7 @@
                     <div *ngIf="messageObj.emoji.length > 0" class="show-reactions-container">
                         <div (mouseover)="openReactionDialog($event, emoji)" (mouseleave)="closeReactionDialog()"
                             [style.display]="emoji.count > 0 ? 'flex' : 'none'" *ngFor="let emoji of messageObj.emoji"
-                            (click)="addCurrentReaction(messageObj.time, emoji.emoji)" class="show-reactions">
+                            (click)="addCurrentReaction(messageObj.time, emoji.emoji) " class="show-reactions">
                             {{emoji.emoji}} {{emoji.count}}
                             <ng-template #reactionInformationDialog>
                                 <div class="reaction-information">

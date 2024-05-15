@@ -23,7 +23,7 @@ export class ThreadService {
   chatDatas: any[] = [];
   ownMessage = false;
   chatLength:number | undefined;
-  closeTab = false;
+  closeTab = true;
 
   private currentChannelDataSubject = new BehaviorSubject<any>(null);
   currentChannelData$ = this.currentChannelDataSubject.asObservable();

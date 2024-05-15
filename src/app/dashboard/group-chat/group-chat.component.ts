@@ -388,10 +388,11 @@ export class GroupChatComponent {
   }
 
   /**
-   * add a reaction to a message
+   * add a reaction to a message and close the info dialog
    */
   addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.chatService.addEmojiToMessage(this.currentId, messageId, selectedEmoji, this.currentUserId)
+    this.closeReactionDialog()
   }
 
   /**
