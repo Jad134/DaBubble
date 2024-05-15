@@ -40,7 +40,7 @@ export class LogInService {
       this.routeToDashboard(userid);
 
     } catch (error) {
-      window.alert('error, anmelden geht nicht');
+      //window.alert('error, anmelden geht nicht');
       this.logInInvalid = true;
     }
   }

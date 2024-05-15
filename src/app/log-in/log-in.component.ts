@@ -59,7 +59,6 @@ export class LogInComponent {
       passwordMessage.style = 'opacity: 1'
     } else {
       passwordMessage.style = 'opacity: 0'
-      console.log(this.mail, this.password)
     }
   }
 }
