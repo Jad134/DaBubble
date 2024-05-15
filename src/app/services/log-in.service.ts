@@ -123,7 +123,9 @@ export class LogInService {
     });
   }
 
-
+/**
+ * Logs the user out
+ */
   async logOut() {
     const auth = getAuth();
     signOut(auth).then(() => {
@@ -133,7 +135,9 @@ export class LogInService {
     });
   }
 
-
+/**
+ * Sets the direct message chat details if the user is registered
+ */
   async setDirectMessageDatas(user: any, userId: any) {
     await setDoc(doc(this.db, "Direct-Message", userId), {
       name: user.displayName,

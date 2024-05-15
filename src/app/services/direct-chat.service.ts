@@ -22,13 +22,18 @@ export class DirectChatService {
 
   constructor() { }
 
+  /**
+   * start functions to send a message for direct chats
+   */
   async sendChat(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, imgUrl?: any,) {
     await this.createDirectMessageCollection(currentUserId, chatPartnerId, timeStamp);
     await this.saveMessageAtCurrentUserDB(currentUserId, chatPartnerId, timeStamp, message, imgUrl)
     await this.saveMessateAtChatPartnerDB(currentUserId, chatPartnerId, timeStamp, message, imgUrl)
   }
 
-
+  /**
+   *Control if the direct message collection exist, and if not create a message collection
+   */
   async createDirectMessageCollection(currentUserId: any, chatPartnerId: any, timeStamp: any) {
     const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
     const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
@@ -48,7 +53,9 @@ export class DirectChatService {
     }
   }
 
-
+/**
+ * Save the message at the current user collection
+ */
   async saveMessageAtCurrentUserDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?: any) {
     const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
     const chatPartnerSubcollectionRef = collection(userDocRef, chatPartnerId);
@@ -56,7 +63,9 @@ export class DirectChatService {
     await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp, fileUrl);
   }
 
-
+/**
+ * Save the message at the chat partner collection
+ */
   async saveMessateAtChatPartnerDB(currentUserId: any, chatPartnerId: any, timeStamp: any, message: any, fileUrl?: any) {
     const userDocRef = doc(this.db, 'Direct-Message', chatPartnerId);
     const chatPartnerSubcollectionRef = collection(userDocRef, currentUserId);
@@ -64,7 +73,9 @@ export class DirectChatService {
     await this.setMessageDocument(currentUserId, chatDocRef, message, timeStamp, fileUrl);
   }
 
-
+/**
+ * Set the message Objet for the db
+ */
   async setMessageDocument(currentUserId: any, chatDocRef: any, message: any, timeStamp: any, fileUrl?: any) {
     let userData = await this.firestoreService.getUserDataById(currentUserId);
     if (userData) {
@@ -151,8 +162,10 @@ export class DirectChatService {
     await this.editMessageAtChatPartner(currentUserId, chatPartnerId, message, messageId, fileUrl)
   }
 
-
- async editMessageAtChatPartner(currentUserId: any, chatPartnerId: any, message: any, messageId: any, fileUrl?: any) {
+/**
+ * Update the edited message, if a user edit a message
+ */
+  async editMessageAtChatPartner(currentUserId: any, chatPartnerId: any, message: any, messageId: any, fileUrl?: any) {
     const userDocRef = doc(this.db, 'Direct-Message', chatPartnerId);
     const chatPartnerSubcollectionRef = collection(userDocRef, currentUserId);
     const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
@@ -183,7 +196,9 @@ export class DirectChatService {
     }
   }
 
-
+/**
+ * if an image exist, return it for the option to delete it at the edit message field
+ */
   async getImgForDelete(currentUserId: any, currentChatPartnerId: any, messageId: any) {
     const userDocRef = doc(this.db, 'Direct-Message', currentUserId);
     const chatPartnerSubcollectionRef = collection(userDocRef, currentChatPartnerId);
@@ -201,7 +216,9 @@ export class DirectChatService {
     }
   }
 
-
+/**
+ * Adds the emoji to a reaction message and controls whether the user has already reacted and whether the emoji already exists in that message
+ */
   async addEmojiToMessage(chatPartnerId: any, currentUserId: any, messageId: any, emoji: any) {
     let userData = await this.firestoreService.getUserDataById(currentUserId);
     if (userData) {

@@ -391,6 +391,9 @@ export class channelDataclientService {
   }
 
 
+  /**
+   * This function add the userarray to the channel
+   */
   async addUserToChannel(id: any, users: any[]) {
     const channelRef = doc(this.db, "Channels", id);
 

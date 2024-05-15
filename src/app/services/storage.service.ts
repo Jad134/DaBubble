@@ -91,7 +91,9 @@ export class StorageService {
     }
   }
 
-
+  /**
+   * download the image from the storage
+   */
   async downloadImage(imagePath: string): Promise<string> {
     const imgReference = ref(this.storage, imagePath);
     try {
@@ -102,7 +104,9 @@ export class StorageService {
     }
   }
 
-
+  /**
+   * upload the image to the channelfolder in storage and turns a file to a blob
+   */
   async uploadToChannelRef(file: any, channelId: any) {
     const fileName = file[0].name;
     const storageRef = ref(this.storage, `channels/${channelId}/${fileName}`);
@@ -113,19 +117,21 @@ export class StorageService {
         const blob = await this.getFileBlob(file[0]);
         const snapshot = await uploadBytes(storageRef, blob);
         imgUrl = await this.downloadImgChannelUrl(channelId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
-  
+
         console.log('Uploaded a blob or file!', imgUrl);
       } catch (error) {
         console.error('Error uploading file:', error);
         throw error; // Ausnahme auslösen, um sicherzustellen, dass ein Wert zurückgegeben wird
       }
     }
-  
+
     await uploadImage();
     return imgUrl; //
   }
 
-
+  /**
+   * Reads the contents of a file as a blob.
+   */
   async getFileBlob(file: any) {
     return new Promise<Blob>((resolve, reject) => {
       const reader = new FileReader();
@@ -144,7 +150,9 @@ export class StorageService {
     });
   }
 
-
+  /**
+   * Downloads the URL for an image in a specific channel.
+   */
   async downloadImgChannelUrl(channelId: any, imgName: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/channels/${channelId}/${imgName}`);
     try {
@@ -156,7 +164,9 @@ export class StorageService {
     }
   }
 
-
+  /**
+   * Downloads the URL for an image in a private chat.
+   */
   async downloadImgPrivateChatUrl(userId: any, imgName: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/privateChats/${userId}/${imgName}`);
     try {
@@ -168,26 +178,29 @@ export class StorageService {
     }
   }
 
-
+  /**
+   * Uploads a file to Firebase Storage and saves it in a private chat between two users.
+   * @returns A Promise containing the URL of the uploaded image, or null in case of error.
+   */
   async uploadToPrivateRef(file: any, userId: any, chatPartnerId: any) {
     const fileName = file[0].name;
     const userStorageRef = ref(this.storage, `privateChats/${userId}/${fileName}`);
     const chatPartnerStorageRef = ref(this.storage, `privateChats/${chatPartnerId}/${fileName}`);
     let imgUrl = null; // Standardmäßig auf null setzen
-  
+
     const uploadImage = async (storageRef: any) => {
       try {
         const blob = await this.getFileBlob(file[0]);
         const snapshot = await uploadBytes(storageRef, blob);
         imgUrl = await this.downloadImgPrivateChatUrl(userId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
-  
+
         console.log('Uploaded a blob or file!', imgUrl);
       } catch (error) {
         console.error('Error uploading file:', error);
         throw error; // Ausnahme auslösen, um sicherzustellen, dass ein Wert zurückgegeben wird
       }
     }
-  
+
     await uploadImage(userStorageRef); // Für den Benutzer hochladen
     await uploadImage(chatPartnerStorageRef); // Für den Chat-Partner hochladen
     return imgUrl; // Rückgabe von imgUrl, unabhängig davon, ob das Bild hochgeladen wurde oder nicht

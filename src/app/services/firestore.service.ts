@@ -72,7 +72,9 @@ export class FirestoreService {
     return users; // Geben Sie das Array der Benutzer zurück
   }
 
-
+/**
+ * Get all user Ids and return it
+ */
   async getAllUserIds(): Promise<string[]> {
     const userIds: string[] = [];
     const querySnapshot = await getDocs(collection(this.db, 'Users'));
@@ -83,12 +85,15 @@ export class FirestoreService {
   }
 
 
-  async getUser(id: string) {
-    const unsub = onSnapshot(doc(this.firestore, 'Users', id), (element) => {
-      return element.data();
-    });
-  }
+  // async getUser(id: string) {
+  //   const unsub = onSnapshot(doc(this.firestore, 'Users', id), (element) => {
+  //     return element.data();
+  //   });
+  // }
 
+  /**
+   * Gets the specific user by ID
+   */
   async getUserDataById(id: string) {
     try {
       const docRef = doc(this.db, 'Users', id);
@@ -108,7 +113,9 @@ export class FirestoreService {
 
 
   // --------------------------Update Db with avatar?--------------------------------------
-
+/**
+ * Update the avatar from the user
+ */
   async updateUserAvatar(id: string, avatarRef: string) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
@@ -117,7 +124,9 @@ export class FirestoreService {
   }
 
 
-  //---------------------------------------------------------------------- check Online function (vorerst)-------------------------
+  /**
+   * Checks if the user is online
+   */
   async checkIfUserOnline(uid: string) {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
@@ -130,7 +139,9 @@ export class FirestoreService {
     });
   }
 
-
+/**
+ * updates the userobject isOnline to true
+ */
   async updateUserToOnline(id: string,) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
@@ -138,8 +149,9 @@ export class FirestoreService {
     });
   }
 
-
-  
+  /**
+ * updates the userobject isOnline to false
+ */
   async updateUserToOffline(id: string,) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {

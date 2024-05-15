@@ -64,7 +64,9 @@ async setDocForDataBase(userid:string, userDatas:any){
   });
 }
 
-
+/**
+ * Sets the direct message datas to the storage
+ */
 async setDirectMessageDatas(userid:string, userDatas:any){
   await setDoc(doc(this.db, "Direct-Message", userid), {
     name: userDatas.name,
