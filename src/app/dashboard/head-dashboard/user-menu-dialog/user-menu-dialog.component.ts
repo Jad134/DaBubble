@@ -24,6 +24,7 @@ export class UserMenuDialogComponent {
     this.logOutService.logOut();
     setTimeout(() => {
       this.dialog.closeAll();
+      this.logOutService.introProhibet = false;
       this.router.navigate(['/']);
     }, 1500);
   }

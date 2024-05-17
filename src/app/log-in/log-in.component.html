@@ -21,12 +21,12 @@
             <div class="input-container">
               <div class="input-validation-container">
                 <input name="mail" [(ngModel)]="mail" #mailField required placeholder="beispielname@emailcom"
-                  class="mail-input" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
+                  class="mail-input" type="email" >
                 <span #passwordMessage>*Diese E-Mail Adresse ist leider ungültig.</span>
               </div>
               <div class="input-validation-container">
                 <input name="password" [(ngModel)]="password" required placeholder="Passwort" class="password-input"
-                  type="text" />
+                  type="password" />
                 <span>*Falsches Passwort. Bitte noch einmal versuchen.</span>
               </div>
 

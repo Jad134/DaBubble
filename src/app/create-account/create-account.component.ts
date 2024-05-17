@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CreateAccountService } from '../services/create-account.service';
 import { RouterModule } from '@angular/router';
+import { LogInService } from '../services/log-in.service';
 
 @Component({
   selector: 'app-create-account',
@@ -15,12 +16,18 @@ import { RouterModule } from '@angular/router';
 })
 export class CreateAccountComponent {
   createAccountService = inject(CreateAccountService);
+  loginService = inject(LogInService);
   newUser = new User();
   nameFailed = false;
   mailFailed = false;
   pswFailed = false;
   dataprotectionFailed = false;
   isAgreed!: boolean;
+
+
+  ngOnInit(): void {
+    this.loginService.introProhibet = true;
+  }
 
   /**
    * Create a user and save in db

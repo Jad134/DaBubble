@@ -54,11 +54,14 @@ export class LogInComponent {
   validateCheck() {
     const mailfield = this.mailField.nativeElement;
     const passwordMessage = this.passwordMessage.nativeElement;
-
-    if (!mailfield.validity.valid) {
-      passwordMessage.style = 'opacity: 1'
+  
+    // Benutzerdefinierte Überprüfung der E-Mail-Adresse
+    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i; // 'i' am Ende macht das Muster case-insensitive
+  
+    if (!emailPattern.test(mailfield.value)) {
+      passwordMessage.style.opacity = '1';
     } else {
-      passwordMessage.style = 'opacity: 0'
+      passwordMessage.style.opacity = '0';
     }
   }
 }
