@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { User } from '../../models/user.class';
 import { CommonModule } from '@angular/common';
 import { StorageService } from '../services/storage.service';
+import { LogInService } from '../services/log-in.service';
 
 @Component({
   selector: 'app-select-avatar',
@@ -16,6 +17,7 @@ import { StorageService } from '../services/storage.service';
 export class SelectAvatarComponent {
   uploadService = inject(StorageService)
   firestore = inject(FirestoreService);
+  loginService = inject(LogInService)
   userId = '';
   actualUser: any;
   name!: string;
@@ -83,6 +85,7 @@ export class SelectAvatarComponent {
     this.controllIfOwnPictureUsed()
 
     setTimeout(() => {
+      this.loginService.introProhibet = true;
       this.router.navigate(['/']);
     }, 1500);
 

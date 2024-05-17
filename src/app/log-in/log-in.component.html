@@ -1,9 +1,9 @@
-<app-intro></app-intro>
+<app-intro *ngIf="!loginService.introProhibet"></app-intro>
 
 <section>
   <div class="main-content">
     <div class="logo-container">
-      <img src="/assets/img/home-workspace.svg" alt="" />
+      <img src="assets/img/home-workspace.svg" alt="" />
     </div>
     <div class="new-user-info">
       <span>Neu bei DABubble?</span>
@@ -36,7 +36,7 @@
               <span>ODER</span>
             </div>
             <div (click)="logInWithGoogle()" class="google-login">
-              <img src="/assets/img/google-icon.png" alt="" />
+              <img src="assets/img/google-icon.png" alt="" />
               <span>Anmelden mit Google</span>
             </div>
             <div class="login-buttons">

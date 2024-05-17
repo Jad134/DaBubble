@@ -22,7 +22,7 @@ export class LogInService {
   auth = getAuth(this.app);
   db = getFirestore(this.app)
   users = new User;
-
+  introProhibet = false;
   logInInvalid = false;
 
   //-- ----------------------------------- ---Anmelden--------------------------------------------
@@ -57,7 +57,7 @@ export class LogInService {
       const userId = user.uid;
       const userDoc = await getDoc(doc(this.db, "Users", userId));
       const userData = this.setUserData(user, userId);
-      
+
 
 
       this.checkUserStatus(userDoc, userId, userData, user);
@@ -73,7 +73,7 @@ export class LogInService {
    * @param userId 
    * @param userData 
    */
-  checkUserStatus(userDoc: any, userId: any, userData: any, user:any) {
+  checkUserStatus(userDoc: any, userId: any, userData: any, user: any) {
     if (userDoc.exists()) {
       this.routeToDashboard(userId)
     } else {
@@ -123,9 +123,9 @@ export class LogInService {
     });
   }
 
-/**
- * Logs the user out
- */
+  /**
+   * Logs the user out
+   */
   async logOut() {
     const auth = getAuth();
     signOut(auth).then(() => {
@@ -135,9 +135,9 @@ export class LogInService {
     });
   }
 
-/**
- * Sets the direct message chat details if the user is registered
- */
+  /**
+   * Sets the direct message chat details if the user is registered
+   */
   async setDirectMessageDatas(user: any, userId: any) {
     await setDoc(doc(this.db, "Direct-Message", userId), {
       name: user.displayName,

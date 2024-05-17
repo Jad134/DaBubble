@@ -15,13 +15,14 @@ section {
 }
 
 input {
+  font-family: $nunito;
   border: none;
   outline: none;
   border-radius: 48px;
   padding: 16px 32px 16px 32px;
   width: 100%;
   height: 38px;
-  background: url(/assets/img/search.png) no-repeat;
+  background: url('../../../assets/img/search.png') no-repeat;
   background-origin: content-box;
   background-position: right center;
   position: relative;

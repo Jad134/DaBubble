@@ -83,7 +83,7 @@ export class SidenavDashboardComponent implements OnDestroy {
   }
 
   sidenavIsHide: boolean = false;
-  imageUrl: string = '../../../assets/img/close-menu.svg';
+  imageUrl: string = 'assets/img/close-menu.svg';
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -112,9 +112,9 @@ export class SidenavDashboardComponent implements OnDestroy {
    */
   onMouseEnter(): void {
     if (!this.sidenavIsHide) {
-      this.imageUrl = '../../../assets/img/close-menu-hover.svg';
+      this.imageUrl = 'assets/img/close-menu-hover.svg';
     } else {
-      this.imageUrl = '../../../assets/img/open-menu-hover.svg';
+      this.imageUrl = 'assets/img/open-menu-hover.svg';
     }
   }
 
@@ -123,9 +123,9 @@ export class SidenavDashboardComponent implements OnDestroy {
   */
   onMouseLeave(): void {
     if (!this.sidenavIsHide) {
-      this.imageUrl = '../../../assets/img/close-menu.svg';
+      this.imageUrl = 'assets/img/close-menu.svg';
     } else {
-      this.imageUrl = '../../../assets/img/open-menu.svg';
+      this.imageUrl = 'assets/img/open-menu.svg';
     }
   }
 
