@@ -420,6 +420,7 @@ form {
   border: 1px solid $light-purple;
   border-radius: 20px;
   padding: 20px;
+  font-family: $nunito;
 
   textarea {
     border: none;
@@ -437,6 +438,7 @@ form {
 
 #answer {
   resize: none;
+  font-family: $nunito;
 }
 
 .button-row {
