@@ -84,6 +84,9 @@ export class CreateAccountComponent {
     return !this.dataprotectionFailed;
   }
 
+  /**
+ * This function checks if the inputs are emtpy and enable it, if the inputs are not
+ */
   checkButtonDisabled() {
     this.disableButton = !(this.newUser.name.length > 0 && this.newUser.eMail.length > 0 && this.newUser.password.length > 0);
   }

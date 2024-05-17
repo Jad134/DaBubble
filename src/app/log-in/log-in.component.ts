@@ -21,7 +21,7 @@ export class LogInComponent {
 
   mail: any;
   password: any;
-
+  disableButton = true;
   loginService = inject(LogInService)
   firestore = inject(FirestoreService)
   uploadService = inject(StorageService)
@@ -63,5 +63,12 @@ export class LogInComponent {
     } else {
       passwordMessage.style.opacity = '0';
     }
+  }
+
+  /**
+   * This function checks if the inputs are emtpy and enable it, if the inputs are not
+   */
+  checkButtonDisabled() {
+    this.disableButton = !(this.mail && this.mail.length > 0 && this.password && this.password.length > 0);
   }
 }
