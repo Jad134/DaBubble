@@ -369,3 +369,46 @@ mat-card-header {
         }
       }
 }
+
+@media (max-width: 400px){
+  mat-card {
+      width: auto;
+      margin-left: 7px;
+      margin-right: 7px;
+    }
+  
+  mat-card-header {
+      h1 {
+        font-size: 28px;
+      }
+    
+      > span {
+        font-size: 14px;
+      }
+    }
+}
+
+@media (max-width: 380px){
+  mat-card {
+      width: auto;
+      margin-left: 7px;
+      margin-right: 7px;
+    }
+  
+    mat-card-content{
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+      width: auto;
+    }
+  
+  mat-card-header {
+    width: 305px;
+      h1 {
+        font-size: 28px;
+      }
+    
+      > span {
+        font-size: 14px;
+      }
+    }
+}
