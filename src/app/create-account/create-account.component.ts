@@ -23,6 +23,7 @@ export class CreateAccountComponent {
   pswFailed = false;
   dataprotectionFailed = false;
   isAgreed!: boolean;
+  disableButton = true;
 
 
   ngOnInit(): void {
@@ -39,11 +40,12 @@ export class CreateAccountComponent {
       this.checkCorrectPasswordFormat() &&
       this.checkDataprotectionIsSet()
     ) {
+      this.disableButton = false;
       this.createAccountService.createUserWithEmailAndPassword(
         this.newUser.eMail,
         this.newUser.password,
         this.newUser
-      ); 
+      );
     }
   }
 
@@ -80,5 +82,9 @@ export class CreateAccountComponent {
   checkDataprotectionIsSet() {
     this.dataprotectionFailed = !this.isAgreed;
     return !this.dataprotectionFailed;
+  }
+
+  checkButtonDisabled() {
+    this.disableButton = !(this.newUser.name.length > 0 && this.newUser.eMail.length > 0 && this.newUser.password.length > 0);
   }
 }

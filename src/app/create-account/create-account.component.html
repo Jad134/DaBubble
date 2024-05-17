@@ -23,6 +23,7 @@
                 class="name-input input-field"
                 type="text"
                 [(ngModel)]="newUser.name"
+                (input)="checkButtonDisabled()"
               />
               <p [ngStyle]="{ display: nameFailed ? 'block' : 'none' }">
                 Bitte schreiben Sie einen Namen.
@@ -34,6 +35,7 @@
                 class="mail-input input-field"
                 type="email"
                 [(ngModel)]="newUser.eMail"
+                (input)="checkButtonDisabled()"
               />
               <p [ngStyle]="{ display: mailFailed ? 'block' : 'none' }">
                 *Diese E-Mail-Adresse ist leider ungültig.
@@ -45,6 +47,7 @@
                 class="password-input input-field"
                 type="password"
                 [(ngModel)]="newUser.password"
+                (input)="checkButtonDisabled()"
               />
               <p [ngStyle]="{ display: pswFailed ? 'block' : 'none' }">
                 Bitte geben Sie ein gültiges Passwort ein.(Mindestens 8 Zeichen)
@@ -59,7 +62,7 @@
             </p>
           </div>
           <div class="forward-button">
-            <button class="forward" (click)="createAccount()">Weiter</button>
+            <button [disabled]="disableButton" class="forward" (click)="createAccount()">Weiter</button>
           </div>
         </mat-card-content>
       </mat-card>

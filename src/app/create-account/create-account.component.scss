@@ -159,6 +159,13 @@ mat-card-header {
   &:hover {
     background-color: lighten($purple1, 10%);
   }
+
+  &:disabled{
+    background-color: gray;
+    &:hover{
+      background-color: gray;
+    }
+  }
 }
 
 .checkbox-container {
