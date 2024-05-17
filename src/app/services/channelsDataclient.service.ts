@@ -52,7 +52,6 @@ export class channelDataclientService {
       });
       let channelId = docRef.id
       this.updateChannelId(channelId)
-      console.log('Dokument written with ID: ', docRef.id);
       for (const user of simplifiedUsersInChannel) {
         await this.firestoreService.updateUsersChannels(user.id, channelId);
       }
@@ -95,7 +94,6 @@ export class channelDataclientService {
       let answers = 0;
       try {
         this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers, channelId, imgUrl, )
-        console.log("Chat-Dokument erfolgreich erstellt.");
         this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName, imgUrl);
         this.updateAnswerCount(channelId, timeStamp)
       } catch (error) {
@@ -188,9 +186,7 @@ export class channelDataclientService {
   }
 
   // Speichern Sie das Array der Chat-Nachrichten in der Instanzvariablen
-  this.allChatMessages = allChatMessages;
-  console.log(this.allChatMessages);
-  
+  this.allChatMessages = allChatMessages;  
   }
 
 
@@ -203,11 +199,8 @@ export class channelDataclientService {
       const UserData = doc.data();
 
       if (UserData) {
-        console.log("Current data: ", UserData['channels']);
         const channels = UserData['channels']
         this.channelIds = channels
-        console.log(this.channelIds);
-        // this.getChannelNames()
         this.getChannels()
         return channels
       }
@@ -232,7 +225,6 @@ export class channelDataclientService {
    */
   async deleteChannelIdAtUserDb(channelId: any, userId: any) {
     let filteredChannel = this.channelIds.filter((id: any) => id !== channelId);
-    console.log(filteredChannel);
     this.channelIds = filteredChannel;
     this.channels = [...filteredChannel];
     this.channels = []
@@ -270,7 +262,6 @@ export class channelDataclientService {
           if (channelDoc.exists()) {
             const channelData = channelDoc.data() as channel;;
             this.controlExistingChannels(channelData)
-            console.log(this.channels);
           } else {
             console.log("Kanal mit ID", channelId, "nicht gefunden.");
           }

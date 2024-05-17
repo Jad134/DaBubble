@@ -58,7 +58,6 @@ export class UserDetailDialogComponent {
    * open the direct chat with the choosen userId
    */
   sendMessage(){
-    console.log("Nachricht Button wurde gedrückt.");
     this.sharedService.setSelectedUserId(this.userId);
     this.close();
   }

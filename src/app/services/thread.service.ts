@@ -58,7 +58,6 @@ export class ThreadService {
         },
         fileUrl: imgUrl || '',
       });
-      console.log('Dokument in Subcollection "thread" wurde erfolgreich erstellt');
     } catch (error) {
       console.error('Fehler beim Erstellen des Dokuments in Subcollection "thread":', error);
     }
@@ -154,7 +153,6 @@ export class ThreadService {
       try {
        await this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)
        await this.updateAnswerCount(this.currentGroupId, this.currentChatId, timeStamp)
-        console.log("Chat-Dokument erfolgreich erstellt.");
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
       }

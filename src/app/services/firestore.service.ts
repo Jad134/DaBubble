@@ -131,10 +131,8 @@ export class FirestoreService {
   async checkIfUserOnline(uid: string) {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        console.log('Benutzer online:', user.uid);
         this.updateUserToOnline(uid)
       } else {
-        console.log('Benutzer offline');
         this.updateUserToOffline(uid)
       }
     });

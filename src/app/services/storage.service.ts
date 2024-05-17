@@ -45,13 +45,13 @@ export class StorageService {
         if (e.target && e.target.result) {
           const blob = new Blob([e.target.result], { type: this.pic.type });
           uploadBytes(this.imagesRef, blob).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
+
           });
         }
       };
       fileReader.readAsArrayBuffer(this.pic);
     } else {
-      console.error('No image selected');
+
     }
   }
 
@@ -64,7 +64,7 @@ export class StorageService {
     if (this.pic) {
       // Wenn eine Datei ausgewählt wurde, erstellen Sie die Referenz zum Bild im Cloud-Speicher
       this.imagesRef = ref(this.storage, userId + '/' + 'ownPictureDA');
-      console.log(this.storage, 'name:', this.pic.name)
+
     }
   }
 
@@ -117,8 +117,6 @@ export class StorageService {
         const blob = await this.getFileBlob(file[0]);
         const snapshot = await uploadBytes(storageRef, blob);
         imgUrl = await this.downloadImgChannelUrl(channelId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
-
-        console.log('Uploaded a blob or file!', imgUrl);
       } catch (error) {
         console.error('Error uploading file:', error);
         throw error; // Ausnahme auslösen, um sicherzustellen, dass ein Wert zurückgegeben wird

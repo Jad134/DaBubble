@@ -42,11 +42,9 @@ export class DirectChatService {
       // Überprüfen, ob die Subkollektion für den Chat-Partner bereits existiert
       const collectionRef = await getDocs(chatPartnerSubcollectionRef);
       if (!collectionRef.empty) {
-        console.log("Subkollektion existiert bereits.");
       } else {
         // Subkollektion für den Chat-Partner erstellen
         await setDoc(chatDocRef, {});
-        console.log("Subkollektion wurde hinzugefügt.");
       }
     } catch (error) {
       console.error("Fehler beim Überprüfen der Subkollektion:", error);
@@ -185,7 +183,6 @@ export class DirectChatService {
     const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
     const docSnap = await getDoc(chatDocRef);
 
-    console.log(docSnap.data());
     if (docSnap.exists()) {
       let message = docSnap.data()['message']
       return message
@@ -205,7 +202,6 @@ export class DirectChatService {
     const chatDocRef = doc(chatPartnerSubcollectionRef, messageId.toString())
     const docSnap = await getDoc(chatDocRef);
 
-    console.log(docSnap.data());
     if (docSnap.exists()) {
       let img = docSnap.data()['fileUrl']
       return img

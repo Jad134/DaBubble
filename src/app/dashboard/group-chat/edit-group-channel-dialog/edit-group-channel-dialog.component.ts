@@ -35,7 +35,6 @@ export class EditGroupChannelDialogComponent {
     this.channelId = this.data.channelId;
     this.currentUserId = this.data.userId
     await this.loadCurrentDatas();
-    console.log('Aktueller Channel ist: ', this.currentChannelData);
     this.name = this.currentChannelData.name;
     this.description = this.currentChannelData.description;
     this.creator = this.currentChannelData.creator;

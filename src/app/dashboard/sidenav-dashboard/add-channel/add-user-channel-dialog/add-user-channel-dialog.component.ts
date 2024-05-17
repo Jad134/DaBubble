@@ -27,7 +27,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AddUserChannelDialogComponent {
   constructor(public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, public originalDialogRef: MatDialogRef<AddUserChannelDialogComponent>, private route: ActivatedRoute,) {
-    console.log('Übergebene Daten:', data);
     this.users = data.users;
     this.newChannel.name = data.channelName;
     this.newChannel.description = data.description;
@@ -59,7 +58,6 @@ export class AddUserChannelDialogComponent {
     const channelAdmin = this.channelAdmin;
     if (channelAdmin) {
       this.selectedUser.push(channelAdmin);
-      console.log('Channel Admin added:', channelAdmin);
     } else {
       console.log('Channel Admin not found with ID:', this.currentUserId);
     }
@@ -127,7 +125,6 @@ export class AddUserChannelDialogComponent {
     const userToAdd = this.users.filter(user => user.id === userId);
     if (userToAdd.length > 0) {
       this.selectedUser.push(...userToAdd);
-      console.log('Selected users:', this.selectedUser);
     } else {
       console.log('User not found with ID:', userId);
     }
@@ -139,7 +136,6 @@ export class AddUserChannelDialogComponent {
    */
   removeSelectedUser(userId: any) {
     this.selectedUser = this.selectedUser.filter(user => user.id !== userId);
-    console.log('Selected users after removal:', this.selectedUser);
 
   }
 
@@ -153,7 +149,6 @@ export class AddUserChannelDialogComponent {
       this.newChannel.usersInChannel = this.selectedUser;
     }
     // Hier kann die Service funktion eingefügt werden 
-    console.log('Neuer Channel: ', this.newChannel);
    await this.channelDataclient.storeNewChannel(this.newChannel);
     this.closeDialog()
   }

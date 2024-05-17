@@ -107,7 +107,6 @@ export class LogInService {
   routeToDashboard(userId: any) {
     this.ngZone.run(() => {
       this.router.navigate(['/dashboard/' + userId]);
-      console.log(userId);
       this.logInInvalid = false;
     });
   }

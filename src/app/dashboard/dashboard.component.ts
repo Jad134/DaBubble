@@ -86,7 +86,6 @@ export class DashboardComponent {
    */
   handleCurrentGroupId(id: string) {
     this.currentGroupChat = id;
-    console.log(this.currentGroupChat);
     this.updateSidenavVisibility();
   }
 

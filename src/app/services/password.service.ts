@@ -32,11 +32,9 @@ export class PasswordService {
    * @param newPassword 
    */
   updatePassword(code: any, newPassword: any) {
-    console.log(code, newPassword);
 
     confirmPasswordReset(this.firestore.auth, code, newPassword)
       .then(() => {
-        console.log('gesendet');
         setTimeout(() => {
           this.router.navigate(['/']);
         }, 1500);
