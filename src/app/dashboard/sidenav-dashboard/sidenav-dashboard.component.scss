@@ -386,3 +386,17 @@ section {
     display: none;
   }
 }
+
+
+@media(max-width: 380px){
+  .sidenav_container_channels {
+    .box_add {
+      flex: 1;
+      position: relative;
+      button {
+        position: absolute;
+        left: 80px;
+      }
+    }
+  }
+}
