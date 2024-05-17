@@ -127,6 +127,29 @@ export class StorageService {
     return imgUrl; //
   }
 
+   /**
+   * upload the image to the channelfolder in storage and turns a file to a blob
+   */
+   async uploadToThreadRef(file: any, channelId: any) {
+    const fileName = file[0].name;
+    const storageRef = ref(this.storage, `threads/${channelId}/${fileName}`);
+    let imgUrl = null; // Standardmäßig auf null setzen
+
+    const uploadImage = async () => {
+      try {
+        const blob = await this.getFileBlob(file[0]);
+        const snapshot = await uploadBytes(storageRef, blob);
+        imgUrl = await this.downloadImgThreadUrl(channelId, file[0].name); // Wenn das Bild erfolgreich hochgeladen wird, imgUrl aktualisieren
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        throw error; // Ausnahme auslösen, um sicherzustellen, dass ein Wert zurückgegeben wird
+      }
+    }
+
+    await uploadImage();
+    return imgUrl; //
+  }
+
   /**
    * Reads the contents of a file as a blob.
    */
@@ -153,6 +176,20 @@ export class StorageService {
    */
   async downloadImgChannelUrl(channelId: any, imgName: any) {
     const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/channels/${channelId}/${imgName}`);
+    try {
+      const url = await getDownloadURL(imgReference);
+      return url; // Hier geben wir die URL zurück
+    } catch (error) {
+      console.error('Fehler beim Herunterladen des Bildes:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Downloads the URL for an image in a specific channel.
+   */
+  async downloadImgThreadUrl(messageId: any, imgName: any) {
+    const imgReference = ref(this.storage, `gs://dabubble-51e17.appspot.com/threads/${messageId}/${imgName}`);
     try {
       const url = await getDownloadURL(imgReference);
       return url; // Hier geben wir die URL zurück

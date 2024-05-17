@@ -35,7 +35,7 @@
                  
                   <div class="edit-message-final-buttons">
                       <div (click)="cancelEdit()" class="cancel-edit"> Abbrechen</div>
-                      <div (click)="saveEdit(messageObj.time, messageForEdit)" class="send-edit"> Speichern</div>
+                      <div (click)="saveEdit(messageObj.time, messageForEdit, imgForDelete)" class="send-edit"> Speichern</div>
                   </div>
               </div>
           </div>
@@ -102,7 +102,7 @@
           placeholder="Antworten..."></textarea>
         <div class="button-row">
           <div class="d-flex-sb">
-            <div class="add w-h-40"></div>
+            <div id="fileUploadDivThread" (click)="openFilePicker()" class="add w-h-40"></div>
             <div class="vector"></div>
             <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false, undefined, false)"></div>
             <div class="email w-h-40"></div>

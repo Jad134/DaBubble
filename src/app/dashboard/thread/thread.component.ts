@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-thread',
@@ -21,6 +22,7 @@ export class ThreadComponent {
   closeTab: boolean = false;
   chatService = inject(channelDataclientService);
   threadService = inject(ThreadService);
+  storageService = inject(StorageService)
   currentUserId: any;
   message: any;
   showButton: boolean[] = Array(this.threadService.chatDatas.length).fill(false);
@@ -31,6 +33,7 @@ export class ThreadComponent {
   @ViewChild('reactionInformationDialog') reactionInfo: any;
   @ViewChild('editMessageDialog') editMessageDialog: any;
   dialogReference: MatDialogRef<any> | null = null;
+  currentFile!: File | null;
 
   editedMessageIndex: number | null = null;
 
@@ -82,8 +85,14 @@ export class ThreadComponent {
   /**
    * This function send the message to the threadservice and sets the timestamp as id
    */
-  sendMessageToThread(message: any) {
+  async sendMessageToThread(message: any) {
     let timeStamp = Date.now().toString()
+    if(this.currentFile){
+      const imgUrl = await this.storageService.uploadToThreadRef(this.currentFile, timeStamp)
+      this.threadService.sendMessageToThread(timeStamp, message, this.currentUserId, imgUrl)
+      this.currentFile = null;
+      this.message = ''
+    }else
     this.threadService.sendMessageToThread(timeStamp, message, this.currentUserId)
     this.message = '';
   }
@@ -288,8 +297,8 @@ export class ThreadComponent {
   /**
    * save a edited message
    */
-  async saveEdit(messageId: any, message: any,) {
-    await this.threadService.editMessage(messageId, message)
+  async saveEdit(messageId: any, message: any, img?:any) {
+    await this.threadService.editMessage(messageId, message, img)
     this.editedMessageIndex = null;
   }
 
@@ -298,6 +307,9 @@ export class ThreadComponent {
 
     this.editedMessageIndex = messageIndex;
     this.messageForEdit = message;
+    let img = await this.threadService.getImgForDelete(messageId)
+    this.editedMessageIndex = messageIndex;
+    this.imgForDelete = img;
     this.dialogReference?.close()
   }
 
@@ -310,5 +322,26 @@ export class ThreadComponent {
       this.sendMessageToThread(this.message);
       event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
     }
+  }
+
+  /**
+   * open a file picer to add a image
+   */
+  openFilePicker(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = (event: any) => {
+      const files = event.target.files;
+      this.currentFile = files
+      if (files && files.length > 0) {
+        const file = files[0]; // Nehmen Sie die erste ausgewählte Datei
+        if (this.message) {
+          this.message += `\nDatei ausgewählt: ${file.name}`;
+        } else {
+          this.message = `Datei ausgewählt: ${file.name}`;
+        }
+      }
+    };
+    input.click();
   }
 }

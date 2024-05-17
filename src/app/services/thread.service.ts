@@ -133,10 +133,11 @@ export class ThreadService {
     /**
    * This function saves the edited message
    */
- async editMessage( messageId:any, message:any){
+ async editMessage( messageId:any, message:any, fileUrl?: any){
   const docRef = doc(this.db, "Channels", this.currentGroupId, 'chat', this.currentChatId, 'thread', messageId);
   await updateDoc(docRef, {
     message: message,
+    fileUrl: fileUrl || ''
   });
 }
 
@@ -144,20 +145,35 @@ export class ThreadService {
   /**
    * This function saved the message in the thread subcollection
    */
-  async sendMessageToThread(timeStamp: string, message: string, userId: string,) {
+  async sendMessageToThread(timeStamp: string, message: string, userId: string,  imgUrl?: any) {
     const chatRef = doc(this.db, "Channels", this.currentGroupId, 'chat', this.currentChatId, 'thread', timeStamp);
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
       let avatar = userData['avatar'];
       try {
-       await this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar)
+       await this.setMessageDocument(chatRef, message, userId, userName, timeStamp, avatar,  imgUrl)
        await this.updateAnswerCount(this.currentGroupId, this.currentChatId, timeStamp)
       } catch (error) {
         console.error("Fehler beim Erstellen des Chat-Dokuments:", error);
       }
     } else {
       console.log('Benutzerdaten nicht gefunden');
+    }
+  }
+
+
+  async getImgForDelete(messageId:any){
+    const chatRef = doc(this.db, "Channels", this.currentGroupId, 'chat', this.currentChatId, 'thread', messageId);
+    const docSnap = await getDoc(chatRef);
+
+    if (docSnap.exists()) {
+      let file = docSnap.data()['fileUrl']
+      return file
+
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
     }
   }
 
@@ -196,7 +212,7 @@ export class ThreadService {
   /**
    * Sets a new message document in the specified chat reference.
    */
-  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, avatar: any) {
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, avatar: any, imgUrl?:any) {
     await setDoc(chatRef, {
       message: message,
       user: {
@@ -206,6 +222,7 @@ export class ThreadService {
       },
       time: timeStamp,
       emoji: [],
+      fileUrl: imgUrl || '',
     });
   }
 
