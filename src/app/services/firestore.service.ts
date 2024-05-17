@@ -7,6 +7,7 @@ import { User } from '../../models/user.class';
 import { doc, updateDoc, getDocs, collection, query, where, } from "firebase/firestore";
 import { AllUser } from '../../models/allUser.class';
 import { channel } from '../../models/channels.class';
+import { Subject } from 'rxjs';
 
 
 
@@ -33,9 +34,9 @@ export class FirestoreService {
   db = getFirestore(this.app);
   users = new User();
   allUsers = new AllUser();
-
   user = this.auth.currentUser;
   userIds: any;
+  changedUserName$: Subject<any> = new Subject<any>();
 
   channelNames: string[] = [];
 
@@ -208,6 +209,13 @@ export class FirestoreService {
     await updateDoc(userRef, {
       channels: channelId
     });
+  }
+
+  /**
+   * This function is only called to update the name in realtime after edit profile 
+   */
+  updateUserName(newName: any) {
+    this.changedUserName$.next(newName); 
   }
 
 }

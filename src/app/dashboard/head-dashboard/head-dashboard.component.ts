@@ -48,8 +48,11 @@ export class HeadDashboardComponent {
   constructor(private route: ActivatedRoute, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.firestoreService.changedUserName$.subscribe(() => {
+      this.downloadProfileDatas(); // Funktion in der Komponente ausführen
+    });
     this.getIdFromURL();
-    this.downloadProfileDatas(this.userId);
+    this.downloadProfileDatas();
     this.channels = this.channelService.channels
     this.firestoreService.getAllUsers().then(async (users) => {
       await this.loadProfilePictures(users);
@@ -74,7 +77,7 @@ export class HeadDashboardComponent {
    * this function load all user informations by user-id
    * @param userID 
    */
-  async downloadProfileDatas(userID: any) {
+  async downloadProfileDatas() {
     await this.firestoreService
       .getUserDataById(this.userId)
       .then((data) => {

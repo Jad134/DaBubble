@@ -77,6 +77,13 @@ mat-card{
   &:hover {
     background-color: lighten($purple1, 10%);
   }
+
+  &:disabled{
+    background-color: gray;
+    &:hover{
+      background-color: gray;
+    }
+  }
 }
 
 .cancle {
@@ -126,6 +133,12 @@ mat-card{
   height: 50px !important;
   right: 150px;
   bottom: 10px;
+}
+
+.invalid-mail{
+  text-decoration: none;
+  font-size: 14px;
+  color: $rosa-error;
 }
 
 @media(max-width: 500px){

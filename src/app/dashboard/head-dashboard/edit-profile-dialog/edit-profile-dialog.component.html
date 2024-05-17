@@ -31,10 +31,14 @@
       class="name-input input-field"
       type="email"
       [(ngModel)]="mailValue"
+      (input)="checkIfCorrectMailFormat()"
     />
+    <p class="invalid-mail" [ngStyle]="{ display: !checkIfCorrectMailFormat() ? 'block' : 'none' }">
+      *Diese E-Mail-Adresse ist leider ungültig.
+    </p>
   </div>
   <div class="button-section">
     <button class="cancle" (click)="close()">Abbrechen</button>
-    <button class="save" (click)="save()">Speichern</button>
+    <button [disabled]="!checkIfCorrectMailFormat()" class="save" (click)="save()">Speichern</button>
   </div>
 </mat-card>
