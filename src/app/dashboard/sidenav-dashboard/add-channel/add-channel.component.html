@@ -15,7 +15,8 @@
       <form (ngSubmit)="checkFormChannelName()">
         <input #channelName required minlength="3" name="name" [(ngModel)]="newChannel.name"
           class="input_channel input_add" type="text" placeholder="z.B.Kooperationsprojekte" />
-        <span #validChannelName>Channel name is invalid</span>
+        <span #validChannelName>Channel Name ist ungenügend</span>
+        <span #duplicateChannelName>Channel exestiert bereits</span>
         <div class="container_heading_Description">
           <h3>Beschreibung</h3>
           <p>(optional)</p>

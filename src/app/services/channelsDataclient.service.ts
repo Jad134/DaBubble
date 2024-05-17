@@ -4,7 +4,7 @@ import { initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
-import { QuerySnapshot, addDoc, arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore';
+import { QuerySnapshot, addDoc, arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { FirestoreService } from './firestore.service';
 import { channel } from '../../models/channels.class';
 import { Channel } from 'diagnostics_channel';
@@ -29,7 +29,7 @@ export class channelDataclientService {
   chatDatas: any[] = [];
   ownMessage = false;
   chatLength!: number;
-  allChatMessages:any;
+  allChatMessages: any;
 
 
 
@@ -38,28 +38,47 @@ export class channelDataclientService {
    * @param channel 
    */
   async storeNewChannel(channel: any) {
-    try {
-      const simplifiedUsersInChannel = this.convertUsersInChannel(
-        channel.usersInChannel
-      );
+    const channelQuery = query(collection(this.db, 'Channels'), where('name', '==', channel.name));
+    const channelSnapshot = await getDocs(channelQuery);
 
-      const docRef = await addDoc(collection(this.db, 'Channels'), {
-        id: channel.id,
-        name: channel.name,
-        description: channel.description,
-        creator: channel.creator,
-        usersInChannel: simplifiedUsersInChannel,
-      });
-      let channelId = docRef.id
-     await this.updateChannelId(channelId)
-      for (const user of simplifiedUsersInChannel) {
-        await this.firestoreService.updateUsersChannels(user.id, channelId);
+    if (channelSnapshot.empty) {
+      try {
+        const simplifiedUsersInChannel = this.convertUsersInChannel(
+          channel.usersInChannel
+        );
+
+        const docRef = await addDoc(collection(this.db, 'Channels'), {
+          id: channel.id,
+          name: channel.name,
+          description: channel.description,
+          creator: channel.creator,
+          usersInChannel: simplifiedUsersInChannel,
+        });
+        let channelId = docRef.id
+        await this.updateChannelId(channelId)
+        for (const user of simplifiedUsersInChannel) {
+          await this.firestoreService.updateUsersChannels(user.id, channelId);
+        }
+
+        await this.createChatCollection(channelId, channel.creator)
+
+      } catch (error) {
+        console.log('Error writing document: ', error);
       }
 
-      await this.createChatCollection(channelId, channel.creator)
+    } else {
+      console.log('Ein Kanal mit diesem Namen existiert bereits.');
+    }
+  }
 
-    } catch (error) {
-      console.log('Error writing document: ', error);
+ async channelNameAlreadyExist(name:string) {
+    const channelQuery = query(collection(this.db, 'Channels'), where('name', '==', name));
+    const channelSnapshot = await getDocs(channelQuery);
+
+    if (!channelSnapshot.empty) {
+      return true;
+    }else {
+      return false;
     }
   }
 
@@ -67,7 +86,7 @@ export class channelDataclientService {
   /**
   * This function create a subcollection which is called 'chat' for the chat function
   */
-  async createChatCollection(collectionId: string, creator:string) {
+  async createChatCollection(collectionId: string, creator: string) {
     const timeStamp = Date.now();
     const parentDocRef = doc(this.db, 'Channels', collectionId);
     const chatCollectionRef = collection(parentDocRef, 'chat');
@@ -78,22 +97,22 @@ export class channelDataclientService {
     // Setze die Daten für das Dokument
     await setDoc(chatDocRef, {
       time: timeStamp,
-      creator:creator,
-      welcomeMessage : true,
+      creator: creator,
+      welcomeMessage: true,
     });
   }
 
   /**
    * This function sets the document with the timestamp as id. This doc has the information for the chats 
    */
-  async sendChat(channelId: string, timeStamp: string, message: string, userId: string, imgUrl?:any) {
+  async sendChat(channelId: string, timeStamp: string, message: string, userId: string, imgUrl?: any) {
     const chatRef = doc(this.db, "Channels", channelId, 'chat', timeStamp);
     let userData = await this.firestoreService.getUserDataById(userId);
     if (userData) {
       let userName = userData['name'];
       let answers = 0;
       try {
-        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers, channelId, imgUrl, )
+        this.setMessageDocument(chatRef, message, userId, userName, timeStamp, answers, channelId, imgUrl,)
         this.threadService.createThreadSubCollection(channelId, timeStamp, message, userId, userName, imgUrl);
         this.updateAnswerCount(channelId, timeStamp)
       } catch (error) {
@@ -120,7 +139,7 @@ export class channelDataclientService {
   /**
    * Sets a new message document in the specified chat reference.
    */
-  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number, channelId:string, imgUrl?:any, ) {
+  async setMessageDocument(chatRef: any, message: string, userId: string, userName: string, timeStamp: string, answers: number, channelId: string, imgUrl?: any,) {
     await setDoc(chatRef, {
       message: message,
       user: {
@@ -169,24 +188,24 @@ export class channelDataclientService {
   }
 
 
-  async getAllMessages(){
+  async getAllMessages() {
     const allChatMessages: { id: string; }[] = []; // Array zum Speichern aller Chat-Nachrichten
 
-  // Schleife durch die angegebenen Kanal-IDs
-  for (const channelId of this.channelIds) {
-    const channelDocRef = doc(this.firestore, 'Channels', channelId);
-    const messagesSnapshot = await getDocs(collection(channelDocRef, 'chat'));
+    // Schleife durch die angegebenen Kanal-IDs
+    for (const channelId of this.channelIds) {
+      const channelDocRef = doc(this.firestore, 'Channels', channelId);
+      const messagesSnapshot = await getDocs(collection(channelDocRef, 'chat'));
 
-    // Für jeden Kanal alle Nachrichten durchlaufen
-    messagesSnapshot.forEach((messageDoc) => {
-      const messageData = messageDoc.data();
-      const newMessage = { id: messageDoc.id, ...messageData };
-      allChatMessages.push(newMessage); // Neue Nachricht zum Array hinzufügen
-    });
-  }
+      // Für jeden Kanal alle Nachrichten durchlaufen
+      messagesSnapshot.forEach((messageDoc) => {
+        const messageData = messageDoc.data();
+        const newMessage = { id: messageDoc.id, ...messageData };
+        allChatMessages.push(newMessage); // Neue Nachricht zum Array hinzufügen
+      });
+    }
 
-  // Speichern Sie das Array der Chat-Nachrichten in der Instanzvariablen
-  this.allChatMessages = allChatMessages;  
+    // Speichern Sie das Array der Chat-Nachrichten in der Instanzvariablen
+    this.allChatMessages = allChatMessages;
   }
 
 
@@ -457,13 +476,13 @@ export class channelDataclientService {
   /**
    * This function saves the edited message
    */
- async editMessage(channelId:any, messageId:any, message:any, fileUrl?:any){
+  async editMessage(channelId: any, messageId: any, message: any, fileUrl?: any) {
     const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
     await updateDoc(docRef, {
       message: message,
       fileUrl: fileUrl || ''
     });
-   await this.threadService.updateEditMessage(channelId,messageId, message, fileUrl)
+    await this.threadService.updateEditMessage(channelId, messageId, message, fileUrl)
   }
 
 
@@ -472,24 +491,24 @@ export class channelDataclientService {
     if (userData) {
       let userName = userData['name'];
       const docRef = doc(this.db, "Channels", channelId, 'chat', messageId);
-      
+
       // Dokument abrufen
       const docSnap = await getDoc(docRef);
-      
+
       // Überprüfen, ob das Dokument existiert
       if (docSnap.exists()) {
         const data = docSnap.data();
-        
+
         // Überprüfen, ob 'emoji' ein Array ist und das erwartete Format hat
         if (Array.isArray(data['emoji'])) {
           // Überprüfen, ob der Benutzer bereits auf das Emoji reagiert hat
           const existingEmojiIndex = data['emoji'].findIndex((e: any) => e.emoji === emoji);
-          
+
           if (existingEmojiIndex !== -1) {
             // Emoji existiert bereits
             const existingEmoji = data['emoji'][existingEmojiIndex];
             const userIndex = existingEmoji.userNames.indexOf(userName);
-            
+
             if (userIndex !== -1) {
               // Benutzer hat bereits auf das Emoji reagiert, den Count verringern und Benutzername entfernen
               existingEmoji.count--;
@@ -499,7 +518,7 @@ export class channelDataclientService {
               existingEmoji.count++;
               existingEmoji.userNames.push(userName);
             }
-            
+
             // Aktualisierte Emoji-Daten in der Datenbank speichern
             await updateDoc(docRef, { emoji: data['emoji'] });
           } else {

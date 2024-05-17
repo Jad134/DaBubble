@@ -34,6 +34,7 @@ export class AddChannelComponent {
   @Input() users: any[] = [];
   @ViewChild('channelName') channelName!: ElementRef;
   @ViewChild('validChannelName') validChannelName!: ElementRef;
+  @ViewChild('duplicateChannelName') duplicateChannelName!: ElementRef;
   @Output() close = new EventEmitter<void>();
   userOverlay: boolean = false;
   selectedOption: string = '';
@@ -86,18 +87,25 @@ export class AddChannelComponent {
   /**
    * check the channel name
    */
-  checkFormChannelName() {
+ async checkFormChannelName() {
     const channelName = this.channelName.nativeElement;
     const validChannelName = this.validChannelName.nativeElement;
-    if (channelName.validity.valid) {
-      // this.toggleUserOverlay();
+    const duplicateChannelName = this.duplicateChannelName.nativeElement;
+    if (channelName.validity.valid) {  
+      validChannelName.style =  'opacity: 0; display: none;';
+    } else {
+      validChannelName.style = 'opacity: 1; display: flex;';
+    }
+    if(await this.channelDataclient.channelNameAlreadyExist(this.newChannel.name)){
+      duplicateChannelName.style = 'opacity: 1; display: flex;';
+    } else{
+      duplicateChannelName.style = 'opacity: 0; display: none;';
+    }
+     if(!await this.channelDataclient.channelNameAlreadyExist(this.newChannel.name) && channelName.validity.valid ){
       this.openDialog()
-      validChannelName.style = 'opacity: 0';
       setTimeout(() => {
         this.closeOverlay()
       },500);
-    } else {
-      validChannelName.style = 'opacity: 1';
     }
   }
 
