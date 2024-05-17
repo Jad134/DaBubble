@@ -51,7 +51,7 @@ export class channelDataclientService {
         usersInChannel: simplifiedUsersInChannel,
       });
       let channelId = docRef.id
-      this.updateChannelId(channelId)
+     await this.updateChannelId(channelId)
       for (const user of simplifiedUsersInChannel) {
         await this.firestoreService.updateUsersChannels(user.id, channelId);
       }

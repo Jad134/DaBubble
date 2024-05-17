@@ -141,6 +141,7 @@ export class AddUserChannelDialogComponent {
 
 
  async addUsersToChannel() {
+  
     this.newChannel.creator = this.channelAdmin.name;
     if (this.selectedOption === 'allUsers') {
       this.selectedUser = [...this.users];
