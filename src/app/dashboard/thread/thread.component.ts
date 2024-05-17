@@ -9,11 +9,12 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 import { StorageService } from '../../services/storage.service';
+import {MatTooltip, MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [MatCardModule, CommonModule, MatIconModule, FormsModule],
+  imports: [MatCardModule, CommonModule, MatIconModule, FormsModule, MatTooltip],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })

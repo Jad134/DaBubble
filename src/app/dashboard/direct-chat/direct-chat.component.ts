@@ -9,11 +9,12 @@ import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component'
 import { DirectChatService } from '../../services/direct-chat.service';
 import { FormsModule } from '@angular/forms'
 import { MatIconModule } from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-direct-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule],
   templateUrl: './direct-chat.component.html',
   styleUrl: './direct-chat.component.scss'
 })

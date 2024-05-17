@@ -13,12 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { ThreadService } from '../../services/thread.service';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 import { StorageService } from '../../services/storage.service';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @Component({
   selector: 'app-group-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogClose, MatIconModule],
+  imports: [CommonModule, FormsModule, MatDialogClose, MatIconModule, MatTooltipModule],
   templateUrl: './group-chat.component.html',
   styleUrl: './group-chat.component.scss',
 })
@@ -146,19 +147,19 @@ export class GroupChatComponent {
         clientX: event.clientX,
         clientY: event.clientY
       },
-      showMemberSection: showMember, 
+      showMemberSection: showMember,
       addMemberSection: addMember
     }
     if (window.innerWidth < 500) {
-      dialogConfig.width = '100%'; 
+      dialogConfig.width = '100%';
       dialogConfig.height = '100%';
       dialogConfig.maxWidth = '100vw';
       dialogConfig.maxHeight = '100vh';
-  } else {
-    const offsetLeft = 400;
-    const offsetY = 20;
-    dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
-  }
+    } else {
+      const offsetLeft = 400;
+      const offsetY = 20;
+      dialogConfig.position = { top: `${event.clientY + offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+    }
     this.dialog.open(ShowMemberDialogComponent, dialogConfig);
   }
 
@@ -329,9 +330,9 @@ export class GroupChatComponent {
     this.dialog.open(EmojiDialogComponent, dialogConfig).afterClosed().subscribe((selectedEmoji: string | undefined) => {
       if (selectedEmoji && addEmojiToTextArea) {
         if (emojiToEditMessage) {
-         this.addEmojitoEditMessageTextArea(selectedEmoji)
+          this.addEmojitoEditMessageTextArea(selectedEmoji)
         } else if (!emojiToEditMessage) {
-         this.addEmojitoAnswerMessageTextArea(selectedEmoji)
+          this.addEmojitoAnswerMessageTextArea(selectedEmoji)
         }
       }
       if (selectedEmoji && addEmojiReaction) {
@@ -343,7 +344,7 @@ export class GroupChatComponent {
   /**
    * add a emoji to a edited message
    */
-  addEmojitoEditMessageTextArea(selectedEmoji:any){
+  addEmojitoEditMessageTextArea(selectedEmoji: any) {
     const textarea = document.getElementById('edit-message') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
     const endPos = textarea.selectionEnd;
@@ -359,7 +360,7 @@ export class GroupChatComponent {
   /**
    * add a emoji to a answer
    */
-  addEmojitoAnswerMessageTextArea(selectedEmoji:any){
+  addEmojitoAnswerMessageTextArea(selectedEmoji: any) {
     const textarea = document.getElementById('answer') as HTMLTextAreaElement;
     const startPos = textarea.selectionStart;
     const endPos = textarea.selectionEnd;
@@ -439,10 +440,11 @@ export class GroupChatComponent {
   /**
    * add a answer by hit the enter button
    */
-  onEnterPressed(event:any): void {
+  onEnterPressed(event: any): void {
     if (event.key === 'Enter' && !event.shiftKey) {
       this.sendMessage(this.currentChannelData.id);
       event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
     }
   }
+
 }

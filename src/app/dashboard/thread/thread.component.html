@@ -53,7 +53,7 @@
               <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
             </div>
             <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}
-              <img class="send-image" *ngIf="messageObj.fileUrl" [src]="messageObj.fileUrl" alt=""></div>
+              <img  matTooltip="Click for download" (click)="storageService.downloadImageFromChat(messageObj.fileUrl)" class="send-image" *ngIf="messageObj.fileUrl" [src]="messageObj.fileUrl" alt=""></div>
             <div [ngClass]="messageObj.ownMessage ? 'own-message-reaction': 'message-reaction'">
               <mat-icon (click)="openEmojiDialog($event, false, true, messageObj.time)"
                 class="add-reaction-icon">add_reaction</mat-icon>

@@ -241,6 +241,34 @@ export class StorageService {
     return imgUrl; // Rückgabe von imgUrl, unabhängig davon, ob das Bild hochgeladen wurde oder nicht
   }
 
+
+  
+  /**
+   * Download the clicket image
+   */
+  downloadImageFromChat(imageUrl: string) {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous'; // Setze crossOrigin, um CORS-Probleme zu vermeiden
+  
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(img, 0, 0);
+  
+      // Lade das Bild herunter
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/jpeg'); // Verwende die Daten-URL des Canvas
+      a.download = 'DaBubbleImg.jpg'; // Setze den Dateinamen für den Download
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+  
+    // Setze die Quelle des Bildes, um das Laden zu starten
+    img.src = imageUrl;
+  }
 }
 
 
