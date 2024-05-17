@@ -10,6 +10,7 @@ import { ThreadComponent } from './thread/thread.component';
 import { DirectChatComponent } from './direct-chat/direct-chat.component';
 import { GroupChatComponent } from './group-chat/group-chat.component';
 import { CommonModule } from '@angular/common';
+import { LogInService } from '../services/log-in.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class DashboardComponent {
   constructor(private route: ActivatedRoute) { }
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
+  loginService = inject(LogInService)
   userId: any;
   users: User[] = [];
   profilePictureReady: boolean = false;
@@ -37,6 +39,7 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.getIdFromURL();
     this.firestoreService.checkIfUserOnline(this.userId);
+    this.loginService.introProhibet = true;
   }
 
   ngAfterViewInit(): void {

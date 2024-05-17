@@ -343,6 +343,7 @@ export class DirectChatComponent {
    */
   addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.directChatService.addEmojiToMessage(this.currentChatPartnerId, this.currentUserId, messageId, selectedEmoji)
+    this.closeReactionDialog()
   }
 
   /**

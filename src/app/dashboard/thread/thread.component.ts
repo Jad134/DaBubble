@@ -185,6 +185,7 @@ export class ThreadComponent {
    */
   addCurrentReaction(messageId: any, selectedEmoji: any) {
     this.threadService.addEmojiToMessage(messageId, selectedEmoji, this.currentUserId)
+    this.closeReactionDialog()
   }
 
   /**
