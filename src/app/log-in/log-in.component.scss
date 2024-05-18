@@ -34,12 +34,12 @@ section {
   flex-direction: column;
   gap: 20px;
 
-  > span {
+  >span {
     font-family: $nunito;
     font-size: 18px;
   }
 
-  > a {
+  >a {
     display: flex;
     justify-content: end;
     text-decoration: none;
@@ -97,7 +97,7 @@ mat-card-header {
     margin-bottom: 30px;
   }
 
-  > span {
+  >span {
     text-align: center;
     font-family: $nunito;
     font-size: 20px;
@@ -113,7 +113,7 @@ mat-card-header {
   text-align: center;
   margin-bottom: 30px;
 
-  > a {
+  >a {
     text-decoration: none;
     font-size: 18px;
     color: $purple2;
@@ -125,7 +125,8 @@ mat-card-header {
   flex-direction: column;
   text-align: justify;
   gap: 4px;
-  > span {
+
+  >span {
     font-family: $nunito;
     font-size: 14px;
     font-weight: 400;
@@ -184,7 +185,7 @@ mat-card-header {
   margin: 10px 0 20px;
   margin-bottom: 30px;
 
-  > span {
+  >span {
     background: #fff;
     padding: 0 10px;
     font-family: $nunito;
@@ -250,9 +251,10 @@ mat-card-header {
     background-color: lighten($purple1, 10%);
   }
 
-  &:disabled{
+  &:disabled {
     background-color: gray;
-    &:hover{
+
+    &:hover {
       background-color: gray;
     }
   }
@@ -284,7 +286,7 @@ mat-card-header {
   justify-content: center;
   padding-top: 50px;
 
-  > a {
+  >a {
     text-decoration: none;
     cursor: pointer;
     color: $purple2;
@@ -347,68 +349,110 @@ mat-card-header {
   }
 }
 
-@media (max-width: 650px){
-    mat-card {
-        width: auto;
-        margin-left: 20px;
-        margin-right: 20px;
-      }
-    mat-card-content{
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        width: auto;
-      }
-    
-    mat-card-header {
-        h1 {
-          font-size: 32px;
-        }
-      
-        > span {
-          font-size: 17px;
-        }
-      }
-}
-
-@media (max-width: 400px){
+@media (max-width: 650px) {
   mat-card {
-      width: auto;
-      margin-left: 7px;
-      margin-right: 7px;
-    }
-  
+    width: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  mat-card-content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    width: auto;
+  }
+
   mat-card-header {
-      h1 {
-        font-size: 28px;
-      }
-    
-      > span {
-        font-size: 14px;
-      }
+    h1 {
+      font-size: 32px;
     }
+
+    >span {
+      font-size: 17px;
+    }
+  }
 }
 
-@media (max-width: 380px){
+@media (max-width: 400px) {
   mat-card {
-      width: auto;
-      margin-left: 7px;
-      margin-right: 7px;
+    width: auto;
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+
+  mat-card-header {
+    h1 {
+      font-size: 28px;
     }
-  
-    mat-card-content{
-      padding-left: 0px !important;
-      padding-right: 0px !important;
-      width: auto;
+
+    >span {
+      font-size: 14px;
     }
-  
+  }
+}
+
+@media (max-width: 380px) {
+  mat-card {
+    width: auto;
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+
+  mat-card-content {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    width: auto;
+  }
+
   mat-card-header {
     width: 305px;
-      h1 {
-        font-size: 28px;
-      }
-    
-      > span {
-        font-size: 14px;
-      }
+
+    h1 {
+      font-size: 28px;
     }
+
+    >span {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 345px) {
+  .input-container {
+    width: 240px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mail-input {
+    font-size: 15px;
+    padding-left: 60px;
+  }
+
+  .sign-up {
+    font-size: 15px;
+    width: 113px;
+  }
+
+  .guest-login {
+      font-size: 15px;
+      width: 113px;
+  }
+
+  .login-buttons{
+    gap: 16px;
+  }
+
+  .google-login{
+    font-size: 15px;
+  }
+
+  mat-card-header {
+    width: 269px;
+  }
+  
 }
