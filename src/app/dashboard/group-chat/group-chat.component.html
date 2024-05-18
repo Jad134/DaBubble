@@ -62,10 +62,13 @@
                 (mouseleave)="showButton[i] = false"
                 [ngClass]="messageObj.ownMessage ? 'you-chat-message' : 'chat-message'" class="chat-message">
 
-                <div *ngIf="messageObj.welcomeMessage && currentChannelData &&currentChannelData?.name" class="welcome-message-container">
-                    <span *ngIf="currentChannelData &&currentChannelData?.name" class="welcome-channel-name"># {{currentChannelData.name}}</span>
+                <div *ngIf="messageObj.welcomeMessage && currentChannelData &&currentChannelData?.name"
+                    class="welcome-message-container">
+                    <span *ngIf="currentChannelData &&currentChannelData?.name" class="welcome-channel-name">#
+                        {{currentChannelData.name}}</span>
                     <div class="welcome-message">
-                        <span> {{messageObj.creator}} hat diesen Channel erstellt. <br> Das ist der Anfang des Channels <span class="small-channel-name"> # {{currentChannelData.name}}</span>
+                        <span> {{messageObj.creator}} hat diesen Channel erstellt. <br> Das ist der Anfang des Channels
+                            <span class="small-channel-name"> # {{currentChannelData.name}}</span>
                         </span>
                     </div>
 
@@ -80,7 +83,9 @@
                         <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
                     </div>
                     <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}
-                        <img  matTooltip="Click for download" (click)="storageService.downloadImageFromChat(messageObj.fileUrl)" class="send-image" *ngIf="messageObj.fileUrl" [src]="messageObj.fileUrl" alt="">
+                        <img matTooltip="Click for download"
+                            (click)="storageService.downloadImageFromChat(messageObj.fileUrl)" class="send-image"
+                            *ngIf="messageObj.fileUrl" [src]="messageObj.fileUrl" alt="">
                     </div>
                     <div [ngClass]="messageObj.ownMessage ? 'message-reaction-own-message' : 'message-reaction'">
                         <div (click)="openThread(messageObj.time)" class="answers">{{messageObj.answer -1}} Antworten
@@ -144,15 +149,25 @@
 
     <div *ngIf="currentChannelData" class="answer-section">
         <div class="answer-field">
-            <textarea  (keydown.enter)="onEnterPressed($event)" [(ngModel)]="message" name="answer" id="answer" cols="1" rows="40"
-                placeholder="Antworten..."></textarea>
+            <textarea (keydown.enter)="onEnterPressed($event)" [(ngModel)]="message" name="answer" id="answer" cols="1"
+                rows="40" placeholder="Antworten..."></textarea>
             <div class="button-row">
                 <div class="d-flex-sb">
                     <div id="fileUploadDiv" (click)="openFilePicker()" class="add w-h-40">
                     </div>
                     <div class="vector"></div>
                     <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false, undefined, false)"></div>
-                    <div class="email w-h-40"></div>
+                    <div (click)="callMember($event)" class="email w-h-40"></div>
+                    <ng-template #atUserList>
+                        <mat-card class="at-user-card">
+                            <div *ngFor="let user of users">
+                                <div (click)="userToTextarea(user.name)" class="show-at-user">
+                                    <img class="at-user-img" [src]="user.avatar" alt="">
+                                    {{user.name}}
+                                </div>
+                            </div>
+                        </mat-card>
+                    </ng-template>
                 </div>
                 <div (click)="sendMessage(currentChannelData.id)" class="send w-h-40"></div>
             </div>

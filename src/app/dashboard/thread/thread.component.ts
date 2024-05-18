@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, inject } from '@angular/core';
+import { Component, HostListener, Input, ViewChild, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
@@ -9,7 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 import { StorageService } from '../../services/storage.service';
-import {MatTooltip, MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { User } from '../../../models/user.class';
 
 @Component({
   selector: 'app-thread',
@@ -33,8 +34,10 @@ export class ThreadComponent {
   imgForDelete: any;
   @ViewChild('reactionInformationDialog') reactionInfo: any;
   @ViewChild('editMessageDialog') editMessageDialog: any;
+  @ViewChild('atUserList') atUserList: any;
   dialogReference: MatDialogRef<any> | null = null;
   currentFile!: File | null;
+  @Input() users: User[] = [];
 
   editedMessageIndex: number | null = null;
 
@@ -88,13 +91,13 @@ export class ThreadComponent {
    */
   async sendMessageToThread(message: any) {
     let timeStamp = Date.now().toString()
-    if(this.currentFile){
+    if (this.currentFile) {
       const imgUrl = await this.storageService.uploadToThreadRef(this.currentFile, timeStamp)
       this.threadService.sendMessageToThread(timeStamp, message, this.currentUserId, imgUrl)
       this.currentFile = null;
       this.message = ''
-    }else
-    this.threadService.sendMessageToThread(timeStamp, message, this.currentUserId)
+    } else
+      this.threadService.sendMessageToThread(timeStamp, message, this.currentUserId)
     this.message = '';
   }
 
@@ -115,9 +118,9 @@ export class ThreadComponent {
     }
   }
 
-/**
-* open the emojiDialog and insert the returned emoji in the textarea field
-*/
+  /**
+  * open the emojiDialog and insert the returned emoji in the textarea field
+  */
   openEmojiDialog(event: MouseEvent, addEmojiToTextArea: boolean, addEmojiReaction: boolean, messageId?: any, emojiToEditMessage?: boolean) {
     const offsetY = 300;
     const dialogConfig = new MatDialogConfig();
@@ -298,7 +301,7 @@ export class ThreadComponent {
   /**
    * save a edited message
    */
-  async saveEdit(messageId: any, message: any, img?:any) {
+  async saveEdit(messageId: any, message: any, img?: any) {
     await this.threadService.editMessage(messageId, message, img)
     this.editedMessageIndex = null;
   }
@@ -317,7 +320,7 @@ export class ThreadComponent {
   /**
    * add a answer by hit the enter key
    */
-  onEnterPressed(event:any): void {
+  onEnterPressed(event: any): void {
     if (event.key === 'Enter' && !event.shiftKey) {
       // Enter-Taste wurde gedrückt und Shift-Taste nicht gehalten
       this.sendMessageToThread(this.message);
@@ -344,5 +347,61 @@ export class ThreadComponent {
       }
     };
     input.click();
+  }
+
+
+  /**
+   * Show the userlist to add the name to textarea
+   */
+  async callMember(event: MouseEvent) {
+    await this.loadProfilePictures(this.users)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      mouseEventData: {
+        clientX: event.clientX,
+        clientY: event.clientY
+      },
+    }
+    if (window.innerWidth < 500) {
+      dialogConfig.width = '100%';
+      dialogConfig.height = '100%';
+      dialogConfig.maxWidth = '100vw';
+      dialogConfig.maxHeight = '100vh';
+    } else {
+      const offsetLeft = 0;
+      const offsetY = 200;
+      dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+    }
+    this.dialog.open(this.atUserList, dialogConfig);
+  }
+
+  /**
+  * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
+  */
+  async loadProfilePictures(users: User[]) {
+    for (const user of users) {
+      if (user.avatar === 'ownPictureDA') {
+        const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
+        try {
+          const downloadedImageUrl = await this.storageService.downloadImage(
+            profilePictureURL
+          );
+          user.avatar = downloadedImageUrl;
+        } catch (error) {
+          console.error('Error downloading user profile picture:', error);
+        }
+      }
+    }
+  }
+
+  /**
+  * Add the name to textarea
+  */
+  userToTextarea(name: string) {
+    if (!this.message) {
+      this.message = '';
+    }
+    this.message += `@ ${name}`;
+    this.dialog.closeAll();
   }
 }

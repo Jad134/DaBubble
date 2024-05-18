@@ -14,12 +14,13 @@ import { ThreadService } from '../../services/thread.service';
 import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component';
 import { StorageService } from '../../services/storage.service';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
   selector: 'app-group-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogClose, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatDialogClose, MatIconModule, MatTooltipModule, MatCardModule],
   templateUrl: './group-chat.component.html',
   styleUrl: './group-chat.component.scss',
 })
@@ -39,6 +40,7 @@ export class GroupChatComponent {
   showReaction: boolean[] = Array(this.chatService.chatDatas.length).fill(false);
   @ViewChild('editMessageDialog') editMessageDialog: any;
   @ViewChild('reactionInformationDialog') reactionInfo: any;
+  @ViewChild('atUserList') atUserList: any;
   dialogReference: MatDialogRef<any> | null = null;
   editedMessageIndex: number | null = null;
   messageForEdit: any;
@@ -445,6 +447,61 @@ export class GroupChatComponent {
       this.sendMessage(this.currentChannelData.id);
       event.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
     }
+  }
+  
+  /**
+   * Show the userlist to add the name to textarea
+   */
+  async callMember(event: MouseEvent){
+    await this.loadProfilePictures(this.users)
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      mouseEventData: {
+        clientX: event.clientX,
+        clientY: event.clientY
+      },
+    }
+    if (window.innerWidth < 500) {
+      dialogConfig.width = '100%';
+      dialogConfig.height = '100%';
+      dialogConfig.maxWidth = '100vw';
+      dialogConfig.maxHeight = '100vh';
+    } else {
+      const offsetLeft = 0;
+      const offsetY = 200;
+      dialogConfig.position = { top: `${event.clientY - offsetY}px`, left: `${event.clientX - offsetLeft}px` };
+    }
+    this.dialog.open(this.atUserList, dialogConfig);
+  }
+
+  /**
+   * This function controls if the user use a own profile picture and the downloaded the image . After this the array Alluser is updatet.
+   */
+  async loadProfilePictures(users: User[]) {
+    for (const user of users) {
+      if (user.avatar === 'ownPictureDA') {
+        const profilePictureURL = `gs://dabubble-51e17.appspot.com/${user.id}/ownPictureDA`;
+        try {
+          const downloadedImageUrl = await this.storageService.downloadImage(
+            profilePictureURL
+          );
+          user.avatar = downloadedImageUrl;
+        } catch (error) {
+          console.error('Error downloading user profile picture:', error);
+        }
+      }
+    }
+  }
+
+   /**
+   * Add the name to textarea
+   */
+  userToTextarea(name:string){
+    if (!this.message) {
+      this.message = '';
+  }
+  this.message += `@ ${name}`;
+  this.dialog.closeAll();
   }
 
 }

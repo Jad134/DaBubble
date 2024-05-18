@@ -26,9 +26,10 @@
     class="chat-components"
   ></app-group-chat>
   <app-direct-chat
+  [users]="users"
     [currentChatPartnerId]="currentDirectChat"
     *ngIf="directChatVisible"
     class="chat-components"
   ></app-direct-chat>
-  <app-thread></app-thread>
+  <app-thread [users]="users"></app-thread>
 </section>

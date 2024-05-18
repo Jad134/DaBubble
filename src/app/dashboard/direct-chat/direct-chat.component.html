@@ -125,7 +125,17 @@
                     </div>
                     <div class="vector"></div>
                     <div class="emoji w-h-40" (click)="openEmojiDialog($event, true, false)"></div>
-                    <div class="email w-h-40"></div>
+                    <div (click)="callMember($event)" class="email w-h-40"></div>
+                    <ng-template #atUserList>
+                        <mat-card class="at-user-card">
+                            <div *ngFor="let user of users">
+                                <div (click)="userToTextarea(user.name)" class="show-at-user">
+                                    <img class="at-user-img" [src]="user.avatar" alt="">
+                                    {{user.name}}
+                                </div>
+                            </div>
+                        </mat-card>
+                    </ng-template>
                 </div>
                 <div (click)="sendChat()" class="send w-h-40"></div>
             </div>
