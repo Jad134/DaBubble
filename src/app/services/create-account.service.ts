@@ -2,7 +2,7 @@
 
 import { Injectable, inject, NgZone } from '@angular/core';
 import { Firestore,  getFirestore } from '@angular/fire/firestore';
-import {  initializeApp } from '@angular/fire/app';
+import {  FirebaseError, initializeApp } from '@angular/fire/app';
 import { getAuth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
@@ -30,7 +30,7 @@ export class CreateAccountService {
    * @param password 
    * @param userDatas 
    */
-  async createUserWithEmailAndPassword(email: string, password: string, userDatas: any): Promise<void> {
+  async createUserWithEmailAndPassword(email: string, password: string, userDatas: any): Promise<string | void> {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
@@ -42,7 +42,11 @@ export class CreateAccountService {
         this.router.navigate(['/select-avatar/' + userid]);
       });
     } catch (error) {
-      console.error('Fehler beim Erstellen des Benutzers:', error);
+      if (error instanceof FirebaseError) {
+        return 'Diese e-Mail Adresse ist bereits in Verwendung!';
+      } else {
+        return 'Ein unbekannter Fehler ist aufgetreten.';
+      }
     }
   }
 

@@ -60,6 +60,7 @@
             <p class="dataprotec-error" [ngStyle]="{ display: dataprotectionFailed ? 'block' : 'none' }">
               Sie müssen der Datenschuterklärung zustimmen.
             </p>
+            <p *ngIf="errorMessage" class="dataprotec-error">{{ errorMessage }}</p>
           </div>
           <div class="forward-button">
             <button [disabled]="disableButton" class="forward" (click)="createAccount()">Weiter</button>

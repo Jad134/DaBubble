@@ -24,6 +24,7 @@ export class CreateAccountComponent {
   dataprotectionFailed = false;
   isAgreed!: boolean;
   disableButton = true;
+  errorMessage: any;
 
 
   ngOnInit(): void {
@@ -45,7 +46,11 @@ export class CreateAccountComponent {
         this.newUser.eMail,
         this.newUser.password,
         this.newUser
-      );
+      ).then(errorMessage => {
+        if (errorMessage) {
+          this.errorMessage = errorMessage;
+        }
+      });
     }
   }
 
