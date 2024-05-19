@@ -393,6 +393,26 @@ button {
   margin-right: 10px;
   display: flex;
   flex-direction: column;
+  overflow: auto;
+  max-width: 340px;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+    border-radius: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $bg-color;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $purple2;
+    border-radius: 8px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: $purple3;
+  }
 }
 
 .time {
@@ -974,5 +994,9 @@ textarea::-webkit-scrollbar-thumb:hover {
 @media (max-width: 1500px){
   .thread-container{
     width: 366px;
+  }
+
+  .message{
+    max-width: 230px;
   }
 }
