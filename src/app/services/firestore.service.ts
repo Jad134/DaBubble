@@ -37,7 +37,6 @@ export class FirestoreService {
   user = this.auth.currentUser;
   userIds: any;
   changedUserName$: Subject<any> = new Subject<any>();
-
   channelNames: string[] = [];
 
 
@@ -73,9 +72,9 @@ export class FirestoreService {
     return users; // Geben Sie das Array der Benutzer zurück
   }
 
-/**
- * Get all user Ids and return it
- */
+  /**
+   * Get all user Ids and return it
+   */
   async getAllUserIds(): Promise<string[]> {
     const userIds: string[] = [];
     const querySnapshot = await getDocs(collection(this.db, 'Users'));
@@ -114,9 +113,9 @@ export class FirestoreService {
 
 
   // --------------------------Update Db with avatar?--------------------------------------
-/**
- * Update the avatar from the user
- */
+  /**
+   * Update the avatar from the user
+   */
   async updateUserAvatar(id: string, avatarRef: string) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
@@ -138,9 +137,9 @@ export class FirestoreService {
     });
   }
 
-/**
- * updates the userobject isOnline to true
- */
+  /**
+   * updates the userobject isOnline to true
+   */
   async updateUserToOnline(id: string,) {
     const userRef = doc(this.db, "Users", id);
     await updateDoc(userRef, {
@@ -179,9 +178,9 @@ export class FirestoreService {
     try {
       const existingUserData = await this.getUserDataById(id);
       if (existingUserData) {
-        let existingChannels: string[] = existingUserData['channels'] || []; 
+        let existingChannels: string[] = existingUserData['channels'] || [];
         if (!Array.isArray(existingChannels)) {
-          existingChannels = [existingChannels]; 
+          existingChannels = [existingChannels];
         }
         existingChannels.push(channelId);
         existingChannels = existingChannels.filter((id, index, self) => self.indexOf(id) === index);
@@ -202,18 +201,44 @@ export class FirestoreService {
   /**
    * This function update the channelsarray at the users db, when user leave a channel
    * */
-  async updateUserChannelsIfDeleteOne(userId: string, channelId:any) {
+  async updateUserChannelsIfDeleteOne(userId: string, channelId: any) {
     const userRef = doc(this.db, "Users", userId)
     await updateDoc(userRef, {
       channels: channelId
     });
   }
 
-  /**
-   * This function is only called to update the name in realtime after edit profile 
-   */
-  updateUserName(newName: any) {
-    this.changedUserName$.next(newName); 
-  }
+  async updateUserName(newName: any, userId: string) {
+  
+    const channelsSnapshot = await getDocs(collection(this.db, 'Channels'));
 
+    for (const channelDoc of channelsSnapshot.docs) {
+      const channelId = channelDoc.id;
+      const messagesSnapshot = await getDocs(collection(this.db, `Channels/${channelId}/chat`));
+
+      for (const messageDoc of messagesSnapshot.docs) {
+        const messageData = messageDoc.data();
+        if (messageData['user'] && messageData['user'].id === userId) {
+          const updatedUser = { ...messageData['user'], name: newName };
+          const messageRef = doc(this.db, `Channels/${channelId}/chat`, messageDoc.id);
+          await updateDoc(messageRef, { user: updatedUser });
+        }
+        const threadsSnapshot = await getDocs(collection(this.db, `Channels/${channelId}/chat/${messageDoc.id}/thread`));
+
+        for (const threadDoc of threadsSnapshot.docs) {
+          const threadData = threadDoc.data();
+          if (threadData['user'] && threadData['user'].id === userId) {
+            const updatedUser = { ...threadData['user'], name: newName };
+            const threadRef = doc(this.db, `Channels/${channelId}/chat/${messageDoc.id}/thread`, threadDoc.id);
+            await updateDoc(threadRef, { user: updatedUser });
+          }
+        }
+      }
+    }
+    this.changedUserName$.next(newName);
+  }
 }
+
+
+
+

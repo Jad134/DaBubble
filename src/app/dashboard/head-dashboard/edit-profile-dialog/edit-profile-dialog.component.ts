@@ -48,7 +48,7 @@ export class EditProfileDialogComponent {
     this.actualUser.name = this.nameValue;
     this.actualUser.eMail = this.mailValue;
     await this.firestoreService.updateUserNameAndMail(this.actualUser);
-    this.firestoreService.updateUserName(this.nameValue)
+    this.firestoreService.updateUserName(this.nameValue, this.userId)
     this.dialog.closeAll();
   }
 
