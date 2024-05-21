@@ -33,7 +33,7 @@ export class FirestoreService {
   auth = getAuth(this.app);
   db = getFirestore(this.app);
   users = new User();
-  allUsers = new AllUser();
+  allUsers!  :User[];
   user = this.auth.currentUser;
   userIds: any;
   changedUserName$: Subject<any> = new Subject<any>();
@@ -67,6 +67,7 @@ export class FirestoreService {
       const user = new User(userData); // Erstellen Sie ein neues User-Objekt mit den abgerufenen Daten
       this.userIds = doc.id
       users.push(user); // Fügen Sie das User-Objekt zum Array hinzu
+      this.allUsers = users
     });
 
     return users; // Geben Sie das Array der Benutzer zurück
@@ -208,34 +209,20 @@ export class FirestoreService {
     });
   }
 
+  /**
+   * Called the getAllUsers for live updating the Username in all compontens and
+   */
   async updateUserName(newName: any, userId: string) {
-  
-    const channelsSnapshot = await getDocs(collection(this.db, 'Channels'));
-
-    for (const channelDoc of channelsSnapshot.docs) {
-      const channelId = channelDoc.id;
-      const messagesSnapshot = await getDocs(collection(this.db, `Channels/${channelId}/chat`));
-
-      for (const messageDoc of messagesSnapshot.docs) {
-        const messageData = messageDoc.data();
-        if (messageData['user'] && messageData['user'].id === userId) {
-          const updatedUser = { ...messageData['user'], name: newName };
-          const messageRef = doc(this.db, `Channels/${channelId}/chat`, messageDoc.id);
-          await updateDoc(messageRef, { user: updatedUser });
-        }
-        const threadsSnapshot = await getDocs(collection(this.db, `Channels/${channelId}/chat/${messageDoc.id}/thread`));
-
-        for (const threadDoc of threadsSnapshot.docs) {
-          const threadData = threadDoc.data();
-          if (threadData['user'] && threadData['user'].id === userId) {
-            const updatedUser = { ...threadData['user'], name: newName };
-            const threadRef = doc(this.db, `Channels/${channelId}/chat/${messageDoc.id}/thread`, threadDoc.id);
-            await updateDoc(threadRef, { user: updatedUser });
-          }
-        }
-      }
-    }
     this.changedUserName$.next(newName);
+    this.getAllUsers()
+  }
+
+  /**
+   * @returns The username per userid
+   */
+  getUserNameById(userId: string): string {
+    const user = this.allUsers.find(user => user.id === userId);
+    return user ? user.name : 'Unknown User';
   }
 }
 

@@ -49,7 +49,7 @@
           <div *ngIf="messageObj?.message">
             <div [ngClass]="messageObj.ownMessage ? 'you-name-time-div': 'name-time-div'">
               <span *ngIf="messageObj.user.name" class="name" (click)="openUserDetail(messageObj.user)">{{
-                messageObj.user.name }}</span>
+               fireStoreService.getUserNameById(messageObj.user.id) }}</span>
               <span class="time">{{ messageObj.time | date:'HH:mm' }}</span>
             </div>
             <div [ngClass]="messageObj.ownMessage ? 'you-message': 'message'">{{ messageObj.message }}

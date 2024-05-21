@@ -11,6 +11,7 @@ import { EmojiDialogComponent } from '../../emoji-dialog/emoji-dialog.component'
 import { StorageService } from '../../services/storage.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { User } from '../../../models/user.class';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-thread',
@@ -25,6 +26,7 @@ export class ThreadComponent {
   chatService = inject(channelDataclientService);
   threadService = inject(ThreadService);
   storageService = inject(StorageService)
+  fireStoreService = inject(FirestoreService)
   currentUserId: any;
   message: any;
   showButton: boolean[] = Array(this.threadService.chatDatas.length).fill(false);

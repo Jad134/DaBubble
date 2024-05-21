@@ -7,6 +7,7 @@ import { FirestoreService } from '../../../services/firestore.service';
 import { Router } from '@angular/router';
 import { ChangeAvatarDialogComponent } from '../../change-avatar-dialog/change-avatar-dialog.component';
 import { CommonModule } from '@angular/common';
+import { channelDataclientService } from '../../../services/channelsDataclient.service';
 
 @Component({
   selector: 'app-edit-profile-dialog',
@@ -19,6 +20,7 @@ export class EditProfileDialogComponent {
   constructor(private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private router: Router) { }
 
   firestoreService = inject(FirestoreService)
+  channelService = inject(channelDataclientService)
   userId: any;
   actualUser: any = new User;
   nameValue: string | undefined;
@@ -48,8 +50,10 @@ export class EditProfileDialogComponent {
     this.actualUser.name = this.nameValue;
     this.actualUser.eMail = this.mailValue;
     await this.firestoreService.updateUserNameAndMail(this.actualUser);
-    this.firestoreService.updateUserName(this.nameValue, this.userId)
+    await this.firestoreService.updateUserName(this.nameValue, this.userId)
+   
     this.dialog.closeAll();
+  
   }
 
   /**

@@ -12,7 +12,7 @@
                 <div [ngStyle]="{
                     'background-color': isUserOnline(user.id) ? 'green' : 'red'
                   }"  class="statuslight"></div>
-                <div class="user-name">{{user.name}}</div>
+                <div class="user-name">{{fireStoreService.getUserNameById(user.id)}}</div>
             </div>
         </div>
         <div (click)="openAddMemberSection()" class="add-person-container">
