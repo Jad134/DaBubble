@@ -1,4 +1,4 @@
-import { Component, Input, inject, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, inject, SimpleChanges, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogConfig, MatDialogClose, MatDialogRef, } from '@angular/material/dialog';
@@ -47,6 +47,7 @@ export class GroupChatComponent {
   imgForDelete: any;
   currentHoverEmoji: any;
   currentFile!: File | null;
+  @Output() threadEvent = new EventEmitter<void>();
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private elementRef: ElementRef,) {
@@ -198,12 +199,13 @@ export class GroupChatComponent {
   /**
    * open the thread component
    */
-  openThread(messageId: any) {
+  openThread(messageId: any) :void{
     this.threadService.closeTab = false;
     this.threadService.currentChatId = messageId;
     this.threadService.currentGroupId = this.currentId
     this.threadService.getCurrentThreadCollection(this.currentId, messageId, this.currentUserId)
     this.threadService.setCurrentChannelData(this.currentChannelData)
+    this.threadEvent.emit();
   }
 
   /**

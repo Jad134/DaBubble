@@ -11,6 +11,7 @@ import { DirectChatComponent } from './direct-chat/direct-chat.component';
 import { GroupChatComponent } from './group-chat/group-chat.component';
 import { CommonModule } from '@angular/common';
 import { LogInService } from '../services/log-in.service';
+import { ThreadService } from '../services/thread.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,7 @@ export class DashboardComponent {
   firestoreService = inject(FirestoreService)
   downloadService = inject(StorageService)
   loginService = inject(LogInService)
+  threadService = inject(ThreadService)
   userId: any;
   users: User[] = [];
   profilePictureReady: boolean = false;
@@ -105,6 +107,24 @@ export class DashboardComponent {
     this.sidenavVisible = !shouldHideSidenav;
   }
 
+   /**
+ * Update the group chat visibility if the window width is lower than 500px.
+ */
+updateGroupChatVisibility(): void {
+  if (window.innerWidth >= 500) {
+    return;
+  }
+  const shouldHideGroupChat = this.groupChatVisible || this.directChatVisible || this.currentGroupChat || this.currentDirectChat;
+
+  if (this.threadService.closeTab === false) {
+    this.groupChatVisible = false;
+    this.directChatVisible = false;
+  } else if(this.threadService.closeTab === true) {
+    this.groupChatVisible = true;
+
+  }
+}
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
     this.checkWindowWidth();
@@ -125,5 +145,6 @@ export class DashboardComponent {
     this.sidenavVisible = true;
     this.directChatVisible = false;
     this.groupChatVisible = false;
+    this.threadService.closeTab = true;
   }
 }

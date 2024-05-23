@@ -1000,3 +1000,13 @@ textarea::-webkit-scrollbar-thumb:hover {
     max-width: 230px;
   }
 }
+
+@media (max-width: 500px){
+  .thread-container {
+    height: calc(100vh - 80px);
+    border-radius: 0px;
+    margin-bottom: 0px;
+    width: 100%;
+    margin: 80px 0 0 0;
+  }
+}

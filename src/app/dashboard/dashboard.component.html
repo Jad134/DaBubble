@@ -22,6 +22,7 @@
   <app-group-chat
     [users]="users"
     [currentId]="currentGroupChat"
+    (threadEvent)="updateGroupChatVisibility()"
     *ngIf="groupChatVisible"
     class="chat-components"
   ></app-group-chat>
@@ -31,5 +32,5 @@
     *ngIf="directChatVisible"
     class="chat-components"
   ></app-direct-chat>
-  <app-thread [users]="users"></app-thread>
+  <app-thread (closedThread)="updateGroupChatVisibility()"  *ngIf="!threadService.closeTab" [users]="users"></app-thread>
 </section>

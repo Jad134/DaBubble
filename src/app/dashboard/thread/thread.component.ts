@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { channelDataclientService } from '../../services/channelsDataclient.service';
@@ -40,16 +40,16 @@ export class ThreadComponent {
   dialogReference: MatDialogRef<any> | null = null;
   currentFile!: File | null;
   @Input() users: User[] = [];
-
+  @Output() closedThread = new EventEmitter<void>();
   editedMessageIndex: number | null = null;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkScreenSize();
+    // this.checkScreenSize();
   }
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog) {
-    this.checkScreenSize();
+    // this.checkScreenSize();
     this.getIdFromURL();
     this.subscribeToCurrentChannelData();
   }
@@ -72,20 +72,21 @@ export class ThreadComponent {
     }
   }
 
-  /**
-   * check if size screen is lower 1305px
-   */
-  checkScreenSize() {
-    if (typeof window !== 'undefined') {
-      this.isSmallScreen = window.innerWidth < 1305;
-    }
-  }
+  // /**
+  //  * check if size screen is lower 1305px
+  //  */
+  // checkScreenSize() {
+  //   if (typeof window !== 'undefined') {
+  //     this.isSmallScreen = window.innerWidth < 1305;
+  //   }
+  // }
 
   /**
    * hide the tab
    */
   Dnone() {
     this.threadService.closeTab = true;
+    this.closedThread.emit()
   }
 
   /**
