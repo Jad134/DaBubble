@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { User } from '../../models/user.class';
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { FirestoreService } from './firestore.service';
+import { channelDataclientService } from './channelsDataclient.service';
 
 
 @Injectable({
@@ -18,6 +19,7 @@ export class LogInService {
 
   firestoreService = inject(FirestoreService)
   firestore: Firestore = inject(Firestore)
+  channelService = inject(channelDataclientService)
   app = initializeApp(this.firestoreService.firebaseConfig);
   auth = getAuth(this.app);
   db = getFirestore(this.app)
@@ -126,6 +128,7 @@ export class LogInService {
    * Logs the user out
    */
   async logOut() {
+    this.channelService.stopSubscription()
     const auth = getAuth();
     signOut(auth).then(() => {
       // Sign-out successful.

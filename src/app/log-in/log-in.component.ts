@@ -27,13 +27,14 @@ export class LogInComponent {
   firestore = inject(FirestoreService)
   uploadService = inject(StorageService)
   threadService = inject(ThreadService)
+  
 
   /**
    * log in function
    */
-  logIn() {
+  async logIn() {
     this.validateCheck()
-    this.loginService.Login(this.mail, this.password) // erst nach dem check 
+   await this.loginService.Login(this.mail, this.password) // erst nach dem check 
     this.threadService.closeTab = true;
   }
 
@@ -49,6 +50,7 @@ export class LogInComponent {
    */
   async logInWithGoogle(){
    await this.loginService.loginWithGoogle()
+   this.threadService.closeTab = true;
   }
 
   /**

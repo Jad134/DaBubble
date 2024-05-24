@@ -148,7 +148,7 @@ export class SidenavDashboardComponent implements OnDestroy {
         console.error('Fehler beim Abrufffen der Benutzerdaten:', error);
       });
 
-    this.downloadChannels(this.currentUserId);
+     this.downloadChannels(this.currentUserId);
   }
 
   /**

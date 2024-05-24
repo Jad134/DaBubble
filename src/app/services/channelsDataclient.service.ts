@@ -30,7 +30,7 @@ export class channelDataclientService {
   ownMessage = false;
   chatLength!: number;
   allChatMessages: any;
-
+  private unsubscribe: (() => void) | undefined;
 
 
   /**
@@ -214,7 +214,8 @@ export class channelDataclientService {
   * @param id 
   */
   async getUserChannelId(id: any) {
-    const unsub = onSnapshot(doc(this.db, "Users", id), (doc) => {
+
+    this.unsubscribe = onSnapshot(doc(this.db, "Users", id), (doc) => {
       const UserData = doc.data();
 
       if (UserData) {
@@ -224,6 +225,12 @@ export class channelDataclientService {
         return channels
       }
     });
+  }
+
+  stopSubscription() {
+    if (this.unsubscribe) {
+      this.unsubscribe(); // Beendet das Abonnement
+    }
   }
 
 
@@ -274,7 +281,8 @@ export class channelDataclientService {
   /***
   * This function gets all chanels from the current user with the getUserChannelIds() ids.
   */
-  async getChannels() {
+  async getChannels() {    
+    this.channels = []
     for (const channelId of this.channelIds) {
       if (!this.channels.find(channel => channel.id === channelId)) {
         const unsub = onSnapshot(doc(this.db, "Channels", channelId), (channelDoc) => {
