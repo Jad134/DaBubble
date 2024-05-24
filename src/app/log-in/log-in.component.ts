@@ -7,6 +7,7 @@ import { FirestoreService } from '../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { LogInService } from '../services/log-in.service';
 import { StorageService } from '../services/storage.service';
+import { ThreadService } from '../services/thread.service';
 
 @Component({
   selector: 'app-log-in',
@@ -25,6 +26,7 @@ export class LogInComponent {
   loginService = inject(LogInService)
   firestore = inject(FirestoreService)
   uploadService = inject(StorageService)
+  threadService = inject(ThreadService)
 
   /**
    * log in function
@@ -32,6 +34,7 @@ export class LogInComponent {
   logIn() {
     this.validateCheck()
     this.loginService.Login(this.mail, this.password) // erst nach dem check 
+    this.threadService.closeTab = true;
   }
 
   /**
